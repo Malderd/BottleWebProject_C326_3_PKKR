@@ -11,17 +11,7 @@ from datetime import datetime
 def home():
     """Renders the home page."""
     return dict(
-        year=datetime.now().year
-    )
-
-@route('/contact')
-@view('contact')
-def contact():
-    """Renders the contact page."""
-    return dict(
-        title='Contact',
-        message='Your contact page.',
-        year=datetime.now().year
+        
     )
 
 @route('/about')
@@ -29,7 +19,34 @@ def contact():
 def about():
     """Renders the about page."""
     return dict(
-        title='About',
-        message='Your application description page.',
-        year=datetime.now().year
+        title='About'
+    )
+
+
+@route('/euler_graph')
+@view('euler_graph')
+def euler_grap():
+    return dict(
+        title='Euler grap'
+    )
+
+@route('/hamillton_graph')
+@view('hamillton_graph')
+def hamillton_graph():
+    return dict(
+        title='Hamillton graph'
+    )
+
+@route('/clique_detection')
+@view('clique_detection')
+def clique_detection():
+    return dict(
+        title='Clique detection'
+    )
+
+@route('/kosarayu_algorithm')
+@view('kosarayu_algorithm')
+def kosarayu_algorithm():
+    return dict(
+        title='Kosarayu_algorithm'
     )
