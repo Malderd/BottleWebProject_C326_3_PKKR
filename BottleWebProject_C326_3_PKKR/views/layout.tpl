@@ -18,13 +18,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand">Application name</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/home">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/home">Домашняя страница</a></li>
+                    <li><a href="/about">Об авторах</a></li>
+                    <li><a href="/euler_graph">Эйлеров цикл</a></li>
+                    <li><a href="/hamillton_graph">Гамильтонов цикл</a></li>
+                    <li><a href="/clique_detection">Выявление сообществ</a></li>
+                    <li><a href="/kosarayu_algorithm">Разбиение на компоненты</a></li>
                 </ul>
             </div>
         </div>
@@ -34,7 +36,7 @@
         {{!base}}
         <hr />
         <footer>
-            <p>&copy; {{ year }} - My Bottle Application</p>
+            <p>&copy; - My Bottle Application</p>
         </footer>
     </div>
 
