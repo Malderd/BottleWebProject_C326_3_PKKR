@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+.hero-about {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    background: linear-gradient(rgba(20,50,20,0.72), rgba(10,35,10,0.80)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&auto=format&fit=crop') center / cover no-repeat fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 40px 0;
+    font-family: 'Montserrat', sans-serif;
+}
+    /* заголовок */
+    .hero-about h2 {
+        color: #ffffff;
+        font-size: 3.1rem;
+        font-weight: 700;
+        margin-bottom: 35px;
+        text-align: center;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+/* карточки */
+.cards {
+    display: flex;
+    gap: 34px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 1500px;
+    margin-bottom: 60px;
+}
+
+.card {
+    flex: 1 1 280px;
+    max-width: 340px;
+    padding: 24px 30px;
+    border-radius: 16px;
+    background: #2e7d32;
+    border: 1px solid #43a047;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    text-align: center;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 22px 50px rgba(0,0,0,0.35);
+    }
+
+    .card h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        line-height: 1.35;
+        color: #ffffff;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .card a {
+        display: block;
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.22);
+        color: #ffffff !important;
+        text-decoration: none !important;
+        font-size: 1.6rem;
+        font-weight: 600;
+        font-family: 'Montserrat', sans-serif;
+        transition: background 0.2s;
+    }
+
+        .card a:hover {
+            background: rgba(255,255,255,0.22);
+            color: #ffffff !important;
+        }
+
+/* контакты */
+.contacts-block {
+    width: 100vw;
+    align-self: stretch;
+    margin-top: auto;
+    margin-left: calc(-50vw + 50%);
+    background: #1b5e20;
+    border-top: 2px solid #43a047;
+    padding: 40px 90px;
+    box-sizing: border-box;
+}
+
+    .contacts-block h3 {
+        font-size: 2.9rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-top: 2px;
+        margin-bottom: 16px;
+        font-family: 'Montserrat', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+.contacts-sub {
+    font-size: 1.25rem;
+    color: #a5d6a7;
+    margin-bottom: 25px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 45px;
+}
+
+.contact-column h4 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 12px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.contact-column p,
+.contact-column a {
+    display: block;
+    font-size: 1.67rem;
+    line-height: 1.9;
+    color: #c8e6c9;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+}
+
+    .contact-column a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
