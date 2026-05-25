@@ -1,48 +1,50 @@
 % rebase('layout.tpl', title=title)
 <link rel="stylesheet" href="/static/content/about.css" />
 <div class="hero-about">
-    <h2>Разработчики</h2>
-    <!-- карточки -->
-    <div class="cards">
-        <div class="card">
-            <h3>Даниэла</h3>
-            <a href="https://github.com/Dorxyna" target="_blank">
-                GitHub
-            </a>
-            <a href="https://t.me/pickmedorxyna" target="_blank">
-                Telegram
-            </a>
-        </div>
-        <div class="card">
-            <h3>Константин</h3>
-            <a href="https://github.com/Malderd" target="_blank">
-                GitHub
-            </a>
-            <a href="https://t.me/Malderd" target="_blank">
-                Telegram
-            </a>
-        </div>
+    <div class="main-content">
+        <h2>Разработчики</h2>
+        <!-- карточки -->
+        <div class="cards">
+            <div class="card">
+                <h3>Даниэла</h3>
+                <a href="https://github.com/Dorxyna" target="_blank">
+                    GitHub
+                </a>
+                <a href="https://t.me/pickmedorxyna" target="_blank">
+                    Telegram
+                </a>
+            </div>
+            <div class="card">
+                <h3>Константин</h3>
+                <a href="https://github.com/Malderd" target="_blank">
+                    GitHub
+                </a>
+                <a href="https://t.me/Malderd" target="_blank">
+                    Telegram
+                </a>
+            </div>
 
-        <div class="card">
-            <h3>Анна</h3>
-            <a href="https://github.com/viruy04" target="_blank">
-                GitHub
-            </a>
-            <a href="https://t.me/Myasnh" target="_blank">
-                Telegram
-            </a>
-        </div>
+            <div class="card">
+                <h3>Анна</h3>
+                <a href="https://github.com/viruy04" target="_blank">
+                    GitHub
+                </a>
+                <a href="https://t.me/Myasnh" target="_blank">
+                    Telegram
+                </a>
+            </div>
 
-        <div class="card">
-            <h3>Анастасия</h3>
-            <a href="https://github.com/nastarozina" target="_blank">
-                GitHub
-            </a>
-            <a href="https://t.me/loudlig" target="_blank">
-                Telegram
-            </a>
-        </div>
+            <div class="card">
+                <h3>Анастасия</h3>
+                <a href="https://github.com/nastarozina" target="_blank">
+                    GitHub
+                </a>
+                <a href="https://t.me/loudlig" target="_blank">
+                    Telegram
+                </a>
+            </div>
 
+        </div>
     </div>
 
     <div class="contacts-block">
@@ -63,8 +65,8 @@
 
             <div class="contact-column">
                 <h4>Электронная почта</h4>
-                <a> mathteam32@mail.ru </a>
-                <a> mathsupport326@gmail.ru </a>
+                <p> mathteam32@mail.ru </p>
+                <p> mathsupport326@gmail.ru </p>
             </div>
         </div>
     </div>
