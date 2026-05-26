@@ -2,8 +2,11 @@
 Routes and views for the bottle application.
 """
 
-from bottle import route, view
+from bottle import route, view, request, template
 from datetime import datetime
+
+from algorithms.hamilton_graph import find_hamiltonian
+from validators.valid_hamilton import validate_matrix
 
 @route('/')
 @route('/home')
@@ -33,9 +36,6 @@ def euler_grap():
 @route('/hamillton_graph')
 @view('hamillton_graph')
 def hamillton_graph():
-    return dict(
-        title='Hamillton graph'
-    )
 
 @route('/clique_detection')
 @view('clique_detection')
