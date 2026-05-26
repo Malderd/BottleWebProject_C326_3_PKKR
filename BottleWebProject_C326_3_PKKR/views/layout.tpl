@@ -10,23 +10,24 @@
 </head>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar navbar-inverse navbar-fixed-top custom-navbar">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
                 </button>
             </div>
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/home">Домашняя страница</a></li>
-                    <li><a href="/about">Об авторах</a></li>
                     <li><a href="/euler_graph">Эйлеров цикл</a></li>
                     <li><a href="/hamillton_graph">Гамильтонов цикл</a></li>
                     <li><a href="/clique_detection">Выявление сообществ</a></li>
                     <li><a href="/kosarayu_algorithm">Разбиение на компоненты</a></li>
+                    <li><a href="/about">Об авторах</a></li>
                 </ul>
             </div>
         </div>

@@ -40,3 +40,36 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+
+/* Главное меню */
+
+.custom-navbar {
+    background-color: black;
+    border-bottom: 2px solid #7D9F00;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    min-height: 65px;
+}
+    .custom-navbar .container {
+        max-width: fit-content;
+    }
+
+    .custom-navbar .navbar-nav li a {
+        font-family: 'Trebuchet MS', sans-serif;
+        color: white;
+        font-size: 22px;
+        font-weight: 500;
+        padding: 28px 26px;
+        transition: 0.3s;
+        white-space: nowrap;
+    }
+
+        .custom-navbar .navbar-nav li a:hover {
+            background-color: #7D9F00;
+            color: white !important;
+        }
+
+/* Отступ сверху для содержимого */
+.body-content {
+    margin-top: 50px;
+}
