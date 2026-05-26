@@ -6,7 +6,13 @@
         <!-- карточки -->
         <div class="cards">
             <div class="card">
-                <h3>Даниэла</h3>
+                <div class="avatar">
+                    <img src="/static/images/danya.png" alt="Даниэла">
+                </div>
+                <h3>Паэгле Даниэла Дмитриевна</h3>
+                <p class="contribution">
+                    Дизайн страницы для поиска Эйлерова цикла, реализация алгоритма и создание UML-диаграмм проекта, <br>логотипа сайта.
+                </p>
                 <a href="https://github.com/Dorxyna" target="_blank">
                     GitHub
                 </a>
@@ -15,7 +21,13 @@
                 </a>
             </div>
             <div class="card">
-                <h3>Константин</h3>
+                <div class="avatar">
+                    <img src="/static/images/kostya.png" alt="Константин">
+                </div>
+                <h3>Куликов Константин Дмитриевич</h3>
+                <p class="contribution">
+                    Дизайн главной страницы, страницы с реализацией алгоритма поиска Гамильтонова цикла<br> методом перебора.
+                </p>
                 <a href="https://github.com/Malderd" target="_blank">
                     GitHub
                 </a>
@@ -25,7 +37,13 @@
             </div>
 
             <div class="card">
-                <h3>Анна</h3>
+                <div class="avatar">
+                    <img src="/static/images/anya.png" alt="Анна">
+                </div>
+                <h3>Казакова Анна <br>Юрьевна</h3>
+                <p class="contribution">
+                    Дизайн страниц "Об авторах", поиска кликов в графе, реализация алгоритма и оформление документации проекта.
+                </p>
                 <a href="https://github.com/viruy04" target="_blank">
                     GitHub
                 </a>
@@ -35,7 +53,13 @@
             </div>
 
             <div class="card">
-                <h3>Анастасия</h3>
+                <div class="avatar">
+                    <img src="/static/images/nastya.png" alt="Анастасия">
+                </div>
+                <h3>Рожина Анастасия Андреевна</h3>
+                <p class="contribution">
+                    Дизайн страницы "Разбиение на компоненты", реализация алгоритма Косарайю и подготовка теоретической части.
+                </p>
                 <a href="https://github.com/nastarozina" target="_blank">
                     GitHub
                 </a>

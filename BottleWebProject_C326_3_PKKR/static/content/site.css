@@ -57,7 +57,7 @@ input[type="checkbox"].input-validation-error {
     .custom-navbar .navbar-nav li a {
         font-family: 'Trebuchet MS', sans-serif;
         color: white;
-        font-size: 22px;
+        font-size: 18px;
         font-weight: 500;
         padding: 28px 26px;
         transition: 0.3s;
