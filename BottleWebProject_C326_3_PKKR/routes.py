@@ -36,6 +36,59 @@ def euler_grap():
 @route('/hamillton_graph')
 @view('hamillton_graph')
 def hamillton_graph():
+    return template(
+        'hamilton.tpl',
+        result=None,
+        success=False,
+        errors={},
+        form_data={}
+    )
+
+@route('/hamillton_graph', method='POST')
+@view('hamillton_graph')
+def hamillton_graph_post():
+    n = int(request.forms.get('n'))
+
+    matrix = []
+
+    for i in range(n):
+
+        row = []
+
+        for j in range(n):
+
+            row.append(
+                int(
+                    request.forms.get(
+                        f'cell_{i}_{j}',
+                        '0'
+                    )
+                )
+            )
+
+        matrix.append(row)
+
+    errors = validate_matrix(matrix)
+
+    if errors:
+
+        return template(
+            'hamilton.tpl',
+            result=None,
+            success=False,
+            errors=errors,
+            form_data=request.forms
+        )
+
+    result = find_hamiltonian(matrix)
+
+    return template(
+        'hamilton.tpl',
+        result=result,
+        success=True,
+        errors={},
+        form_data=request.forms
+    )
 
 @route('/clique_detection')
 @view('clique_detection')
