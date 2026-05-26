@@ -47,7 +47,7 @@
     max-width: 340px;
     padding: 20px 30px;
     border-radius: 16px;
-    background: #2e7d32;
+    background: #7D9F00;
     border: 1px solid #43a047;
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     text-align: center;
@@ -134,7 +134,7 @@
 .contact-column p,
 .contact-column a {
     display: block;
-    font-size: 1.67rem;
+    font-size: 1.52rem;
     line-height: 1.3;
     color: white;
     text-decoration: none;
