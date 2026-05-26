@@ -33,6 +33,9 @@
     <Compile Include="hamilton_graph\hamilton_graph.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="hamilton_graph\valid_hamilton.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes.py" />
   </ItemGroup>
   <ItemGroup>
