@@ -14,7 +14,7 @@
 }
 
     /* заголовок страницы */
-    .hero-about h2 {
+    .hero-about h1 {
         color: #fff;
         font-size: 3.1rem;
         font-weight: 700;
@@ -62,7 +62,7 @@
         box-shadow: 0 22px 50px rgba(0,0,0,0.35);
     }
 
-    .card h3 {
+    .card h2 {
         font-size: 2rem;
         font-weight: 700;
         margin-bottom: 10px;

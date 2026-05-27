@@ -2,14 +2,14 @@
 <link rel="stylesheet" href="/static/content/about.css" />
 <div class="hero-about">
     <div class="main-content">
-        <h2>Разработчики</h2>
+        <h1>Разработчики</h1>
         <!-- карточки -->
         <div class="cards">
             <div class="card">
                 <div class="avatar">
                     <img src="/static/images/danya.png" alt="Даниэла">
                 </div>
-                <h3>Паэгле Даниэла Дмитриевна</h3>
+                <h2>Паэгле Даниэла Дмитриевна</h2>
                 <p class="contribution">
                     Дизайн страницы для поиска Эйлерова цикла, реализация алгоритма и создание UML-диаграмм проекта, <br>логотипа сайта.
                 </p>
@@ -24,7 +24,7 @@
                 <div class="avatar">
                     <img src="/static/images/kostya.png" alt="Константин">
                 </div>
-                <h3>Куликов Константин Дмитриевич</h3>
+                <h2>Куликов Константин Дмитриевич</h2>
                 <p class="contribution">
                     Дизайн главной страницы, страницы с реализацией алгоритма поиска Гамильтонова цикла<br> методом перебора.
                 </p>
@@ -40,7 +40,7 @@
                 <div class="avatar">
                     <img src="/static/images/anya.png" alt="Анна">
                 </div>
-                <h3>Казакова Анна <br>Юрьевна</h3>
+                <h2>Казакова Анна <br>Юрьевна</h2>
                 <p class="contribution">
                     Дизайн страниц "Об авторах", поиска клик в графе, реализация алгоритма и оформление документации проекта.
                 </p>
@@ -56,7 +56,7 @@
                 <div class="avatar">
                     <img src="/static/images/nastya.png" alt="Анастасия">
                 </div>
-                <h3>Рожина Анастасия Андреевна</h3>
+                <h2>Рожина Анастасия Андреевна</h2>
                 <p class="contribution">
                     Дизайн страницы "Разбиение на компоненты", реализация алгоритма Косарайю и подготовка теоретической части.
                 </p>
@@ -72,7 +72,7 @@
     </div>
 
     <div class="contacts-block">
-        <h3>Контакты проекта</h3>
+        <h3>Контакты</h3>
         <div class="contacts-grid">
             <div class="contact-column">
                 <h4>GitHub</h4>

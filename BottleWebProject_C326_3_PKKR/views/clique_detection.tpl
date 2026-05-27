@@ -65,11 +65,11 @@
                             Создать матрицу
                         </button>
 
-                        <button class="btn secondary">
+                        <button class="btn primary">
                             Случайные рёбра
                         </button>
 
-                        <button class="btn secondary">
+                        <button class="btn primary">
                             Загрузить TXT
                         </button>
 
@@ -164,16 +164,18 @@
 
                     <div class="result-block">
 
-                        <div class="result-item">
-                            Сообщество 1: {0, 1, 2}
-                        </div>
+                        <h2>Найденные сообщества</h2>
 
-                        <div class="result-item">
-                            Сообщество 2: {3}
-                        </div>
+                        <div class="result-list">
 
-                        <div class="result-item">
-                            Сообщество 3: {2, 4}
+                            <p>1. {0, 1, 2}</p>
+
+                            <p>2. {3}</p>
+
+                            <p>3. {2, 4}</p>
+
+                            <p>4. {5, 6, 7}</p>
+
                         </div>
 
                     </div>
