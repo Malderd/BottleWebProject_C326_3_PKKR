@@ -18,7 +18,7 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>BottleWebProject_C326_3_PKKR</Name>
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
-    <InterpreterId>MSBuild|env_paegle|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,19 +75,10 @@
     <Content Include="views\layout.tpl" />
   </ItemGroup>
   <ItemGroup>
-    <Interpreter Include="env_kaz\">
-      <Id>env_kaz</Id>
+    <Interpreter Include="env_dorxyna\">
+      <Id>env_dorxyna</Id>
       <Version>3.13</Version>
-      <Description>env_kaz (Python 3.13 (64-bit))</Description>
-      <InterpreterPath>Scripts\python.exe</InterpreterPath>
-      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
-      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
-      <Architecture>X64</Architecture>
-    </Interpreter>
-    <Interpreter Include="env_paegle\">
-      <Id>env_paegle</Id>
-      <Version>3.13</Version>
-      <Description>env_paegle (Python 3.13 (64-bit))</Description>
+      <Description>env_dorxyna (Python 3.13 (64-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
