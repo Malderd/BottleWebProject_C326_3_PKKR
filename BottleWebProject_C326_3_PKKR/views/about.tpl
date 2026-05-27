@@ -1,4 +1,4 @@
-% rebase('layout.tpl', title=title)
+% rebase('layout.tpl', title='Об авторах')
 <link rel="stylesheet" href="/static/content/about.css" />
 <div class="hero-about">
     <div class="main-content">
