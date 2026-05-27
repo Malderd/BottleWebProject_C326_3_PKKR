@@ -50,16 +50,11 @@
                     <h2>Параметры графа и матрица смежности</h2>
 
                     <div class="form-group">
-
-                        <label>
-                            Количество вершин
-                        </label>
-
                         <input
                             type="number"
                             min="1"
                             max="20"
-                            placeholder="Введите N"
+                            placeholder="Введите количество вершин N"
                         >
 
                     </div>
@@ -83,35 +78,65 @@
                     <div class="matrix-wrapper">
 
                         <table class="matrix-table">
-
                             <tr>
-                                <td>0</td>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
+                                <td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
                             </tr>
 
                             <tr>
-                                <td><input type="number"></td>
-                                <td>0</td>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
+                                <td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
                             </tr>
 
                             <tr>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
-                                <td>0</td>
-                                <td><input type="number"></td>
+                                <td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
                             </tr>
 
                             <tr>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
-                                <td><input type="number"></td>
-                                <td>0</td>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
                             </tr>
 
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td>
+                            </tr>
+
+                            <tr>
+                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td>
+                            </tr>
                         </table>
 
                     </div>
@@ -134,7 +159,7 @@
                     </div>
 
                     <button class="btn solve-btn">
-                        Найти максимальные клики
+                       Построить граф и найти максимальные клики
                     </button>
 
                     <div class="result-block">

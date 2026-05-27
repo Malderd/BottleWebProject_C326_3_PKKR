@@ -46,30 +46,41 @@
 }
 
     .theory-block summary {
-        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         padding: 24px 30px;
-        font-size: 1.8rem;
+        font-size: 2.1rem;
         font-weight: 700;
         list-style: none;
-        transition: 0.2s;
+        transition: background-color 0.25s ease;
     }
 
-        .theory-block summary:hover {
-            background: rgba(255,255,255,0.06);
+        .theory-block summary::after {
+            content: "▸";
+            font-size: 1.6rem;
+            transition: transform 0.25s ease;
+            color: #f1f8e9;
         }
 
+    .theory-block[open] summary::after {
+        transform: rotate(90deg);
+    }
+
+    .theory-block summary:hover {
+        background: rgba(255,255,255,0.06);
+    }
+
 .theory-content {
-    padding: 0 30px 30px;
+    padding: 15px 30px 15px;
 }
 
     .theory-content p {
-        font-size: 1.52rem;
+        font-size: 1.7rem;
         line-height: 1.5;
         color: #f1f8e9;
         margin-bottom: 18px;
     }
-
-/* ОСНОВНАЯ СЕТКА */
 
 .main-layout {
     display: flex;
@@ -108,11 +119,6 @@
     margin-bottom: 24px;
 }
 
-    .form-group label {
-        font-size: 1.52rem;
-        font-weight: 600;
-    }
-
     .form-group input {
         padding: 14px 16px;
         border-radius: 10px;
@@ -140,32 +146,65 @@
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    transition: 0.25s;
     font-size: 1.6rem;
     font-weight: 600;
     font-family: 'Montserrat', sans-serif;
+    color: white !important;
+    transition: background-color 0.25s ease;
 }
 
+/* кнопки */
 .primary {
     background: #1b5e20;
-    color: white;
+    color: white !important;
 }
 
     .primary:hover {
         background: #2e7d32;
-        transform: translateY(-2px);
+        color: white !important;
     }
 
 .secondary {
     background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.2);
-    color: white;
+    color: white !important;
 }
 
     .secondary:hover {
         background: rgba(255,255,255,0.22);
+        color: white !important;
     }
 
+.solve-btn {
+    width: 100%;
+    background: #1b5e20;
+    color: white !important;
+    margin-bottom: 30px;
+}
+
+    .solve-btn:hover {
+        background: #2e7d32;
+        color: white !important;
+    }
+
+/* INPUT STYLE */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* МАТРИЦА 15x15 */
 .matrix-wrapper {
     overflow-x: auto;
 }
@@ -176,11 +215,15 @@
 }
 
     .matrix-table td {
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
+        min-width: 34px;
+        min-height: 34px;
         border: 1px solid rgba(255,255,255,0.18);
         text-align: center;
         background: rgba(255,255,255,0.08);
+        font-size: 1.3rem;
+        font-weight: 600;
     }
 
     .matrix-table input {
@@ -190,7 +233,8 @@
         border: none;
         color: white;
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+        font-weight: 700;
         outline: none;
         font-family: 'Montserrat', sans-serif;
     }
@@ -208,17 +252,6 @@
     background: rgba(255,255,255,0.05);
     margin-bottom: 28px;
 }
-
-.solve-btn {
-    width: 100%;
-    background: #1b5e20;
-    color: white;
-    margin-bottom: 30px;
-}
-
-    .solve-btn:hover {
-        background: #2e7d32;
-    }
 
 .result-block {
     display: flex;
