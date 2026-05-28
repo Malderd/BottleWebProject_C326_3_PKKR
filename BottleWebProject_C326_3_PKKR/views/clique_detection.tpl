@@ -161,6 +161,9 @@
                     <button class="btn solve-btn">
                        Построить граф и найти максимальные клики
                     </button>
+                    <button class="btn solve-btn">
+                       Сохранить результаты
+                    </button>
 
                     <div class="result-block">
 
