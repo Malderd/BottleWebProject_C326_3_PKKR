@@ -52,7 +52,7 @@ def clique_detection():
         theory = json.load(f)
     return dict(
         title='Clique detection',
-        request=request
+        request=request,
         theory=theory
     )
 
