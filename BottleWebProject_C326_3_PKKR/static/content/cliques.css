@@ -4,22 +4,25 @@
     box-sizing: border-box;
 }
 
+/* основной контейнер страницы, фиксируем на весь экран */
 .hero-cliques {
-    position: fixed; /* фиксируем весь экран */
+    position: fixed;
     inset: 0;
-    overflow-y: auto; /* прокрутка внутри блока */
-    background: linear-gradient(rgba(15,15,15,0.82)),url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
+    overflow-y: auto;
+    background: linear-gradient(rgba(15,15,15,0.82)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
     padding: 93px 45px 60px;
-    font-family: 'Montserrat',sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: white;
 }
 
+/* полупрозрачный слой поверх фона */
 .overlay {
     position: absolute;
     inset: 0;
-    backdrop-filter: blur(2px); /* лёгкое размытие фона */
+    backdrop-filter: blur(2px);
 }
 
+/* обёртка для всего контента, чтобы не расползался на широких экранах */
 .content {
     position: relative;
     z-index: 2;
@@ -27,6 +30,7 @@
     margin: 0 auto;
 }
 
+/* заголовок страницы */
 .hero-cliques h1 {
     text-align: center;
     font-size: 3.1rem;
@@ -36,6 +40,7 @@
     letter-spacing: 0.04em;
 }
 
+/* блок теории — раскрывающийся details */
 .theory-block {
     margin-bottom: 36px;
     border-radius: 18px;
@@ -45,6 +50,7 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
+    /* заголовок теории, убираем стандартный маркер */
     .theory-block summary {
         display: flex;
         align-items: center;
@@ -53,24 +59,27 @@
         font-size: 2.1rem;
         font-weight: 700;
         list-style: none;
+        cursor: pointer;
         transition: background-color 0.25s ease;
     }
 
+        /* стрелка справа, поворачивается при открытии */
         .theory-block summary::after {
             content: "▸";
             font-size: 1.6rem;
-            transition: transform 0.25s ease; /* анимация стрелки */
+            transition: transform 0.25s ease;
             color: #f1f8e9;
         }
 
     .theory-block[open] summary::after {
-        transform: rotate(90deg); /* поворот при раскрытии */
+        transform: rotate(90deg);
     }
 
     .theory-block summary:hover {
         background: rgba(255,255,255,0.06);
     }
 
+/* содержимое теории */
 .theory-content {
     padding: 15px 30px;
 }
@@ -82,20 +91,22 @@
         margin-bottom: 10px;
     }
 
+/* двухколоночный макет: левая — ввод, правая — результат */
 .main-layout {
     display: flex;
-    gap: 34px;
+    gap: 25px;
     align-items: flex-start;
 }
 
 .left-panel {
-    width: 48%;
+    width: 55%;
 }
 
 .right-panel {
-    width: 52%;
+    width: 45%;
 }
 
+/* зелёная карточка */
 .card {
     background: rgba(125,159,0,0.88);
     border: 1px solid #43A047;
@@ -112,34 +123,79 @@
         color: white;
     }
 
+/* вкладки: вручную / случайно / из txt */
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.tab {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 1.45rem;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    border: 1.5px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+    /* активная и hover-вкладка */
+    .tab.active,
+    .tab:hover {
+        background: rgba(255,255,255,0.22);
+        border-color: rgba(255,255,255,0.7);
+    }
+
+/* подсказка под вкладкой, объясняет что делать */
+.tab-hint {
+    font-size: 1.6rem;
+    color: #e8f5e9;
+    margin-bottom: 14px;
+    line-height: 1.4;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 10px;
+    border-left: 3px solid rgba(255,255,255,0.4);
+}
+
+/* группа полей ввода */
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 14px;
 }
 
     .form-group input {
-        padding: 14px 16px;
+        padding: 14px;
         border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 10px;
         background: rgba(255,255,255,0.12);
         color: white;
         font-size: 1.6rem;
+        width: 100%;
         outline: none;
-        font-family: 'Montserrat',sans-serif;
+        font-family: 'Montserrat', sans-serif;
     }
 
         .form-group input::placeholder {
-            color: white;
+            color: rgba(255,255,255,0.6);
         }
 
+/* ряд кнопок */
 .buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 14px;
-    margin-bottom: 30px;
+    margin-bottom: 14px;
 }
 
+/* базовый стиль кнопки */
 .btn {
     padding: 15px 22px;
     border: none;
@@ -147,12 +203,12 @@
     cursor: pointer;
     font-size: 1.6rem;
     font-weight: 600;
-    font-family: 'Montserrat',sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: white !important;
-    transition: background-color 0.25s ease; /* плавный hover */
+    transition: background-color 0.25s ease;
 }
 
-/* основные кнопки */
+/* тёмно-зелёная кнопка — основное действие */
 .primary {
     background: #1b5e20;
 }
@@ -161,17 +217,70 @@
         background: #2e7d32;
     }
 
+/* прозрачная кнопка — второстепенное действие */
+.secondary {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+    .secondary:hover {
+        background: rgba(255,255,255,0.2);
+    }
+
+/* кнопка на всю ширину для правой панели */
 .solve-btn {
     width: 100%;
     background: #1b5e20;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
+    padding: 15px;
 }
 
     .solve-btn:hover {
         background: #2e7d32;
     }
 
-/* убираем стрелки у input number */
+/* зона для drag-and-drop файла */
+.file-zone {
+    border: 2px dashed rgba(255,255,255,0.35);
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+    .file-zone:hover {
+        border-color: rgba(255,255,255,0.7);
+        background: rgba(255,255,255,0.05);
+    }
+
+    .file-zone b {
+        display: block;
+        font-size: 1.7rem;
+        color: #fff;
+        margin-bottom: 6px;
+    }
+
+/* пример формата txt-файла */
+.txt-example {
+    font-size: 1.67rem;
+    color: white;
+    margin-top: 6px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+    .txt-example code {
+        font-size: 1.67rem;
+        background: rgba(0,0,0,0.25);
+        color: white;
+        font-family: monospace;
+    }
+
+/* убираем стрелки у input type=number */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -182,16 +291,16 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-input {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
+/* обёртка матрицы, отрицательные отступы чтобы таблица не упиралась в края карточки */
 .matrix-wrapper {
     overflow-x: auto;
+    margin-left: -28px;
+    margin-right: -28px;
+    padding-left: 28px;
+    padding-right: 28px;
 }
 
+/* сама таблица матрицы смежности */
 .matrix-table {
     border-collapse: collapse;
     margin: 0 auto;
@@ -209,6 +318,23 @@ input {
         font-weight: 600;
     }
 
+        /* диагональ — всегда 0, не редактируется */
+        .matrix-table td.diag {
+            background: rgba(0,0,0,0.3);
+            color: rgba(255,255,255,0.4);
+            font-size: 1.2rem;
+        }
+
+        /* подписи строк и столбцов */
+        .matrix-table td.lbl {
+            background: rgba(0,0,0,0.4);
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.6);
+            border: none;
+            font-weight: 700;
+        }
+
+    /* поле ввода внутри ячейки матрицы */
     .matrix-table input {
         width: 100%;
         height: 100%;
@@ -219,9 +345,10 @@ input {
         font-size: 1.3rem;
         font-weight: 700;
         outline: none;
-        font-family: 'Montserrat',sans-serif;
+        font-family: 'Montserrat', sans-serif;
     }
 
+/* место под граф, пока пустое */
 .graph-placeholder {
     min-height: 360px;
     border-radius: 14px;
@@ -233,13 +360,19 @@ input {
     font-size: 1.52rem;
     color: #f1f8e9;
     background: rgba(255,255,255,0.05);
-    margin-bottom: 28px;
+    margin-bottom: 14px;
 }
 
+/* блок результатов */
 .result-block {
     margin-top: 10px;
 }
 
+    .result-block h2 {
+        margin-bottom: 12px;
+    }
+
+/* список найденных клик */
 .result-list {
     padding: 18px;
     border-radius: 14px;
