@@ -1,4 +1,4 @@
-def validate_matrix(matrix):
+def valid_hamillton(matrix):
 
     errors = {}
 

@@ -1,4 +1,4 @@
-% rebase('layout.tpl')
+% rebase('layout.tpl', title=title)
 
 <head>
     <meta charset="UTF-8">
@@ -61,7 +61,7 @@
     </div>
 
     <form
-        action="/dashboard/solve_hamilton"
+        action="/decide_hamillton_graph"
         method="post">
 
         <input

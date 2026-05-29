@@ -30,16 +30,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.py" />
-    <Compile Include="hamilton_graph\hamilton_graph.py">
+    <Compile Include="hamillton_graph\hamillton_graph.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hamilton_graph\valid_hamilton.py">
+    <Compile Include="hamillton_graph\valid_hamillton.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="hamilton_graph\" />
+    <Folder Include="hamillton_graph\" />
     <Folder Include="static\" />
     <Folder Include="static\content\" />
     <Folder Include="static\fonts\" />
@@ -52,6 +52,9 @@
     <Content Include="static\content\about.css" />
     <Content Include="static\content\bootstrap.css" />
     <Content Include="static\content\bootstrap.min.css" />
+    <Content Include="static\content\hamillton_graph.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="static\content\site.css" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="static\fonts\glyphicons-halflings-regular.svg" />

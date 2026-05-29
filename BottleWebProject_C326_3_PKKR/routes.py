@@ -5,8 +5,7 @@ Routes and views for the bottle application.
 from bottle import route, view, request, template
 from datetime import datetime
 
-from algorithms.hamilton_graph import find_hamiltonian
-from validators.valid_hamilton import validate_matrix
+from hamillton_graph import hamillton_graph, valid_hamillton
 
 @route('/')
 @route('/home')
@@ -37,16 +36,17 @@ def euler_grap():
 @view('hamillton_graph')
 def hamillton_graph():
     return template(
-        'hamilton.tpl',
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
         result=None,
         success=False,
         errors={},
         form_data={}
     )
 
-@route('/hamillton_graph', method='POST')
+@route('/decide_hamillton_graph', method='POST')
 @view('hamillton_graph')
-def hamillton_graph_post():
+def decide_hamillton_graph():
     n = int(request.forms.get('n'))
 
     matrix = []
@@ -68,22 +68,24 @@ def hamillton_graph_post():
 
         matrix.append(row)
 
-    errors = validate_matrix(matrix)
+    errors = valid_hamillton(matrix)
 
     if errors:
 
         return template(
-            'hamilton.tpl',
+            'hamillton_graph.tpl',
+            title='Hamilltom graph',
             result=None,
             success=False,
             errors=errors,
             form_data=request.forms
         )
 
-    result = find_hamiltonian(matrix)
+    result = hamillton_graph(matrix)
 
     return template(
-        'hamilton.tpl',
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
         result=result,
         success=True,
         errors={},
