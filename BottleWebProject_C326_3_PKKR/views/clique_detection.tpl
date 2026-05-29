@@ -145,7 +145,7 @@
                             </button>
                         </div>
 
-                        <div class="txt-example">
+                        <div class="txt-example" id="txt-example">
                             Пример формата файла:<br>
                             <code>0 1 0 1 1 1 1<br></code>
                             <code>1 0 1 1 0 0 1<br></code>
@@ -278,6 +278,7 @@
 
     function buildFileMatrix(matrix, n) {
         var wrapper = document.getElementById('file-matrix-wrapper');
+        var example = document.getElementById('txt-example');
         var table = document.getElementById('file-matrix-table');
         table.innerHTML = '';
 
@@ -294,14 +295,16 @@
                 if (i === j) {
                     rowHtml += '<td class="diag">0</td>';
                 } else {
-                    rowHtml += '<td><input type="number" min="0" max="1" value="' +
-                        matrix[i][j] + '" name="m_' + (i + 1) + '_' + (j + 1) + '"></td>';
+                    rowHtml += '<td><input type="number" value="' +
+                        matrix[i][j] + '" name="m_' + (i + 1) + '_' + (j + 1) +
+                        '" readonly tabindex="-1"></td>';
                 }
             }
             rowHtml += '</tr>';
             table.innerHTML += rowHtml;
         }
 
+        example.style.display = 'none';
         wrapper.style.display = 'block';
     }
 
@@ -310,6 +313,7 @@
         fileZone.querySelector('b').textContent = 'Перетащите файл сюда';
         document.getElementById('file-matrix-table').innerHTML = '';
         document.getElementById('file-matrix-wrapper').style.display = 'none';
+        document.getElementById('txt-example').style.display = 'block';
     });
 
     document.getElementById('btn-create-matrix').addEventListener('click', function () {

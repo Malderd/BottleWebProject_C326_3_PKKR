@@ -1,5 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/static/fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
 
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/static/fonts/Montserrat-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/static/fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
 * {
     box-sizing: border-box;
 }
@@ -393,6 +411,10 @@ input[type=number] {
         outline: none;
         font-family: 'Montserrat', sans-serif;
     }
+        .matrix-table input[readonly] {
+            cursor: default;
+            color: rgba(255,255,255,0.5);
+        }
 
 /* место под граф, пока пустое */
 .graph-placeholder {

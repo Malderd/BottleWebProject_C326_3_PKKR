@@ -55,6 +55,9 @@
     <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="static\fonts\Montserrat-Bold.ttf" />
+    <Content Include="static\fonts\Montserrat-Regular.ttf" />
+    <Content Include="static\fonts\Montserrat-SemiBold.ttf" />
     <Content Include="static\images\4_cliques.png" />
     <Content Include="static\images\anya.png" />
     <Content Include="static\images\authors.png" />
