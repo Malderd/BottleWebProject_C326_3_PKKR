@@ -10,7 +10,7 @@
 
         <h1>Поиск максимальных клик графа</h1>
 
-        <!-- ТЕОРИЯ -->
+        <!-- теория раскрывается по клику -->
         <details class="theory-block">
 
             <summary>
@@ -42,102 +42,125 @@
 
         <div class="main-layout">
 
-            <!-- ЛЕВАЯ КОЛОНКА -->
+            <!-- левая колонка: ввод данных -->
             <div class="left-panel">
 
                 <div class="card">
 
                     <h2>Параметры графа и матрица смежности</h2>
 
-                    <div class="form-group">
-                        <input
-                            type="number"
-                            min="1"
-                            max="20"
-                            placeholder="Введите количество вершин N"
-                        >
+                    <!-- три вкладки: вручную, случайно, из файла -->
+                    <div class="tabs">
+                        <button class="tab active" data-tab="manual">✎ Вручную</button>
+                        <button class="tab" data-tab="random">⚂ Случайно</button>
+                        <button class="tab" data-tab="file">↑ Из TXT</button>
+                    </div>
+
+                    <!-- вкладка: ввод вручную -->
+                    <div id="tab-manual" class="tab-content">
+
+                        <p class="tab-hint">
+                            Введите количество вершин, затем заполните матрицу смежности —
+                            1 если есть ребро, 0 если нет. Диагональ всегда 0.
+                        </p>
+
+                        <div class="form-group">
+                            <input
+                                type="number"
+                                id="n-manual"
+                                min="1"
+                                max="20"
+                                placeholder="Количество вершин N (до 20)"
+                            >
+                        </div>
+
+                        <div class="buttons">
+                            <button class="btn primary" id="btn-create-matrix">
+                                Создать матрицу
+                            </button>
+                            <button class="btn secondary" id="btn-clear-matrix">
+                                Очистить
+                            </button>
+                        </div>
+
+                        <!-- таблица генерируется через js после нажатия "создать матрицу" -->
+                        <div class="matrix-wrapper">
+                            <table class="matrix-table" id="matrix-table"></table>
+                        </div>
 
                     </div>
 
-                    <div class="buttons">
+                    <!-- вкладка: случайная генерация -->
+                    <div id="tab-random" class="tab-content" style="display:none">
 
-                        <button class="btn primary">
-                            Создать матрицу
-                        </button>
+                        <p class="tab-hint">
+                            Укажите количество вершин и плотность рёбер —
+                            матрица и граф будут заполнены случайными связями автоматически.
+                        </p>
 
-                        <button class="btn primary">
-                            Случайные рёбра
-                        </button>
+                        <div class="form-group">
+                            <input
+                                type="number"
+                                id="n-random"
+                                min="1"
+                                max="20"
+                                placeholder="Количество вершин N (до 20)"
+                            >
+                            <input
+                                type="number"
+                                id="density"
+                                min="1"
+                                max="100"
+                                placeholder="Плотность рёбер % (Пр.: 50)"
+                            >
+                        </div>
 
-                        <button class="btn primary">
-                            Загрузить TXT
-                        </button>
+                        <div class="buttons">
+                            <button class="btn primary" id="btn-random">
+                                Сгенерировать случайный граф
+                            </button>
+                        </div>
 
                     </div>
 
-                    <div class="matrix-wrapper">
+                    <!-- вкладка: загрузка из txt-файла -->
+                    <div id="tab-file" class="tab-content" style="display:none">
 
-                        <table class="matrix-table">
-                            <tr>
-                                <td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
+                        <p class="tab-hint">
+                            Загрузите TXT-файл с матрицей смежности.
+                            Каждая строка — одна вершина, значения разделены пробелами.
+                            N определится автоматически.
+                        </p>
 
-                            <tr>
-                                <td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
+                        <!-- зона для перетаскивания файла -->
+                        <div class="file-zone" id="file-zone">
+                            <b>Перетащите файл сюда</b>
+                            или нажмите для выбора (.txt)
+                        </div>
 
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
+                        <!-- скрытый input, открывается по клику на кнопку или зону -->
+                        <input type="file" id="file-input" accept=".txt" style="display:none">
 
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
+                        <div class="buttons">
+                            <button class="btn primary" id="btn-choose-file">
+                                Выбрать файл
+                            </button>
+                            <button class="btn secondary" id="btn-clear-file">
+                                Очистить
+                            </button>
+                        </div>
 
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td><td><input type="number"></td>
-                            </tr>
-
-                            <tr>
-                                <td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td>0</td>
-                            </tr>
-                        </table>
+                        <!-- пример симметричной матрицы -->
+                        <div class="txt-example">
+                            Пример формата файла:<br>
+                            <code>0 1 0 1 1 1 1<br></code>
+                            <code>1 0 1 1 0 0 1<br></code>
+                            <code>0 1 0 0 0 0 0<br></code>
+                            <code>1 1 0 0 1 0 0<br></code>
+                            <code>1 0 0 1 0 1 0<br></code>
+                            <code>1 0 0 0 1 0 1<br></code>
+                            <code>1 1 0 0 0 1 0<br></code>
+                        </div>
 
                     </div>
 
@@ -145,37 +168,33 @@
 
             </div>
 
-            <!-- ПРАВАЯ КОЛОНКА -->
+            <!-- правая колонка: граф и результаты -->
             <div class="right-panel">
 
                 <div class="card">
 
                     <h2>Визуализация и результаты</h2>
 
-                    <div class="graph-placeholder">
-
+                    <!-- placeholder для canvas с графом -->
+                    <div class="graph-placeholder" id="graph-placeholder">
                         Здесь будет граф
-
                     </div>
 
-                    <button class="btn solve-btn">
-                       Построить граф и найти максимальные клики
+                    <button class="btn solve-btn" id="btn-solve">
+                        Построить граф и найти максимальные клики
+                    </button>
+
+                    <button class="btn solve-btn secondary" id="btn-save">
+                        Сохранить результаты
                     </button>
 
                     <div class="result-block">
 
-                        <h2>Найденные сообщества</h2>
+                        <h2>Найденные клики</h2>
 
-                        <div class="result-list">
-
-                            <p>1. {0, 1, 2}</p>
-
-                            <p>2. {3}</p>
-
-                            <p>3. {2, 4}</p>
-
-                            <p>4. {5, 6, 7}</p>
-
+                        <!-- сюда через js вставляются найденные клики -->
+                        <div class="result-list" id="result-list">
+                            <p>Результаты появятся после нажатия кнопки «Построить граф»</p>
                         </div>
 
                     </div>
@@ -189,3 +208,86 @@
     </div>
 
 </section>
+
+<script>
+    // переключение вкладок: скрываем все, показываем нужную
+    document.querySelectorAll('.tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            document.querySelectorAll('.tab').forEach(function (t) {
+                t.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(function (c) {
+                c.style.display = 'none';
+            });
+            tab.classList.add('active');
+            document.getElementById('tab-' + tab.dataset.tab).style.display = 'block';
+        });
+    });
+
+    // кнопка "выбрать файл" открывает скрытый input
+    document.getElementById('btn-choose-file').addEventListener('click', function () {
+        document.getElementById('file-input').click();
+    });
+
+    // клик по зоне drag-and-drop тоже открывает выбор файла
+    document.getElementById('file-zone').addEventListener('click', function () {
+        document.getElementById('file-input').click();
+    });
+
+    // обработка drag-and-drop
+    var fileZone = document.getElementById('file-zone');
+
+    fileZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        fileZone.style.borderColor = 'rgba(255,255,255,0.8)';
+    });
+
+    fileZone.addEventListener('dragleave', function () {
+        fileZone.style.borderColor = '';
+    });
+
+    fileZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        fileZone.style.borderColor = '';
+        var file = e.dataTransfer.files[0];
+        if (file) fileZone.querySelector('b').textContent = file.name;
+    });
+
+    // показываем имя выбранного файла в зоне
+    document.getElementById('file-input').addEventListener('change', function () {
+        if (this.files[0]) {
+            fileZone.querySelector('b').textContent = this.files[0].name;
+        }
+    });
+
+    // генерация таблицы матрицы смежности по введённому n
+    document.getElementById('btn-create-matrix').addEventListener('click', function () {
+        var n = parseInt(document.getElementById('n-manual').value);
+        if (!n || n < 1 || n > 20) return;
+
+        var table = document.getElementById('matrix-table');
+        table.innerHTML = '';
+
+        // первая строка — номера столбцов
+        var headerRow = '<tr><td class="lbl"></td>';
+        for (var j = 1; j <= n; j++) {
+            headerRow += '<td class="lbl">' + j + '</td>';
+        }
+        headerRow += '</tr>';
+        table.innerHTML += headerRow;
+
+        // строки матрицы: диагональ = 0, остальное — input
+        for (var i = 1; i <= n; i++) {
+            var row = '<tr><td class="lbl">' + i + '</td>';
+            for (var j = 1; j <= n; j++) {
+                if (i === j) {
+                    row += '<td class="diag">0</td>';
+                } else {
+                    row += '<td><input type="number" min="0" max="1" value="0" name="m_' + i + '_' + j + '"></td>';
+                }
+            }
+            row += '</tr>';
+            table.innerHTML += row;
+        }
+    });
+</script>
