@@ -24,16 +24,23 @@
 
                         <h3 class="theory-section-title">{{section['title']}}</h3>
 
-                        <p>{{section['text']}}</p>
+                        <div class="theory-section-body">
 
-                        % if section.get('image'):
-                            <figure class="theory-figure">
-                                <img src="{{section['image']}}" alt="{{section.get('image_caption', '')}}">
-                                % if section.get('image_caption'):
-                                    <figcaption>{{section['image_caption']}}</figcaption>
-                                % end
-                            </figure>
-                        % end
+                            <div class="theory-section-text">
+                                <p>{{section['text']}}</p>
+                            </div>
+
+                            <!-- картинка отображается только если путь указан в json -->
+                            % if section.get('image'):
+                                <figure class="theory-figure">
+                                    <img src="{{section['image']}}" alt="{{section.get('image_caption', '')}}">
+                                    % if section.get('image_caption'):
+                                        <figcaption>{{section['image_caption']}}</figcaption>
+                                    % end
+                                </figure>
+                            % end
+
+                        </div>
 
                     </div>
 
@@ -51,6 +58,7 @@
 
                     <h2>Параметры графа и матрица смежности</h2>
 
+                    <!-- три вкладки: вручную, случайно, из файла -->
                     <div class="tabs">
                         <button class="tab active" data-tab="manual">✎ Вручную</button>
                         <button class="tab" data-tab="random">⚂ Случайно</button>
@@ -83,6 +91,7 @@
                             </button>
                         </div>
 
+                        <!-- таблица генерируется через js после нажатия "создать матрицу" -->
                         <div class="matrix-wrapper">
                             <table class="matrix-table" id="matrix-table"></table>
                         </div>
@@ -129,11 +138,13 @@
                             N определится автоматически.
                         </p>
 
+                        <!-- зона для перетаскивания файла -->
                         <div class="file-zone" id="file-zone">
                             <b>Перетащите файл сюда</b>
                             или нажмите для выбора (.txt)
                         </div>
 
+                        <!-- скрытый input, открывается по клику на кнопку или зону -->
                         <input type="file" id="file-input" accept=".txt" style="display:none">
 
                         <div class="buttons">
@@ -145,6 +156,7 @@
                             </button>
                         </div>
 
+                        <!-- пример симметричной матрицы -->
                         <div class="txt-example" id="txt-example">
                             Пример формата файла:<br>
                             <code>0 1 0 1 1 1 1<br></code>
@@ -172,6 +184,7 @@
 
                     <h2>Визуализация и результаты</h2>
 
+                    <!-- placeholder для canvas с графом -->
                     <div class="graph-placeholder" id="graph-placeholder">
                         Здесь будет граф
                     </div>
@@ -188,6 +201,7 @@
 
                         <h2>Найденные клики</h2>
 
+                        <!-- сюда через js вставляются найденные клики -->
                         <div class="result-list" id="result-list">
                             <p>Результаты появятся после нажатия кнопки «Построить граф»</p>
                         </div>
@@ -205,6 +219,7 @@
 </section>
 
 <script>
+    // переключение вкладок: скрываем все, показываем нужную
     document.querySelectorAll('.tab').forEach(function (tab) {
         tab.addEventListener('click', function () {
             document.querySelectorAll('.tab').forEach(function (t) {
@@ -218,16 +233,19 @@
         });
     });
 
+    // кнопка "выбрать файл" открывает скрытый input
     document.getElementById('btn-choose-file').addEventListener('click', function () {
         document.getElementById('file-input').click();
     });
 
+    // клик по зоне drag-and-drop тоже открывает выбор файла
     var fileZone = document.getElementById('file-zone');
 
     fileZone.addEventListener('click', function () {
         document.getElementById('file-input').click();
     });
 
+    // обработка drag-and-drop
     fileZone.addEventListener('dragover', function (e) {
         e.preventDefault();
         fileZone.style.borderColor = 'rgba(255,255,255,0.8)';
@@ -247,6 +265,7 @@
         }
     });
 
+    // показываем имя выбранного файла и читаем матрицу
     document.getElementById('file-input').addEventListener('change', function () {
         var file = this.files[0];
         if (!file) return;
@@ -254,6 +273,7 @@
         readMatrixFile(file);
     });
 
+    // читаем txt-файл и парсим матрицу
     function readMatrixFile(file) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -276,6 +296,7 @@
         reader.readAsText(file);
     }
 
+    // строим таблицу матрицы во вкладке "из txt", пример пропадает
     function buildFileMatrix(matrix, n) {
         var wrapper = document.getElementById('file-matrix-wrapper');
         var example = document.getElementById('txt-example');
@@ -295,6 +316,7 @@
                 if (i === j) {
                     rowHtml += '<td class="diag">0</td>';
                 } else {
+                    // readonly — редактировать нельзя
                     rowHtml += '<td><input type="number" value="' +
                         matrix[i][j] + '" name="m_' + (i + 1) + '_' + (j + 1) +
                         '" readonly tabindex="-1"></td>';
@@ -308,6 +330,7 @@
         wrapper.style.display = 'block';
     }
 
+    // очистка: убираем матрицу, возвращаем пример
     document.getElementById('btn-clear-file').addEventListener('click', function () {
         document.getElementById('file-input').value = '';
         fileZone.querySelector('b').textContent = 'Перетащите файл сюда';
@@ -316,6 +339,7 @@
         document.getElementById('txt-example').style.display = 'block';
     });
 
+    // генерация таблицы матрицы смежности по введённому n
     document.getElementById('btn-create-matrix').addEventListener('click', function () {
         var n = parseInt(document.getElementById('n-manual').value);
         if (!n || n < 1 || n > 20) return;
@@ -323,6 +347,7 @@
         var table = document.getElementById('matrix-table');
         table.innerHTML = '';
 
+        // первая строка — номера столбцов
         var headerRow = '<tr><td class="lbl"></td>';
         for (var j = 1; j <= n; j++) {
             headerRow += '<td class="lbl">' + j + '</td>';
@@ -330,6 +355,7 @@
         headerRow += '</tr>';
         table.innerHTML += headerRow;
 
+        // строки матрицы: диагональ = 0, остальное — input
         for (var i = 1; i <= n; i++) {
             var row = '<tr><td class="lbl">' + i + '</td>';
             for (var j = 1; j <= n; j++) {
