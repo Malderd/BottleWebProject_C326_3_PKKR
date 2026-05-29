@@ -1,5 +1,6 @@
 % rebase('layout.tpl', title='Об авторах')
 <link rel="stylesheet" href="/static/content/about.css" />
+<link rel="stylesheet" href="/static/content/fonts.css">
 <div class="hero-about">
     <div class="main-content">
         <h1>Разработчики</h1>
