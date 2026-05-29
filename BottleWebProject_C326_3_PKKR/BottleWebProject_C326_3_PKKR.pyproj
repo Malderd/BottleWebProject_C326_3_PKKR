@@ -54,6 +54,8 @@
     <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="static\images\anya.png" />
+    <Content Include="static\images\authors.png" />
+    <Content Include="static\images\cliques.png" />
     <Content Include="static\images\danya.png" />
     <Content Include="static\images\kostya.png" />
     <Content Include="static\images\nastya.png" />
