@@ -68,7 +68,13 @@ input[type="checkbox"].input-validation-error {
             background-color: #7D9F00;
             color: white !important;
         }
-
+        /* АКТИВНАЯ СТРАНИЦА */
+        .custom-navbar .navbar-nav li.active a,
+        .custom-navbar .navbar-nav li a:focus,
+        .custom-navbar .navbar-nav li a:active {
+            background-color: #7D9F00;
+            color: white !important;
+        }
 /* Отступ сверху для содержимого */
 .body-content {
     margin-top: 50px;
