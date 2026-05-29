@@ -18,7 +18,7 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>BottleWebProject_C326_3_PKKR</Name>
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
-    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_kaz|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="hamillton_graph\" />
+    <Folder Include="algorithms\" />
+    <Folder Include="validations\" />
     <Folder Include="static\" />
     <Folder Include="static\content\" />
     <Folder Include="static\fonts\" />
@@ -55,11 +57,16 @@
     <Content Include="static\content\hamillton_graph.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="static\content\cliques.css" />
     <Content Include="static\content\site.css" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="static\images\anya.png" />
+    <Content Include="static\images\danya.png" />
+    <Content Include="static\images\kostya.png" />
+    <Content Include="static\images\nastya.png" />
     <Content Include="static\scripts\bootstrap.js" />
     <Content Include="static\scripts\bootstrap.min.js" />
     <Content Include="static\scripts\jquery-1.10.2.intellisense.js" />

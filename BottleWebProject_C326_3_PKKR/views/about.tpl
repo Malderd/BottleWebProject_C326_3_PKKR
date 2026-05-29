@@ -1,12 +1,18 @@
-% rebase('layout.tpl', title=title)
+% rebase('layout.tpl', title='Об авторах')
 <link rel="stylesheet" href="/static/content/about.css" />
 <div class="hero-about">
     <div class="main-content">
-        <h2>Разработчики</h2>
+        <h1>Разработчики</h1>
         <!-- карточки -->
         <div class="cards">
             <div class="card">
-                <h3>Даниэла</h3>
+                <div class="avatar">
+                    <img src="/static/images/danya.png" alt="Даниэла">
+                </div>
+                <h2>Паэгле Даниэла Дмитриевна</h2>
+                <p class="contribution">
+                    Дизайн страницы для поиска Эйлерова цикла, реализация алгоритма и создание UML-диаграмм проекта, <br>логотипа сайта.
+                </p>
                 <a href="https://github.com/Dorxyna" target="_blank">
                     GitHub
                 </a>
@@ -15,7 +21,13 @@
                 </a>
             </div>
             <div class="card">
-                <h3>Константин</h3>
+                <div class="avatar">
+                    <img src="/static/images/kostya.png" alt="Константин">
+                </div>
+                <h2>Куликов Константин Дмитриевич</h2>
+                <p class="contribution">
+                    Дизайн главной страницы, страницы с реализацией алгоритма поиска Гамильтонова цикла<br> методом перебора.
+                </p>
                 <a href="https://github.com/Malderd" target="_blank">
                     GitHub
                 </a>
@@ -25,7 +37,13 @@
             </div>
 
             <div class="card">
-                <h3>Анна</h3>
+                <div class="avatar">
+                    <img src="/static/images/anya.png" alt="Анна">
+                </div>
+                <h2>Казакова Анна <br>Юрьевна</h2>
+                <p class="contribution">
+                    Дизайн страниц "Об авторах", поиска клик в графе, реализация алгоритма и оформление документации проекта.
+                </p>
                 <a href="https://github.com/viruy04" target="_blank">
                     GitHub
                 </a>
@@ -35,7 +53,13 @@
             </div>
 
             <div class="card">
-                <h3>Анастасия</h3>
+                <div class="avatar">
+                    <img src="/static/images/nastya.png" alt="Анастасия">
+                </div>
+                <h2>Рожина Анастасия Андреевна</h2>
+                <p class="contribution">
+                    Дизайн страницы "Разбиение на компоненты", реализация алгоритма Косарайю и подготовка теоретической части.
+                </p>
                 <a href="https://github.com/nastarozina" target="_blank">
                     GitHub
                 </a>
@@ -48,7 +72,7 @@
     </div>
 
     <div class="contacts-block">
-        <h3>Контакты проекта</h3>
+        <h3>Контакты</h3>
         <div class="contacts-grid">
             <div class="contact-column">
                 <h4>GitHub</h4>
