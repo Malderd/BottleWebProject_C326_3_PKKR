@@ -35,10 +35,6 @@
 
     <div class="container body-content">
         {{!base}}
-        <hr />
-        <footer>
-            <p>&copy; - My Bottle Application</p>
-        </footer>
     </div>
 
     <script src="/static/scripts/jquery-1.10.2.js"></script>
