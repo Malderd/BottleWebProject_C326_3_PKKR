@@ -10,7 +10,6 @@
 
         <h1>Поиск максимальных клик графа</h1>
 
-        <!-- теория раскрывается по клику -->
         <details class="theory-block">
 
             <summary>
@@ -19,22 +18,26 @@
 
             <div class="theory-content">
 
-                <p>
-                    Кликой называется подмножество вершин графа,
-                    в котором каждая вершина соединена со всеми остальными.
-                </p>
+                % for section in theory['sections']:
 
-                <p>
-                    Максимальная клика — это клика,
-                    которую невозможно расширить
-                    без нарушения свойства полной связности.
-                </p>
+                    <div class="theory-section">
 
-                <p>
-                    Алгоритм выполняет перебор всех подмножеств вершин,
-                    проверяет наличие рёбер между всеми парами вершин
-                    и выделяет максимальные сообщества графа.
-                </p>
+                        <h3 class="theory-section-title">{{section['title']}}</h3>
+
+                        <p>{{section['text']}}</p>
+
+                        % if section.get('image'):
+                            <figure class="theory-figure">
+                                <img src="{{section['image']}}" alt="{{section.get('image_caption', '')}}">
+                                % if section.get('image_caption'):
+                                    <figcaption>{{section['image_caption']}}</figcaption>
+                                % end
+                            </figure>
+                        % end
+
+                    </div>
+
+                % end
 
             </div>
 
@@ -42,21 +45,18 @@
 
         <div class="main-layout">
 
-            <!-- левая колонка: ввод данных -->
             <div class="left-panel">
 
                 <div class="card">
 
                     <h2>Параметры графа и матрица смежности</h2>
 
-                    <!-- три вкладки: вручную, случайно, из файла -->
                     <div class="tabs">
                         <button class="tab active" data-tab="manual">✎ Вручную</button>
                         <button class="tab" data-tab="random">⚂ Случайно</button>
                         <button class="tab" data-tab="file">↑ Из TXT</button>
                     </div>
 
-                    <!-- вкладка: ввод вручную -->
                     <div id="tab-manual" class="tab-content">
 
                         <p class="tab-hint">
@@ -83,14 +83,12 @@
                             </button>
                         </div>
 
-                        <!-- таблица генерируется через js после нажатия "создать матрицу" -->
                         <div class="matrix-wrapper">
                             <table class="matrix-table" id="matrix-table"></table>
                         </div>
 
                     </div>
 
-                    <!-- вкладка: случайная генерация -->
                     <div id="tab-random" class="tab-content" style="display:none">
 
                         <p class="tab-hint">
@@ -123,7 +121,6 @@
 
                     </div>
 
-                    <!-- вкладка: загрузка из txt-файла -->
                     <div id="tab-file" class="tab-content" style="display:none">
 
                         <p class="tab-hint">
@@ -132,13 +129,11 @@
                             N определится автоматически.
                         </p>
 
-                        <!-- зона для перетаскивания файла -->
                         <div class="file-zone" id="file-zone">
                             <b>Перетащите файл сюда</b>
                             или нажмите для выбора (.txt)
                         </div>
 
-                        <!-- скрытый input, открывается по клику на кнопку или зону -->
                         <input type="file" id="file-input" accept=".txt" style="display:none">
 
                         <div class="buttons">
@@ -150,7 +145,6 @@
                             </button>
                         </div>
 
-                        <!-- пример симметричной матрицы -->
                         <div class="txt-example">
                             Пример формата файла:<br>
                             <code>0 1 0 1 1 1 1<br></code>
@@ -162,20 +156,22 @@
                             <code>1 1 0 0 0 1 0<br></code>
                         </div>
 
+                        <div class="matrix-wrapper" id="file-matrix-wrapper" style="display:none; margin-top:18px">
+                            <table class="matrix-table" id="file-matrix-table"></table>
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
 
-            <!-- правая колонка: граф и результаты -->
             <div class="right-panel">
 
                 <div class="card">
 
                     <h2>Визуализация и результаты</h2>
 
-                    <!-- placeholder для canvas с графом -->
                     <div class="graph-placeholder" id="graph-placeholder">
                         Здесь будет граф
                     </div>
@@ -192,7 +188,6 @@
 
                         <h2>Найденные клики</h2>
 
-                        <!-- сюда через js вставляются найденные клики -->
                         <div class="result-list" id="result-list">
                             <p>Результаты появятся после нажатия кнопки «Построить граф»</p>
                         </div>
@@ -210,7 +205,6 @@
 </section>
 
 <script>
-    // переключение вкладок: скрываем все, показываем нужную
     document.querySelectorAll('.tab').forEach(function (tab) {
         tab.addEventListener('click', function () {
             document.querySelectorAll('.tab').forEach(function (t) {
@@ -224,18 +218,15 @@
         });
     });
 
-    // кнопка "выбрать файл" открывает скрытый input
     document.getElementById('btn-choose-file').addEventListener('click', function () {
         document.getElementById('file-input').click();
     });
 
-    // клик по зоне drag-and-drop тоже открывает выбор файла
-    document.getElementById('file-zone').addEventListener('click', function () {
+    var fileZone = document.getElementById('file-zone');
+
+    fileZone.addEventListener('click', function () {
         document.getElementById('file-input').click();
     });
-
-    // обработка drag-and-drop
-    var fileZone = document.getElementById('file-zone');
 
     fileZone.addEventListener('dragover', function (e) {
         e.preventDefault();
@@ -250,25 +241,46 @@
         e.preventDefault();
         fileZone.style.borderColor = '';
         var file = e.dataTransfer.files[0];
-        if (file) fileZone.querySelector('b').textContent = file.name;
-    });
-
-    // показываем имя выбранного файла в зоне
-    document.getElementById('file-input').addEventListener('change', function () {
-        if (this.files[0]) {
-            fileZone.querySelector('b').textContent = this.files[0].name;
+        if (file) {
+            fileZone.querySelector('b').textContent = file.name;
+            readMatrixFile(file);
         }
     });
 
-    // генерация таблицы матрицы смежности по введённому n
-    document.getElementById('btn-create-matrix').addEventListener('click', function () {
-        var n = parseInt(document.getElementById('n-manual').value);
-        if (!n || n < 1 || n > 20) return;
+    document.getElementById('file-input').addEventListener('change', function () {
+        var file = this.files[0];
+        if (!file) return;
+        fileZone.querySelector('b').textContent = file.name;
+        readMatrixFile(file);
+    });
 
-        var table = document.getElementById('matrix-table');
+    function readMatrixFile(file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var text = e.target.result.trim();
+            var rows = text.split('\n');
+            var matrix = rows.map(function (row) {
+                return row.trim().split(/\s+/).map(Number);
+            });
+            var n = matrix.length;
+
+            for (var i = 0; i < n; i++) {
+                if (matrix[i].length !== n) {
+                    alert('Матрица должна быть квадратной!');
+                    return;
+                }
+            }
+
+            buildFileMatrix(matrix, n);
+        };
+        reader.readAsText(file);
+    }
+
+    function buildFileMatrix(matrix, n) {
+        var wrapper = document.getElementById('file-matrix-wrapper');
+        var table = document.getElementById('file-matrix-table');
         table.innerHTML = '';
 
-        // первая строка — номера столбцов
         var headerRow = '<tr><td class="lbl"></td>';
         for (var j = 1; j <= n; j++) {
             headerRow += '<td class="lbl">' + j + '</td>';
@@ -276,7 +288,44 @@
         headerRow += '</tr>';
         table.innerHTML += headerRow;
 
-        // строки матрицы: диагональ = 0, остальное — input
+        for (var i = 0; i < n; i++) {
+            var rowHtml = '<tr><td class="lbl">' + (i + 1) + '</td>';
+            for (var j = 0; j < n; j++) {
+                if (i === j) {
+                    rowHtml += '<td class="diag">0</td>';
+                } else {
+                    rowHtml += '<td><input type="number" min="0" max="1" value="' +
+                        matrix[i][j] + '" name="m_' + (i + 1) + '_' + (j + 1) + '"></td>';
+                }
+            }
+            rowHtml += '</tr>';
+            table.innerHTML += rowHtml;
+        }
+
+        wrapper.style.display = 'block';
+    }
+
+    document.getElementById('btn-clear-file').addEventListener('click', function () {
+        document.getElementById('file-input').value = '';
+        fileZone.querySelector('b').textContent = 'Перетащите файл сюда';
+        document.getElementById('file-matrix-table').innerHTML = '';
+        document.getElementById('file-matrix-wrapper').style.display = 'none';
+    });
+
+    document.getElementById('btn-create-matrix').addEventListener('click', function () {
+        var n = parseInt(document.getElementById('n-manual').value);
+        if (!n || n < 1 || n > 20) return;
+
+        var table = document.getElementById('matrix-table');
+        table.innerHTML = '';
+
+        var headerRow = '<tr><td class="lbl"></td>';
+        for (var j = 1; j <= n; j++) {
+            headerRow += '<td class="lbl">' + j + '</td>';
+        }
+        headerRow += '</tr>';
+        table.innerHTML += headerRow;
+
         for (var i = 1; i <= n; i++) {
             var row = '<tr><td class="lbl">' + i + '</td>';
             for (var j = 1; j <= n; j++) {

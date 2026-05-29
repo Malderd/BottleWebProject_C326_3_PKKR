@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="algorithms\" />
+    <Folder Include="static\data\" />
     <Folder Include="validations\" />
     <Folder Include="static\" />
     <Folder Include="static\content\" />
@@ -49,16 +50,22 @@
     <Content Include="static\content\bootstrap.min.css" />
     <Content Include="static\content\cliques.css" />
     <Content Include="static\content\site.css" />
+    <Content Include="static\data\cliques_theory.json" />
     <Content Include="static\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="static\images\4_cliques.png" />
     <Content Include="static\images\anya.png" />
     <Content Include="static\images\authors.png" />
     <Content Include="static\images\cliques.png" />
     <Content Include="static\images\danya.png" />
+    <Content Include="static\images\example.png" />
+    <Content Include="static\images\graphs.png" />
     <Content Include="static\images\kostya.png" />
+    <Content Include="static\images\many_cliques.png" />
     <Content Include="static\images\nastya.png" />
+    <Content Include="static\images\friend_graph.png" />
     <Content Include="static\scripts\bootstrap.js" />
     <Content Include="static\scripts\bootstrap.min.js" />
     <Content Include="static\scripts\jquery-1.10.2.intellisense.js" />
