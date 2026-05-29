@@ -170,7 +170,7 @@
 
 /* зелёная карточка */
 .card {
-    background: rgba(125,159,0,0.88);
+    background: #527d05;
     border: 1px solid #43A047;
     border-radius: 18px;
     padding: 28px;
