@@ -4,6 +4,7 @@ Routes and views for the bottle application.
 
 from bottle import route, view, request, template
 from datetime import datetime
+import json
 
 from hamillton_graph import hamillton_graph, valid_hamillton
 
@@ -95,8 +96,11 @@ def decide_hamillton_graph():
 @route('/clique_detection')
 @view('clique_detection')
 def clique_detection():
+    with open('./static/data/cliques_theory.json', encoding='utf-8') as f:
+        theory = json.load(f)
     return dict(
-        title='Clique detection'
+        title='Clique detection',
+        theory=theory
     )
 
 @route('/kosarayu_algorithm')
