@@ -1,29 +1,97 @@
-% rebase('layout.tpl', title='Home Page')
+% rebase('layout.tpl', title='Главная страница')
 
-<div class="jumbotron">
-    <h1>Bottle</h1>
-    <p class="lead">Bottle is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://bottlepy.org/docs/dev/index.html" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-</div>
+<link rel="stylesheet" href="/static/content/index.css" />
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            Bottle gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://bottlepy.org/docs/dev/index.html">Learn more &raquo;</a></p>
+<div class="hero-home">
+
+    <div class="home-content">
+
+        <div class="hero-header">
+
+            <h1>Теория графов</h1>
+
+            <p class="home-subtitle">
+                Интерактивная система для исследования графов,
+                визуализации алгоритмов и анализа структуры сетей.
+            </p>
+
+        </div>
+
+        <div class="algorithm-cards">
+
+            <div class="algorithm-card">
+
+                <div class="card-number">01</div>
+
+                <h2>Эйлеров цикл</h2>
+
+                <p>
+                    Определение существования Эйлеровой цепи
+                    или цикла в неориентированном графе
+                    с выводом последовательности вершин.
+                </p>
+
+                <a href="/euler_graph">
+                    Открыть раздел
+                </a>
+
+            </div>
+
+            <div class="algorithm-card">
+
+                <div class="card-number">02</div>
+
+                <h2>Гамильтонов цикл</h2>
+
+                <p>
+                    Проверка существования Гамильтонова пути
+                    и цикла методом полного перебора
+                    для графов небольшой размерности.
+                </p>
+
+                <a href="/hamillton_graph">
+                    Открыть раздел
+                </a>
+
+            </div>
+
+            <div class="algorithm-card">
+
+                <div class="card-number">03</div>
+
+                <h2>Выявление сообществ</h2>
+
+                <p>
+                    Поиск клик и анализ связей между вершинами
+                    для выделения тесно связанных групп пользователей.
+                </p>
+
+                <a href="/clique_detection">
+                    Открыть раздел
+                </a>
+
+            </div>
+
+            <div class="algorithm-card">
+
+                <div class="card-number">04</div>
+
+                <h2>Компоненты связности</h2>
+
+                <p>
+                    Разбиение ориентированного графа
+                    на компоненты сильной связности
+                    алгоритмом Косарайю.
+                </p>
+
+                <a href="/kosarayu_algorithm">
+                    Открыть раздел
+                </a>
+
+            </div>
+
+        </div>
+
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>The Python Package Index is a repository of software for the Python programming language.</p>
-        <p><a class="btn btn-default" href="https://pypi.python.org/pypi">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Microsoft Azure</h2>
-        <p>You can easily publish to Microsoft Azure using Visual Studio. Find out how you can host your application using a free trial today.</p>
-        <p><a class="btn btn-default" href="http://azure.microsoft.com">Learn more &raquo;</a></p>
-    </div>
+
 </div>
