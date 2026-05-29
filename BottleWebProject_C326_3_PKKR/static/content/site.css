@@ -43,13 +43,13 @@ input[type="checkbox"].input-validation-error {
 
 
 /* Главное меню */
-
 .custom-navbar {
     background-color: black;
     border-bottom: 2px solid #7D9F00;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     min-height: 65px;
 }
+
     .custom-navbar .container {
         max-width: fit-content;
     }
@@ -66,6 +66,52 @@ input[type="checkbox"].input-validation-error {
 
         .custom-navbar .navbar-nav li a:hover {
             background-color: #7D9F00;
+            color: white !important;
+        }
+        .custom-navbar .navbar-nav li a[href="/home"]:hover,
+        .custom-navbar .navbar-nav li.active a[href="/home"] {
+            background-color: #1b3a00 !important;
+            color: white !important;
+        }
+
+        /* 2. Эйлеров цикл (#2d5200) */
+        .custom-navbar .navbar-nav li a[href="/euler_graph"]:hover,
+        .custom-navbar .navbar-nav li.active a[href="/euler_graph"] {
+            background-color: #2d5200 !important;
+            color: white !important;
+        }
+
+        /* 3. Гамильтонов цикл (#3f6b00) */
+        .custom-navbar .navbar-nav li a[href="/hamillton_graph"]:hover,
+        .custom-navbar .navbar-nav li.active a[href="/hamillton_graph"] {
+            background-color: #3f6b00 !important;
+            color: white !important;
+        }
+
+        /* 4. Выявление сообществ (#527d05) */
+        .custom-navbar .navbar-nav li a[href="/clique_detection"]:hover,
+        .custom-navbar .navbar-nav li.active a[href="/clique_detection"] {
+            background-color: #527d05 !important;
+            color: white !important;
+        }
+
+        /* 5. Разбиение на компоненты (#628f05) */
+        .custom-navbar .navbar-nav li a[href="/kosarayu_algorithm"]:hover,
+        .custom-navbar .navbar-nav li.active a[href="/kosarayu_algorithm"] {
+            background-color: #628f05 !important;
+            color: white !important;
+        }
+
+        /* 6. Об авторах (#729105) */
+        .custom-navbar .navbar-nav li a[href="/about"]:hover,
+        .custom-navbar .navbar-nav li.active a[href="/about"] {
+            background-color: #729105 !important;
+            color: white !important;
+        }
+
+        /* Базовые фокусы для безопасности */
+        .custom-navbar .navbar-nav li a:focus,
+        .custom-navbar .navbar-nav li a:active {
             color: white !important;
         }
 
