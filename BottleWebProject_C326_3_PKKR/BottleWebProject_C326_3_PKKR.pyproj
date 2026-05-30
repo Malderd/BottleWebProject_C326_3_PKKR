@@ -18,7 +18,8 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>BottleWebProject_C326_3_PKKR</Name>
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
-    <InterpreterId>MSBuild|env_kaz|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,9 +31,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.py" />
+    <Compile Include="hamillton_graph\hamillton_graph.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hamillton_graph\valid_hamillton.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="hamillton_graph\" />
     <Folder Include="algorithms\" />
     <Folder Include="static\data\" />
     <Folder Include="validations\" />
@@ -48,7 +56,16 @@
     <Content Include="static\content\about.css" />
     <Content Include="static\content\bootstrap.css" />
     <Content Include="static\content\bootstrap.min.css" />
+    <Content Include="static\content\hamillton_graph.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="static\content\cliques.css" />
+    <Content Include="static\content\index.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="static\content\euler.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="static\content\fonts.css" />
     <Content Include="static\content\site.css" />
     <Content Include="static\data\cliques_theory.json" />
@@ -96,10 +113,19 @@
     <Content Include="views\layout.tpl" />
   </ItemGroup>
   <ItemGroup>
-    <Interpreter Include="env_kaz\">
-      <Id>env_kaz</Id>
+    <Interpreter Include="env_dorxyna\">
+      <Id>env_dorxyna</Id>
       <Version>3.13</Version>
-      <Description>env_kaz (Python 3.13 (64-bit))</Description>
+      <Description>env_dorxyna (Python 3.13 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+    <Interpreter Include="env_kaza\">
+      <Id>env_kaza</Id>
+      <Version>3.13</Version>
+      <Description>env_kaza (Python 3.13 (64-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
