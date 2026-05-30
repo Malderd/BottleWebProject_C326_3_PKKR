@@ -7,8 +7,13 @@
     <div class="overlay"></div>
 
     <div class="content">
+        <div class="header-nav">
+            <h1>Поиск компонент сильной связности</h1>
 
-        <h1>Поиск компонент сильной связности в ориентированном графе</h1>
+            <a href="#graph-form" class="scroll-btn">
+                ⬇&nbsp;&nbsp;Перейти к задаче
+             </a>
+        </div>
 
         <!-- ТЕОРИЯ -->
         <details class="theory-block">
@@ -31,7 +36,7 @@
                     что между любыми двумя вершинами существует путь.
                 </p>
 
-                <img src="/static/images/components_of_strong_connectivity.png" class="components-img" alt="Компоненты сильной связности">
+                <img src="/static/images/components_strong_connectivity.png" class="components-img" alt="Компоненты сильной связности">
 
                 <p>
                     <i>Поиск в глубину</i> (англ. Depth-First Search, DFS) – один из методов обхода графа.
@@ -78,7 +83,7 @@
         <div class="main-layout">
 
             <!-- ЛЕВАЯ КОЛОНКА -->
-            <div class="left-panel">
+            <div class="left-panel" id="graph-form">
 
                 <div class="card">
 
@@ -89,10 +94,10 @@
                             type="number"
                             min="1"
                             max="20"
-                            placeholder="Введите количество вершин"
+                            placeholder="Количество вершин"
                         >
                          <div class="other-buttons">
-                        <button class="btn primary">
+                        <button class="btn other">
                             Создать матрицу
                         </button>
                         <button class="btn primary">
@@ -107,7 +112,7 @@
                             Сгенерировать
                         </button>
 
-                        <button class="btn primary">
+                        <button class="btn other">
                             Найти компоненты
                         </button>
                         <button class="btn primary">
@@ -121,17 +126,17 @@
 
                         <tr>
                             <th></th>
-                            % for j in range(20):
+                            % for j in range(16):
                                 <th>{{j}}</th>
                             % end
                         </tr>
 
-                        % for i in range(20):
+                        % for i in range(16):
                             <tr>
 
                                 <th>{{i}}</th>
 
-                                % for j in range(20):
+                                % for j in range(16):
 
                                     % if i == j:
                                         <td class="diagonal-cell">0</td>
@@ -179,7 +184,7 @@
                 <div class="animation-panel">
 
                     <button class="btn primary">
-                        ▶  Показать работу алгоритма
+                        ▶&nbsp;&nbsp;Показать работу алгоритма
                     </button>
                         
                 </div>

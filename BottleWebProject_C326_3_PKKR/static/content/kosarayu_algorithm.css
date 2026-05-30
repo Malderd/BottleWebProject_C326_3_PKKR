@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .components_of_strong_connectivity {
     position: fixed; /* фиксируем весь экран */
     inset: 0;
@@ -23,7 +27,7 @@
 .content {
     position: relative;
     z-index: 2;
-    max-width: 1600px;
+    max-width: 1500px;
     margin: 0 auto;
 }
 
@@ -31,11 +35,41 @@
     text-align: center;
     font-size: 3.1rem;
     font-weight: 700;
-    margin-bottom: 40px;
-    margin-top: 50px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
+
+.header-nav {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.header-nav h1 {
+        text-align: center;
+        margin: 0;
+}
+
+.scroll-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    background: transparent;
+    padding: 0;
+    font-size: 16px;
+    border: none;
+    transition: text-decoration 0.2s ease;
+}
+
+    .scroll-btn:hover {
+        text-decoration: underline;
+        background: transparent;
+        color: white;
+    }
 
 .theory-block {
     margin-bottom: 36px;
@@ -54,18 +88,18 @@
     margin: 25px 0;
 }
 
-    .theory-content .block p {
+.theory-content .block p {
         flex: 1;
         margin: 0;
-    }
+}
 
-    .theory-content .block img {
+.theory-content .block img {
         width: 360px;
         max-width: 40%;
         height: auto;
         border-radius: 8px;
         display: block;
-    }
+}
 
 .theory-content {
     max-width: 1000px;
@@ -98,7 +132,7 @@
 }
 
 .components-img {
-    height: 450px
+    height: 300px
 }
 
 .directed_graph-img {
@@ -108,19 +142,19 @@
 .theory-block summary {
     display: flex;
     justify-content: space-between;
-    padding: 24px 30px;
+    padding: 15px 30px;
     font-size: 2.1rem;
     font-weight: 700;
     list-style: none;
     transition: background-color 0.25s ease;
 }
 
-    .theory-block summary::after {
+.theory-block summary::after {
         content: "▸";
         font-size: 2rem;
         transition: transform 0.25s ease; /* анимация стрелки */
         color: #f1f8e9;
-    }
+}
 
 .theory-block[open] summary::after {
     transform: rotate(90deg); /* поворот при раскрытии */
@@ -153,23 +187,23 @@
     backdrop-filter: blur(4px);
 }
 
-    .card h2 {
+.card h2 {
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 20px;
         color: white;
-    }
+}
 
 .form-group {
     display: flex;
     flex-direction: row;
-    gap: 100px;
-    margin-top: 55px;
+    gap: 80px;
+    margin-top: 45px;
     margin-bottom: 34px;
 }
 
-    .form-group input {
-        padding: 14px 12px;
+.form-group input {
+        padding: 12px 10px;
         border: 1px solid rgba(255,255,255,0.25);
         font-size: 1.7rem;
         background: rgba(255,255,255,0.9);
@@ -177,7 +211,7 @@
         font-family: 'Montserrat',sans-serif;
         flex: 1;
         min-width: 210px;
-    }
+}
 
 .other-buttons {
     display: flex;
@@ -191,9 +225,9 @@
     margin-bottom: 30px;
 }
 
-    .buttons button {
+.buttons button {
         flex: 1;
-    }
+}
 
 .btn {
     padding: 15px 22px;
@@ -212,9 +246,17 @@
     background: #1b5e20;
 }
 
-    .primary:hover {
-        background: #2e7d32;
+.other {
+    background: #388E3C;
+}
+
+    .other:hover {
+        background: #43A047;
     }
+
+.primary:hover {
+        background: #2e7d32;
+}
 
 /* убираем стрелки у input number */
 input::-webkit-outer-spin-button,
@@ -246,7 +288,7 @@ input[type=number] {
     margin: 0 auto;
 }
 
-    .matrix-table td {
+.matrix-table td {
         width: 40px;
         height: 40px;
         min-width: 34px;
@@ -256,20 +298,20 @@ input[type=number] {
         background: rgba(255,255,255,0.08);
         font-size: 1.3rem;
         font-weight: 600;
-    }
+}
 
-    .matrix-table input[type="checkbox"] {
+.matrix-table input[type="checkbox"] {
         width: 22px;
         height: 22px;
         cursor: pointer;
         accent-color: #869942;
-    }
+}
 
-    .matrix-table th {
+.matrix-table th {
         padding: 10px;
         font-weight: bold;
         text-align: center;
-    }
+}
 
 .results-card {
     background: rgba(125,159,0,0.88);
@@ -281,19 +323,19 @@ input[type=number] {
     margin-top: 20px
 }
 
-    .results-card h2 {
+.results-card h2 {
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 20px;
         color: white;
-    }
+}
 
-    .graph-container {
+.graph-container {
         margin-bottom: 20px;
-    }
+}
 
 .graph-placeholder {
-    height: 650px;
+    height: 450px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -316,15 +358,15 @@ input[type=number] {
     font-size: 17px
 }
 
-    .results-info b {
+.results-info b {
         margin-left: 5px
-    }
+}
 
-    .components-list {
+.components-list {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
-    }
+}
 
 .component-item {
     display: flex;
@@ -365,8 +407,8 @@ input[type=number] {
     margin-bottom: 20px;
 }
 
-    .section-header h2 {
+.section-header h2 {
         font-size: 2.5rem;
         font-weight: 700;
         color: white;
-    }
+}

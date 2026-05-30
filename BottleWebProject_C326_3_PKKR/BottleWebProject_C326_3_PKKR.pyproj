@@ -53,7 +53,7 @@
     <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="static\images\components_of_strong_connectivity.png" />
+    <Content Include="static\images\components_strong_connectivity.png" />
     <Content Include="static\images\dfs.gif" />
     <Content Include="static\images\dfs2.gif" />
     <Content Include="static\images\directed_graph.png" />
