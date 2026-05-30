@@ -7,12 +7,14 @@
     padding: 160px 60px 80px;
 }
 
+/* Контейнер контента */
 .home-content {
     width: 100%;
     max-width: 1700px;
     margin: 0 auto;
 }
 
+/* Главный заголовок страницы */
 .hero-home h1 {
     color: #fff;
     font-size: 50px;
@@ -24,6 +26,7 @@
     text-align: center;
 }
 
+/* Подзаголовок страницы */
 .home-subtitle {
     max-width: 1100px;
     margin: 0 auto 70px;
@@ -34,22 +37,24 @@
     font-weight: 500;
 }
 
+/* Сетка карточек алгоритмов */
 .algorithm-cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
 }
 
+/* Карточка алгоритма */
 .algorithm-card {
     position: relative;
     min-height: 320px;
     padding: 45px;
     border-radius: 28px;
     background: rgba(125,159,0,0.18);
-    backdrop-filter: blur(14px);
     overflow: hidden;
 }
 
+    /* Декоративный круг в правом верхнем углу карточки */
     .algorithm-card::before {
         content: '';
         position: absolute;
@@ -61,18 +66,21 @@
         right: -70px;
     }
 
+    /* Анимация при наведении */
     .algorithm-card:hover {
         transform: translateY(-12px);
     }
 
+/* Номер карточки */
 .card-number {
-    font-size: 5rem;
+    font-size: 50px;
     font-weight: 800;
     color: rgba(255,255,255,0.4);
     margin-bottom: 15px;
     line-height: 1;
 }
 
+/* Заголовок карточки */
 .algorithm-card h2 {
     color: #fff;
     font-size: 28px;
@@ -82,6 +90,7 @@
     position: relative;
 }
 
+/* Описание алгоритма */
 .algorithm-card p {
     color: #f1f8e9;
     font-size: 17px;
@@ -90,6 +99,8 @@
     position: relative;
 }
 
+
+/* Кнопка перехода */
 .algorithm-card a {
     display: inline-flex;
     align-items: center;
@@ -105,6 +116,7 @@
     position: relative;
 }
 
+    /* Эффект наведения на кнопку */
     .algorithm-card a:hover {
         transform: scale(1.05);
     }
