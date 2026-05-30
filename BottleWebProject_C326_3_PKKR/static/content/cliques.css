@@ -6,6 +6,7 @@
 .hero-cliques {
     position: fixed;
     inset: 0;
+    overflow-x: hidden;
     overflow-y: auto;
     background: linear-gradient(rgba(15,15,15,0.82)), url("/static/images/cliques.png") center/cover no-repeat fixed;
     padding: 60px 45px 60px;
@@ -478,7 +479,7 @@ input[type=number] {
     letter-spacing: 0.04em;
 }
 
-/* ссылка прибита к правому краю через absolute */
+/* ссылка прибита к правому краю */
 .scroll-link {
     position: absolute;
     margin-top: 50px;
