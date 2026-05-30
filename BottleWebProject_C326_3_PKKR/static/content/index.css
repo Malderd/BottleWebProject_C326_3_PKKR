@@ -29,7 +29,7 @@
     margin: 0 auto 70px;
     text-align: center;
     color: #edf8d8;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1.8;
     font-weight: 500;
 }
@@ -37,7 +37,7 @@
 .algorithm-cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 45px;
+    gap: 40px;
 }
 
 .algorithm-card {
@@ -62,14 +62,13 @@
     }
 
     .algorithm-card:hover {
-        transform: translateY(-12px) scale(1.02);
-        border: 1px solid rgba(200,255,120,0.25);
+        transform: translateY(-12px);
     }
 
 .card-number {
     font-size: 5rem;
     font-weight: 800;
-    color: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.4);
     margin-bottom: 15px;
     line-height: 1;
 }
@@ -85,7 +84,7 @@
 
 .algorithm-card p {
     color: #f1f8e9;
-    font-size: 16px;
+    font-size: 17px;
     line-height: 1.8;
     margin-bottom: 40px;
     position: relative;
@@ -108,5 +107,4 @@
 
     .algorithm-card a:hover {
         transform: scale(1.05);
-        box-shadow: 0 12px 30px rgba(165,214,0,0.45);
     }

@@ -266,20 +266,6 @@
 
         </details>
 
-        % if errors:
-
-            <div class="error-box">
-
-                % for key, value in errors.items():
-
-                    <p>{{ value }}</p>
-
-                % end
-
-            </div>
-
-        % end
-
         <!-- панель -->
         <div class="panel">
 
@@ -329,7 +315,6 @@
 
             <div id="matrixContainer"></div>
 
-            <!-- действия -->
             <div class="action-buttons">
 
                 <button type="submit" class="submit-btn">
@@ -346,7 +331,6 @@
 
             </div>
 
-            <!-- граф -->
             <div class="graph-section">
 
                 <h2>
