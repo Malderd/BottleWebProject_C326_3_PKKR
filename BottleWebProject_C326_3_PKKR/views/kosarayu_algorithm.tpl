@@ -82,7 +82,7 @@
 
                 <div class="card">
 
-                    <h2>Представление графа матрицей смежности</h2>
+                    <h2>Представление графа в виде матрицы смежности</h2>
 
                     <div class="form-group">
                         <input
@@ -91,23 +91,28 @@
                             max="20"
                             placeholder="Введите количество вершин"
                         >
-
+                         <div class="other-buttons">
+                        <button class="btn primary">
+                            Создать матрицу
+                        </button>
+                        <button class="btn primary">
+                            Загрузить
+                        </button>
+                        </div>
                     </div>
 
                     <div class="buttons">
 
                         <button class="btn primary">
-                            Создать матрицу
+                            Сгенерировать
                         </button>
 
                         <button class="btn primary">
-                            Случайные рёбра
+                            Найти компоненты
                         </button>
-
                         <button class="btn primary">
-                            Загрузить
+                            Очистить
                         </button>
-
                     </div>
 
                     <div class="matrix-wrapper">
@@ -156,37 +161,64 @@
 
                 <div class="card">
 
-                    <h2>Визуализация и результаты</h2>
+    <div class="section-header">
+        <h2>Визуализация графа и результаты</h2>
+        <button class="btn primary">
+             Сохранить
+        </button>
+    </div>
 
-                    <div class="graph-placeholder">
+    <div class="graph-container">
 
-                        Здесь будет граф
+        <div class="graph-placeholder">
+            Здесь будет визуализация графа с выделенными компонентами сильной связности
+        </div>
 
-                    </div>
+    </div>
 
-                    <button class="btn solve-btn">
-                       Построить граф и найти максимальные клики
-                    </button>
+    <div class="animation-panel">
 
-                    <div class="result-block">
+        <button class="btn primary">
+            ▶  Показать работу алгоритма
+        </button>
+            </div>
 
-                        <h2>Найденные компоненты сильной связности</h2>
+</div>
 
-                        <div class="result-list">
 
-                            <p>1. {0, 1, 2}</p>
+<div class="results-card">
 
-                            <p>2. {3}</p>
+    <h2>Найденные компоненты сильной связности</h2>
 
-                            <p>3. {2, 4}</p>
+    <div class="results-info">
+        Количество компонент: <b>4</b>
+    </div>
 
-                            <p>4. {5, 6, 7}</p>
+    <div class="components-list">
 
-                        </div>
+        <div class="component-item">
+            <span class="component-color color-1"></span>
+            {0, 1, 2}
+        </div>
 
-                    </div>
+        <div class="component-item">
+            <span class="component-color color-2"></span>
+            {3}
+        </div>
 
-                </div>
+        <div class="component-item">
+            <span class="component-color color-3"></span>
+            {4, 5}
+        </div>
+
+        <div class="component-item">
+            <span class="component-color color-4"></span>
+            {6, 7, 8}
+        </div>
+
+    </div>
+
+</div>
 
             </div>
 
