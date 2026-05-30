@@ -23,7 +23,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="{{'active' if request.path == '/home' else ''}}">
-                    <a href="/home">Домашняя страница</a>
+                    <a href="/home">Главная</a>
                     </li>
                     <li class="{{'active' if request.path == '/euler_graph' else ''}}">
                     <a href="/euler_graph">Эйлеров цикл</a>

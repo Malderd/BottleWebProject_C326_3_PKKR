@@ -21,7 +21,6 @@
             Поиск гамильтонова цикла/цепи
         </h1>
 
-        <!-- описание -->
         <details class="info-block">
 
             <summary>
@@ -30,12 +29,16 @@
 
             <div class="info-content">
 
-                <h2>
+                <h2 style="margin-top: 10px;">
                     Общая информация
                 </h2>
 
                 <p>
                     Данный модуль предназначен для поиска гамильтоновых цепей и циклов в неориентированном графе.
+                </p>
+
+                <p>
+                    Неориентированный граф — это граф, где рёбра не имеют направления, что делает связь между вершинами двусторонней.
                 </p>
 
                 <p>
@@ -117,22 +120,26 @@
                 </h2>
 
                 <p>
-                    После выполнения алгоритма отображается найденный путь, тип решения (гамильтонова цепь или цикл), а также визуализация графа.
+                    После выполнения алгоритма отображается найденный путь, тип решения (гамильтонова цепь или цикл), а также визуализация графа. При отсутствии решения выводится соответствующее сообщение.
                 </p>
 
                 <h2>
                     Пример работы алгоритма
                 </h2>
 
-                <p>
-                    Рассмотрим неориентированный граф, состоящий из 5 вершин.
-                </p>
+                <div class="example-header">
 
-                <p>
-                    Вершины графа соединены рёбрами таким образом, чтобы существовал гамильтонов цикл — путь, проходящий через каждую вершину ровно один раз с возвратом в начальную вершину.
-                </p>
+                    <p>
+                        Рассмотрим неориентированный граф, состоящий из 5 вершин.
+                    </p>
 
-                <div class="example-block">
+                    <p>
+                        Вершины графа соединены рёбрами таким образом, чтобы существовал гамильтонов цикл — путь, проходящий через каждую вершину ровно один раз с возвратом в начальную вершину.
+                    </p>
+
+                </div>
+
+                <div class="example-top">
 
                     <div class="example-image">
 
@@ -142,7 +149,7 @@
 
                     </div>
 
-                    <div class="example-text">
+                    <div class="example-matrix-block">
 
                         <h3>
                             Матрица смежности
@@ -170,14 +177,14 @@
                                 <td>1</td>
                                 <td>0</td>
                                 <td>0</td>
-                                <td>1</td>
+                                <td>0</td>
                                 <td>1</td>
                             </tr>
 
                             <tr>
                                 <td>0</td>
                                 <td>1</td>
-                                <td>1</td>
+                                <td>0</td>
                                 <td>0</td>
                                 <td>1</td>
                             </tr>
@@ -191,6 +198,12 @@
                             </tr>
 
                         </table>
+
+                        </div>
+
+                    </div>
+
+                    <div class="example-text">
 
                         <h3>
                             Пошаговое решение
@@ -266,7 +279,10 @@
 
         </details>
 
-        <!-- панель -->
+        <h2>
+            Решение графа
+        </h2>
+
         <div class="panel">
 
             <div class="panel-group">
@@ -281,27 +297,27 @@
 
             <div class="panel-buttons">
 
-                <button type="button" onclick="createMatrix()">
+                <button type="button" onclick="createMatrix()" style="background: linear-gradient(135deg, #4CAF50, #2E7D32);">
 
-                    Создать матрицу
-
-                </button>
-
-                <button type="button" onclick="generateMatrix()">
-
-                    Сгенерировать граф
+                    Создать
 
                 </button>
 
                 <button type="button">
 
-                    Загрузить файл
+                    Сгенерировать
+
+                </button>
+
+                <button type="button">
+
+                    Загрузить
 
                 </button>
 
                 <button type="button" onclick="createMatrix()">
 
-                    Очистить матрицу
+                    Очистить
 
                 </button>
 
@@ -317,7 +333,7 @@
 
             <div class="action-buttons">
 
-                <button type="submit" class="submit-btn">
+                <button type="submit" class="submit-btn"  style="background: linear-gradient(135deg, #4CAF50, #2E7D32);">
 
                     Найти решение
 
@@ -325,7 +341,7 @@
 
                 <button type="button" class="save-btn">
 
-                    Сохранить результаты
+                    Сохранить
 
                 </button>
 
@@ -391,42 +407,6 @@ function createMatrix() {
         'matrixContainer'
     ).innerHTML = html;
 }
-
-function generateMatrix() {
-
-    createMatrix();
-
-    const n =
-        Number(
-            document.getElementById('size').value
-        );
-
-    for (let i = 0; i < n; i++) {
-
-        for (let j = i; j < n; j++) {
-
-            const value =
-                i === j
-                ? 0
-                : Math.random() < 0.5 ? 0 : 1;
-
-            const first =
-                document.getElementsByName(
-                    `cell_${i}_${j}`
-                )[0];
-
-            const second =
-                document.getElementsByName(
-                    `cell_${j}_${i}`
-                )[0];
-
-            first.value = value;
-            second.value = value;
-        }
-    }
-}
-
-window.onload = createMatrix;
 
 </script>
 
