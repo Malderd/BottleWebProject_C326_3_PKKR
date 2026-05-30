@@ -108,6 +108,7 @@
     <Content Include="static\images\authors.png" />
     <Content Include="static\images\cliques.png" />
     <Content Include="static\images\danya.png" />
+    <Content Include="static\images\directed_graph.png" />
     <Content Include="static\images\example.png" />
     <Content Include="static\images\graphs - Copy.png" />
     <Content Include="static\images\graphs.png" />

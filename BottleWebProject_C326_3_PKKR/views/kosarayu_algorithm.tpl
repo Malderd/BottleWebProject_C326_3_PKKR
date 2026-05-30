@@ -92,8 +92,8 @@
                     <div class="form-group">
                         <input
                             type="number"
-                            min="1"
-                            max="20"
+                            min="3"
+                            max="16"
                             placeholder="Количество вершин"
                         >
                          <div class="other-buttons">
