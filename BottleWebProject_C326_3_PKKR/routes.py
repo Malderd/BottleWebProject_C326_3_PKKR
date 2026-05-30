@@ -44,6 +44,18 @@ def hamillton_graph():
         request=request
     )
 
+@route('/decide_hamillton_graph', method='POST')
+@view('hamillton_graph')
+def decide_hamillton_graph():
+    
+    return template(
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
+        result=[],
+        success=True,
+        errors={},
+        form_data=request.forms
+    )
 
 @route('/clique_detection')
 @view('clique_detection')
