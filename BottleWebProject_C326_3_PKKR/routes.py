@@ -2,24 +2,28 @@
 Routes and views for the bottle application.
 """
 
-from bottle import route, view
+from bottle import route, view, request, template
 from datetime import datetime
+import json
+
+from hamillton_graph import hamillton_graph, valid_hamillton
+
 
 @route('/')
 @route('/home')
 @view('index')
 def home():
-    """Renders the home page."""
     return dict(
-        
+        request=request
     )
+
 
 @route('/about')
 @view('about')
 def about():
-    """Renders the about page."""
     return dict(
-        title='About'
+        title='About',
+        request=request
     )
 
 
@@ -27,26 +31,48 @@ def about():
 @view('euler_graph')
 def euler_grap():
     return dict(
-        title='Euler grap'
+        title='Euler graph',
+        request=request
     )
+
 
 @route('/hamillton_graph')
 @view('hamillton_graph')
 def hamillton_graph():
     return dict(
-        title='Hamillton graph'
+        title='Hamillton graph',
+        request=request
+    )
+
+@route('/decide_hamillton_graph', method='POST')
+@view('hamillton_graph')
+def decide_hamillton_graph():
+    
+    return template(
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
+        result=[],
+        success=True,
+        errors={},
+        form_data=request.forms
     )
 
 @route('/clique_detection')
 @view('clique_detection')
 def clique_detection():
+    with open('./static/data/cliques_theory.json', encoding='utf-8') as f:
+        theory = json.load(f)
     return dict(
-        title='Clique detection'
+        title='Clique detection',
+        request=request,
+        theory=theory
     )
+
 
 @route('/kosarayu_algorithm')
 @view('kosarayu_algorithm')
 def kosarayu_algorithm():
     return dict(
-        title='Kosarayu_algorithm'
+        title='Kosarayu_algorithm',
+        request=request
     )

@@ -1,5 +1,6 @@
 % rebase('layout.tpl', title='Об авторах')
 <link rel="stylesheet" href="/static/content/about.css" />
+<link rel="stylesheet" href="/static/content/fonts.css">
 <div class="hero-about">
     <div class="main-content">
         <h1>Разработчики</h1>
@@ -11,14 +12,16 @@
                 </div>
                 <h2>Паэгле Даниэла Дмитриевна</h2>
                 <p class="contribution">
-                    Дизайн страницы для поиска Эйлерова цикла, реализация алгоритма и создание UML-диаграмм проекта, <br>логотипа сайта.
+                    Дизайн страницы для поиска Эйлерова цикла/цепи, реализация алгоритма и создание UML-диаграмм проекта, логотипа сайта.
                 </p>
+                <div class="card-links">
                 <a href="https://github.com/Dorxyna" target="_blank">
                     GitHub
                 </a>
                 <a href="https://t.me/pickmedorxyna" target="_blank">
                     Telegram
                 </a>
+                </div>
             </div>
             <div class="card">
                 <div class="avatar">
@@ -26,14 +29,16 @@
                 </div>
                 <h2>Куликов Константин Дмитриевич</h2>
                 <p class="contribution">
-                    Дизайн главной страницы, страницы с реализацией алгоритма поиска Гамильтонова цикла<br> методом перебора.
+                    Дизайн главной страницы, страницы с реализацией алгоритма поиска Гамильтонова цикла/цепи<br> методом перебора.
                 </p>
-                <a href="https://github.com/Malderd" target="_blank">
-                    GitHub
-                </a>
-                <a href="https://t.me/Malderd" target="_blank">
-                    Telegram
-                </a>
+                <div class="card-links">
+                    <a href="https://github.com/Malderd" target="_blank">
+                        GitHub
+                    </a>
+                    <a href="https://t.me/Malderd" target="_blank">
+                        Telegram
+                    </a>
+                </div>
             </div>
 
             <div class="card">
@@ -42,14 +47,16 @@
                 </div>
                 <h2>Казакова Анна <br>Юрьевна</h2>
                 <p class="contribution">
-                    Дизайн страниц "Об авторах", поиска клик в графе, реализация алгоритма и оформление документации проекта.
+                    Дизайн страниц "Об авторах", "Выявление сообществ", реализация алгоритма и оформление документации проекта.
                 </p>
-                <a href="https://github.com/viruy04" target="_blank">
-                    GitHub
-                </a>
-                <a href="https://t.me/Myasnh" target="_blank">
-                    Telegram
-                </a>
+                <div class="card-links">
+                    <a href="https://github.com/viruy04" target="_blank">
+                        GitHub
+                    </a>
+                    <a href="https://t.me/Myasnh" target="_blank">
+                        Telegram
+                    </a>
+                </div>
             </div>
 
             <div class="card">
@@ -60,12 +67,14 @@
                 <p class="contribution">
                     Дизайн страницы "Разбиение на компоненты", реализация алгоритма Косарайю и подготовка теоретической части.
                 </p>
-                <a href="https://github.com/nastarozina" target="_blank">
-                    GitHub
-                </a>
-                <a href="https://t.me/loudlig" target="_blank">
-                    Telegram
-                </a>
+                <div class="card-links">
+                    <a href="https://github.com/nastarozina" target="_blank">
+                        GitHub
+                    </a>
+                    <a href="https://t.me/loudlig" target="_blank">
+                        Telegram
+                    </a>
+                </div>
             </div>
 
         </div>

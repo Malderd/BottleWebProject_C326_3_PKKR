@@ -1,6 +1,7 @@
 % rebase('layout.tpl', title='Поиск максимальных клик')
 
 <link rel="stylesheet" href="/static/content/cliques.css">
+<link rel="stylesheet" href="/static/content/fonts.css">
 
 <section class="hero-cliques">
 
@@ -8,9 +9,12 @@
 
     <div class="content">
 
-        <h1>Поиск максимальных клик графа</h1>
-
-        <!-- теория раскрывается по клику -->
+        <div class="page-header">
+            <h1>Поиск максимальных клик графа</h1>
+            <a href="#main-layout" class="scroll-link">
+                Перейти к вводу данных ↓
+            </a>
+        </div>
         <details class="theory-block">
 
             <summary>
@@ -19,30 +23,37 @@
 
             <div class="theory-content">
 
-                <p>
-                    Кликой называется подмножество вершин графа,
-                    в котором каждая вершина соединена со всеми остальными.
-                </p>
+                % for section in theory['sections']:
 
-                <p>
-                    Максимальная клика — это клика,
-                    которую невозможно расширить
-                    без нарушения свойства полной связности.
-                </p>
+                    <div class="theory-section">
 
-                <p>
-                    Алгоритм выполняет перебор всех подмножеств вершин,
-                    проверяет наличие рёбер между всеми парами вершин
-                    и выделяет максимальные сообщества графа.
-                </p>
+                        <h3 class="theory-section-title">{{section['title']}}</h3>
+
+                        <div class="theory-section-body">
+
+                            <div class="theory-section-text">
+                                <p>{{section['text']}}</p>
+                            </div>
+
+                            <!-- картинка отображается только если путь указан в json -->
+                            % if section.get('image'):
+                                <figure class="theory-figure">
+                                    <img src="{{section['image']}}">
+                                </figure>
+                            % end
+
+                        </div>
+
+                    </div>
+
+                % end
 
             </div>
 
         </details>
 
-        <div class="main-layout">
+        <div class="main-layout" id="main-layout">
 
-            <!-- левая колонка: ввод данных -->
             <div class="left-panel">
 
                 <div class="card">
@@ -56,7 +67,6 @@
                         <button class="tab" data-tab="file">↑ Из TXT</button>
                     </div>
 
-                    <!-- вкладка: ввод вручную -->
                     <div id="tab-manual" class="tab-content">
 
                         <p class="tab-hint">
@@ -90,7 +100,6 @@
 
                     </div>
 
-                    <!-- вкладка: случайная генерация -->
                     <div id="tab-random" class="tab-content" style="display:none">
 
                         <p class="tab-hint">
@@ -123,7 +132,6 @@
 
                     </div>
 
-                    <!-- вкладка: загрузка из txt-файла -->
                     <div id="tab-file" class="tab-content" style="display:none">
 
                         <p class="tab-hint">
@@ -151,7 +159,7 @@
                         </div>
 
                         <!-- пример симметричной матрицы -->
-                        <div class="txt-example">
+                        <div class="txt-example" id="txt-example">
                             Пример формата файла:<br>
                             <code>0 1 0 1 1 1 1<br></code>
                             <code>1 0 1 1 0 0 1<br></code>
@@ -162,13 +170,16 @@
                             <code>1 1 0 0 0 1 0<br></code>
                         </div>
 
+                        <div class="matrix-wrapper" id="file-matrix-wrapper" style="display:none; margin-top:18px">
+                            <table class="matrix-table" id="file-matrix-table"></table>
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
 
-            <!-- правая колонка: граф и результаты -->
             <div class="right-panel">
 
                 <div class="card">
@@ -180,13 +191,14 @@
                         Здесь будет граф
                     </div>
 
-                    <button class="btn solve-btn" id="btn-solve">
-                        Построить граф и найти максимальные клики
-                    </button>
-
-                    <button class="btn solve-btn secondary" id="btn-save">
-                        Сохранить результаты
-                    </button>
+                    <div class="buttons buttons-center">
+                            <button class="btn primary" id="btn-create-matrix">
+                                Построить граф
+                            </button>
+                            <button class="btn secondary" id="btn-clear-matrix">
+                                Сохранить
+                            </button>
+                    </div>
 
                     <div class="result-block">
 
@@ -206,7 +218,7 @@
         </div>
 
     </div>
-
+    % include('footer.tpl')
 </section>
 
 <script>
@@ -230,13 +242,13 @@
     });
 
     // клик по зоне drag-and-drop тоже открывает выбор файла
-    document.getElementById('file-zone').addEventListener('click', function () {
+    var fileZone = document.getElementById('file-zone');
+
+    fileZone.addEventListener('click', function () {
         document.getElementById('file-input').click();
     });
 
     // обработка drag-and-drop
-    var fileZone = document.getElementById('file-zone');
-
     fileZone.addEventListener('dragover', function (e) {
         e.preventDefault();
         fileZone.style.borderColor = 'rgba(255,255,255,0.8)';
@@ -250,14 +262,84 @@
         e.preventDefault();
         fileZone.style.borderColor = '';
         var file = e.dataTransfer.files[0];
-        if (file) fileZone.querySelector('b').textContent = file.name;
+        if (file) {
+            fileZone.querySelector('b').textContent = file.name;
+            readMatrixFile(file);
+        }
     });
 
-    // показываем имя выбранного файла в зоне
+    // показываем имя выбранного файла и читаем матрицу
     document.getElementById('file-input').addEventListener('change', function () {
-        if (this.files[0]) {
-            fileZone.querySelector('b').textContent = this.files[0].name;
+        var file = this.files[0];
+        if (!file) return;
+        fileZone.querySelector('b').textContent = file.name;
+        readMatrixFile(file);
+    });
+
+    // читаем txt-файл и парсим матрицу
+    function readMatrixFile(file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var text = e.target.result.trim();
+            var rows = text.split('\n');
+            var matrix = rows.map(function (row) {
+                return row.trim().split(/\s+/).map(Number);
+            });
+            var n = matrix.length;
+
+            for (var i = 0; i < n; i++) {
+                if (matrix[i].length !== n) {
+                    alert('Матрица должна быть квадратной!');
+                    return;
+                }
+            }
+
+            buildFileMatrix(matrix, n);
+        };
+        reader.readAsText(file);
+    }
+
+    // строим таблицу матрицы во вкладке "из txt", пример пропадает
+    function buildFileMatrix(matrix, n) {
+        var wrapper = document.getElementById('file-matrix-wrapper');
+        var example = document.getElementById('txt-example');
+        var table = document.getElementById('file-matrix-table');
+        table.innerHTML = '';
+
+        var headerRow = '<tr><td class="lbl"></td>';
+        for (var j = 1; j <= n; j++) {
+            headerRow += '<td class="lbl">' + j + '</td>';
         }
+        headerRow += '</tr>';
+        table.innerHTML += headerRow;
+
+        for (var i = 0; i < n; i++) {
+            var rowHtml = '<tr><td class="lbl">' + (i + 1) + '</td>';
+            for (var j = 0; j < n; j++) {
+                if (i === j) {
+                    rowHtml += '<td class="diag">0</td>';
+                } else {
+                    // readonly — редактировать нельзя
+                    rowHtml += '<td><input type="number" value="' +
+                        matrix[i][j] + '" name="m_' + (i + 1) + '_' + (j + 1) +
+                        '" readonly tabindex="-1"></td>';
+                }
+            }
+            rowHtml += '</tr>';
+            table.innerHTML += rowHtml;
+        }
+
+        example.style.display = 'none';
+        wrapper.style.display = 'block';
+    }
+
+    // очистка: убираем матрицу, возвращаем пример
+    document.getElementById('btn-clear-file').addEventListener('click', function () {
+        document.getElementById('file-input').value = '';
+        fileZone.querySelector('b').textContent = 'Перетащите файл сюда';
+        document.getElementById('file-matrix-table').innerHTML = '';
+        document.getElementById('file-matrix-wrapper').style.display = 'none';
+        document.getElementById('txt-example').style.display = 'block';
     });
 
     // генерация таблицы матрицы смежности по введённому n

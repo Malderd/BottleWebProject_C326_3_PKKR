@@ -1,0 +1,426 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.hero-euler {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #32441a 0%, #1a1a1a 100%);
+    padding: 93px 45px 60px;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    padding-bottom: 0
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(2px);
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Заголовок */
+.hero-euler h1 {
+    text-align: left;
+    font-size: 3.4rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    border-left: 6px solid #43A047;
+    padding-left: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Теория */
+.theory-block {
+    margin-bottom: 36px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid #43A047;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+    .theory-block summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 30px;
+        font-size: 2.1rem;
+        font-weight: 700;
+        list-style: none;
+        cursor: pointer;
+        transition: background-color .25s ease;
+    }
+
+        .theory-block summary::after {
+            content: "▸";
+            font-size: 1.6rem;
+            transition: transform .25s ease;
+            color: #f1f8e9;
+        }
+
+    .theory-block[open] summary::after {
+        transform: rotate(90deg);
+    }
+
+    .theory-block summary:hover {
+        background: rgba(255,255,255,.06);
+    }
+
+.theory-content {
+    padding: 15px 30px;
+}
+
+    .theory-content p {
+        font-size: 1.7rem;
+        line-height: 1.3;
+        color: #f1f8e9;
+        margin-bottom: 10px;
+    }
+
+/* Основной макет */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+    align-items: start;
+}
+
+.left-panel,
+.right-panel {
+    width: 100%;
+}
+
+.workspace {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Карточки */
+.card {
+    background: #2d5200;
+    border: 1px solid #43A047;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 12px 34px rgba(0,0,0,.35);
+    backdrop-filter: blur(4px);
+}
+
+    .card h2 {
+        font-size: 2.3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+/* Вкладки */
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.tab {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 1.45rem;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    border: 1.5px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.08);
+    color: white;
+    cursor: pointer;
+    transition: .2s;
+}
+
+    .tab.active,
+    .tab:hover {
+        background: rgba(255,255,255,.22);
+        border-color: rgba(255,255,255,.7);
+    }
+
+/* Подсказка */
+.tab-hint {
+    font-size: 1.6rem;
+    color: #e8f5e9;
+    margin-bottom: 14px;
+    line-height: 1.4;
+    padding: 10px 14px;
+    background: rgba(0,0,0,.25);
+    border-radius: 10px;
+    border-left: 3px solid rgba(255,255,255,.4);
+}
+
+/* Поля */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+    .form-group input {
+        padding: 14px;
+        border: 1px solid rgba(255,255,255,.25);
+        border-radius: 10px;
+        background: rgba(255,255,255,.12);
+        color: white;
+        font-size: 1.6rem;
+        width: 100%;
+        outline: none;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+        .form-group input::placeholder {
+            color: rgba(255,255,255,.6);
+        }
+
+/* Кнопки */
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.btn {
+    padding: 15px 22px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: white !important;
+    font-family: 'Montserrat', sans-serif;
+    transition: .25s;
+}
+
+.primary {
+    background: #1b5e20;
+}
+
+    .primary:hover {
+        background: #2e7d32;
+    }
+
+.secondary {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.3);
+}
+
+    .secondary:hover {
+        background: rgba(255,255,255,.2);
+    }
+
+.solve-btn {
+    width: 100%;
+    background: #1b5e20;
+    margin-top: 24px; /* Разъединяем кнопку и контейнер графа сверху */
+    margin-bottom: 14px;
+    padding: 30px;
+}
+
+    .solve-btn:hover {
+        background: #2e7d32;
+    }
+
+    .solve-btn.secondary {
+        background: rgba(255,255,255,.1);
+        border: 1px solid rgba(255,255,255,.3);
+        margin-top: 0; /* Для кнопки сохранения результатов обнуляем верхний отступ */
+    }
+
+        .solve-btn.secondary:hover {
+            background: rgba(255,255,255,.2);
+        }
+
+/* Загрузка файла */
+.file-zone {
+    border: 2px dashed rgba(255,255,255,.35);
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: rgba(255,255,255,.7);
+    margin-bottom: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+    .file-zone:hover {
+        border-color: rgba(255,255,255,.7);
+        background: rgba(255,255,255,.05);
+    }
+
+    .file-zone b {
+        display: block;
+        font-size: 1.7rem;
+        color: white;
+        margin-bottom: 6px;
+    }
+
+.txt-example {
+    font-size: 1.67rem;
+    color: white;
+    margin-top: 6px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+    .txt-example code {
+        font-size: 1.67rem;
+        background: rgba(0,0,0,.25);
+        color: white;
+    }
+
+/* Input number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Матрица */
+.matrix-wrapper {
+    overflow-x: auto;
+    margin-left: -28px;
+    margin-right: -28px;
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+.matrix-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+    .matrix-table td {
+        width: 40px;
+        height: 40px;
+        min-width: 34px;
+        min-height: 34px;
+        border: 1px solid rgba(255,255,255,.18);
+        text-align: center;
+        background: rgba(255,255,255,.08);
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+        .matrix-table td.diag {
+            background: rgba(0,0,0,.3);
+            color: rgba(255,255,255,.4);
+        }
+
+        .matrix-table td.lbl {
+            background: rgba(0,0,0,.4);
+            border: none;
+            color: rgba(255,255,255,.6);
+            font-weight: 700;
+        }
+
+    .matrix-table input {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        color: white;
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        outline: none;
+    }
+
+/* Граф */
+.graph-placeholder {
+    min-height: 700px;
+    border-radius: 18px;
+    border: 2px dashed rgba(255,255,255,.24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.7rem;
+    color: #f1f8e9;
+    background: rgba(255,255,255,.05);
+    padding: 0; /* Чистый паддинг без деформаций */
+}
+
+/* Результаты */
+.result-full {
+    width: 100%;
+    margin-top: 32px;
+}
+
+.result-card {
+    width: 100%;
+    background: #314e12;
+}
+
+.result-list {
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.16);
+}
+
+    .result-list p {
+        font-size: 1.6rem;
+        line-height: 1.6;
+        color: #f1f8e9;
+        margin-bottom: 10px;
+    }
+
+        .result-list p:last-child {
+            margin-bottom: 0;
+        }
+
+/* Цвета карточек */
+.graph-card {
+    background: #233112;
+}
+
+.result-card h2 {
+    margin-bottom: 18px;
+}
+
+/* Бейджи */
+.badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.badge-cycle {
+    background: rgba(27,94,32,.8);
+    border: 1px solid #43A047;
+}
+
+.badge-path {
+    background: rgba(230,126,34,.7);
+    border: 1px solid #f39c12;
+}
+
+.badge-none {
+    background: rgba(150,0,0,.7);
+    border: 1px solid #e74c3c;
+}
