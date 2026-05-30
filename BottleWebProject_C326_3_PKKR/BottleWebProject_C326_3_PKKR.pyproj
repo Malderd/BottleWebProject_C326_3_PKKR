@@ -67,6 +67,7 @@
     <Content Include="static\images\example.png" />
     <Content Include="static\images\graphs.png" />
     <Content Include="static\images\kostya.png" />
+    <Content Include="static\images\logo.png" />
     <Content Include="static\images\many_cliques.png" />
     <Content Include="static\images\nastya.png" />
     <Content Include="static\images\friend_graph.png" />

@@ -22,7 +22,14 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/home">Домашняя страница</a></li>
+                    <li>
+                        <a style="padding: 5px 5px; background: transparent !important;">
+                            <img src="/static/images/logo.png"
+                                 alt="Логотип"
+                                 style="height: 70px; width: auto;">
+                        </a>
+                    </li>
+                    <li><a href="/home">Graphora</a></li>
                     <li><a href="/euler_graph">Эйлеров цикл</a></li>
                     <li><a href="/hamillton_graph">Гамильтонов цикл</a></li>
                     <li><a href="/clique_detection">Выявление сообществ</a></li>
