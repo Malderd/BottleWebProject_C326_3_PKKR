@@ -20,6 +20,7 @@
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,6 +85,7 @@
     <Content Include="static\images\example.png" />
     <Content Include="static\images\graphs.png" />
     <Content Include="static\images\kostya.png" />
+    <Content Include="static\images\logo.png" />
     <Content Include="static\images\many_cliques.png" />
     <Content Include="static\images\nastya.png" />
     <Content Include="static\images\friend_graph.png" />
@@ -109,6 +111,7 @@
     <Content Include="views\about.tpl" />
     <Content Include="views\contact.tpl" />
     <Content Include="views\index.tpl" />
+    <Content Include="views\footer.tpl" />
     <Content Include="views\layout.tpl" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +119,15 @@
       <Id>env_dorxyna</Id>
       <Version>3.13</Version>
       <Description>env_dorxyna (Python 3.13 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+    <Interpreter Include="env_kaza\">
+      <Id>env_kaza</Id>
+      <Version>3.13</Version>
+      <Description>env_kaza (Python 3.13 (64-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>

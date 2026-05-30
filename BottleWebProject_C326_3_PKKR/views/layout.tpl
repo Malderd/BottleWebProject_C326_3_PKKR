@@ -22,6 +22,13 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>
+                        <a style="padding: 5px 5px; background: transparent !important;">
+                            <img src="/static/images/logo.png"
+                                 alt="Логотип"
+                                 style="height: 70px; width: auto;">
+                        </a>
+                    </li>
                     <li class="{{'active' if request.path == '/home' else ''}}">
                     <a href="/home">Главная</a>
                     </li>

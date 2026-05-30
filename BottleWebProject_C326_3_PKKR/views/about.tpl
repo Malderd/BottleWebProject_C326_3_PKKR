@@ -14,12 +14,14 @@
                 <p class="contribution">
                     Дизайн страницы для поиска Эйлерова цикла/цепи, реализация алгоритма и создание UML-диаграмм проекта, логотипа сайта.
                 </p>
+                <div class="card-links">
                 <a href="https://github.com/Dorxyna" target="_blank">
                     GitHub
                 </a>
                 <a href="https://t.me/pickmedorxyna" target="_blank">
                     Telegram
                 </a>
+                </div>
             </div>
             <div class="card">
                 <div class="avatar">
@@ -29,12 +31,14 @@
                 <p class="contribution">
                     Дизайн главной страницы, страницы с реализацией алгоритма поиска Гамильтонова цикла/цепи<br> методом перебора.
                 </p>
-                <a href="https://github.com/Malderd" target="_blank">
-                    GitHub
-                </a>
-                <a href="https://t.me/Malderd" target="_blank">
-                    Telegram
-                </a>
+                <div class="card-links">
+                    <a href="https://github.com/Malderd" target="_blank">
+                        GitHub
+                    </a>
+                    <a href="https://t.me/Malderd" target="_blank">
+                        Telegram
+                    </a>
+                </div>
             </div>
 
             <div class="card">
@@ -45,12 +49,14 @@
                 <p class="contribution">
                     Дизайн страниц "Об авторах", "Выявление сообществ", реализация алгоритма и оформление документации проекта.
                 </p>
-                <a href="https://github.com/viruy04" target="_blank">
-                    GitHub
-                </a>
-                <a href="https://t.me/Myasnh" target="_blank">
-                    Telegram
-                </a>
+                <div class="card-links">
+                    <a href="https://github.com/viruy04" target="_blank">
+                        GitHub
+                    </a>
+                    <a href="https://t.me/Myasnh" target="_blank">
+                        Telegram
+                    </a>
+                </div>
             </div>
 
             <div class="card">
@@ -61,12 +67,14 @@
                 <p class="contribution">
                     Дизайн страницы "Разбиение на компоненты", реализация алгоритма Косарайю и подготовка теоретической части.
                 </p>
-                <a href="https://github.com/nastarozina" target="_blank">
-                    GitHub
-                </a>
-                <a href="https://t.me/loudlig" target="_blank">
-                    Telegram
-                </a>
+                <div class="card-links">
+                    <a href="https://github.com/nastarozina" target="_blank">
+                        GitHub
+                    </a>
+                    <a href="https://t.me/loudlig" target="_blank">
+                        Telegram
+                    </a>
+                </div>
             </div>
 
         </div>

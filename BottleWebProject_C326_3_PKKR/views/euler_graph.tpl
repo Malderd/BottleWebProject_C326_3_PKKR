@@ -151,7 +151,8 @@
             </div>
         </div>
 
-    </div> 
+    </div>
+    % include('footer.tpl')
 </section>
 
 <script>
