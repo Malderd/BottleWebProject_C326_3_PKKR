@@ -22,12 +22,24 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/home">Домашняя страница</a></li>
-                    <li><a href="/euler_graph">Эйлеров цикл</a></li>
-                    <li><a href="/hamillton_graph">Гамильтонов цикл</a></li>
-                    <li><a href="/clique_detection">Выявление сообществ</a></li>
-                    <li><a href="/kosarayu_algorithm">Разбиение на компоненты</a></li>
-                    <li><a href="/about">Об авторах</a></li>
+                    <li class="{{'active' if request.path == '/home' else ''}}">
+                    <a href="/home">Домашняя страница</a>
+                    </li>
+                    <li class="{{'active' if request.path == '/euler_graph' else ''}}">
+                    <a href="/euler_graph">Эйлеров цикл</a>
+                    </li>
+                    <li class="{{'active' if request.path == '/hamillton_graph' else ''}}">
+                    <a href="/hamillton_graph">Гамильтонов цикл</a>
+                    </li>
+                    <li class="{{'active' if request.path == '/clique_detection' else ''}}">
+                    <a href="/clique_detection">Выявление сообществ</a>
+                    </li>
+                    <li class="{{'active' if request.path == '/kosarayu_algorithm' else ''}}">
+                    <a href="/kosarayu_algorithm">Разбиение на компоненты</a>
+                    </li>
+                    <li class="{{'active' if request.path == '/about' else ''}}">
+                    <a href="/about">Об авторах</a>
+                    </li>
                 </ul>
             </div>
         </div>
