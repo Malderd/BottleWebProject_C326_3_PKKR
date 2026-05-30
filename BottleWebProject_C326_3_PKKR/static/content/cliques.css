@@ -380,7 +380,7 @@ input[type=number] {
         font-weight: 600;
     }
 
-        /* диагональ — всегда 0, не редактируется */
+        /* диагональ — всегда 0 */
         .matrix-table td.diag {
             background: rgba(0,0,0,0.3);
             color: rgba(255,255,255,0.4);
