@@ -47,46 +47,11 @@ def hamillton_graph():
 @route('/decide_hamillton_graph', method='POST')
 @view('hamillton_graph')
 def decide_hamillton_graph():
-    n = int(request.forms.get('n'))
-
-    matrix = []
-
-    for i in range(n):
-
-        row = []
-
-        for j in range(n):
-
-            row.append(
-                int(
-                    request.forms.get(
-                        f'cell_{i}_{j}',
-                        '0'
-                    )
-                )
-            )
-
-        matrix.append(row)
-
-    errors = valid_hamillton(matrix)
-
-    if errors:
-
-        return template(
-            'hamillton_graph.tpl',
-            title='Hamilltom graph',
-            result=None,
-            success=False,
-            errors=errors,
-            form_data=request.forms
-        )
-
-    result = hamillton_graph(matrix)
-
+    
     return template(
         'hamillton_graph.tpl',
         title='Hamilltom graph',
-        result=result,
+        result=[],
         success=True,
         errors={},
         form_data=request.forms
