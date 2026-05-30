@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="/static/content/kosarayu_algorithm.css">
 
-<section class="hero-cliques">
+<section class="components_of_strong_connectivity">
 
     <div class="overlay"></div>
 
@@ -117,38 +117,38 @@
 
                     <div class="matrix-wrapper">
 
-                     <table class="matrix-table">
+                    <table class="matrix-table">
 
-    <tr>
-        <th></th>
-        % for j in range(20):
-            <th>{{j}}</th>
-        % end
-    </tr>
+                        <tr>
+                            <th></th>
+                            % for j in range(20):
+                                <th>{{j}}</th>
+                            % end
+                        </tr>
 
-    % for i in range(20):
-        <tr>
+                        % for i in range(20):
+                            <tr>
 
-            <th>{{i}}</th>
+                                <th>{{i}}</th>
 
-            % for j in range(20):
+                                % for j in range(20):
 
-                % if i == j:
-                    <td class="diagonal-cell">0</td>
-                % else:
-                    <td>
-                        <input
-                            type="checkbox"
-                            name="cell_{{i}}_{{j}}">
-                    </td>
-                % end
+                                    % if i == j:
+                                        <td class="diagonal-cell">0</td>
+                                    % else:
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                name="cell_{{i}}_{{j}}">
+                                        </td>
+                                    % end
 
-            % end
+                                % end
 
-        </tr>
-    % end
+                            </tr>
+                        % end
 
-</table>
+                    </table>
 
                     </div>
 
@@ -161,64 +161,65 @@
 
                 <div class="card">
 
-    <div class="section-header">
-        <h2>Визуализация графа и результаты</h2>
-        <button class="btn primary">
-             Сохранить
-        </button>
-    </div>
+                <div class="section-header">
+                    <h2>Визуализация графа и результаты</h2>
+                    <button class="btn primary">
+                         Сохранить
+                    </button>
+                </div>
 
-    <div class="graph-container">
+                <div class="graph-container">
 
-        <div class="graph-placeholder">
-            Здесь будет визуализация графа с выделенными компонентами сильной связности
-        </div>
+                    <div class="graph-placeholder">
+                        Здесь будет визуализация графа с выделенными компонентами сильной связности
+                    </div>
 
-    </div>
+                </div>
 
-    <div class="animation-panel">
+                <div class="animation-panel">
 
-        <button class="btn primary">
-            ▶  Показать работу алгоритма
-        </button>
+                    <button class="btn primary">
+                        ▶  Показать работу алгоритма
+                    </button>
+                        
+                </div>
+
             </div>
 
-</div>
 
+            <div class="results-card">
 
-<div class="results-card">
+                <h2>Найденные компоненты сильной связности</h2>
 
-    <h2>Найденные компоненты сильной связности</h2>
+                <div class="results-info">
+                    Количество компонент: <b>4</b>
+                </div>
 
-    <div class="results-info">
-        Количество компонент: <b>4</b>
-    </div>
+                <div class="components-list">
 
-    <div class="components-list">
+                    <div class="component-item">
+                        <span class="component-color color-1"></span>
+                        {0, 1, 2}
+                    </div>
 
-        <div class="component-item">
-            <span class="component-color color-1"></span>
-            {0, 1, 2}
-        </div>
+                    <div class="component-item">
+                        <span class="component-color color-2"></span>
+                        {3}
+                    </div>
 
-        <div class="component-item">
-            <span class="component-color color-2"></span>
-            {3}
-        </div>
+                    <div class="component-item">
+                        <span class="component-color color-3"></span>
+                        {4, 5}
+                    </div>
 
-        <div class="component-item">
-            <span class="component-color color-3"></span>
-            {4, 5}
-        </div>
+                    <div class="component-item">
+                        <span class="component-color color-4"></span>
+                        {6, 7, 8}
+                    </div>
 
-        <div class="component-item">
-            <span class="component-color color-4"></span>
-            {6, 7, 8}
-        </div>
+                </div>
 
-    </div>
-
-</div>
+            </div>
 
             </div>
 
