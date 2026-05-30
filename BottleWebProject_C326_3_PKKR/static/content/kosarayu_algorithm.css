@@ -1,29 +1,35 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+﻿/* ===================== ПОДКЛЮЧЕНИЕ ШРИФТА ===================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
+/* ===================== ОБЩИЕ СТИЛИ ===================== */
 * {
     box-sizing: border-box;
 }
 
+/* Плавная прокрутка по якорям */
 html {
     scroll-behavior: smooth;
 }
 
+/* ===================== ОСНОВНОЙ КОНТЕЙНЕР СТРАНИЦЫ ===================== */
 .components_of_strong_connectivity {
-    position: fixed; /* фиксируем весь экран */
+    position: fixed;
     inset: 0;
-    overflow-y: auto; /* прокрутка внутри блока */
-    background: linear-gradient(rgba(15,15,15,0.82)),url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
+    overflow-y: auto;
+    background: linear-gradient(rgba(15,15,15,0.82)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
     padding: 93px 45px 60px;
     font-family: 'Montserrat',sans-serif;
     color: white;
 }
 
+/* ===================== ФОНОВЫЙ СЛОЙ ===================== */
 .overlay {
     position: absolute;
     inset: 0;
-    backdrop-filter: blur(2px); /* лёгкое размытие фона */
+    backdrop-filter: blur(2px);
 }
 
+/* ===================== КОНТЕЙНЕР СОДЕРЖИМОГО ===================== */
 .content {
     position: relative;
     z-index: 2;
@@ -31,6 +37,7 @@ html {
     margin: 0 auto;
 }
 
+/* ===================== ГЛАВНЫЙ ЗАГОЛОВОК ===================== */
 .components_of_strong_connectivity h1 {
     text-align: center;
     font-size: 3.1rem;
@@ -39,17 +46,19 @@ html {
     letter-spacing: 0.04em;
 }
 
+/* ===================== HEADER + НАВИГАЦИЯ ===================== */
 .header-nav {
     position: relative;
     margin-top: 20px;
     margin-bottom: 30px;
 }
 
-.header-nav h1 {
+    .header-nav h1 {
         text-align: center;
         margin: 0;
-}
+    }
 
+/* Кнопка перехода к задаче */
 .scroll-btn {
     position: absolute;
     right: 0;
@@ -65,12 +74,14 @@ html {
     transition: text-decoration 0.2s ease;
 }
 
+    /* hover эффекты кнопки */
     .scroll-btn:hover {
         text-decoration: underline;
         background: transparent;
         color: white;
     }
 
+/* ===================== ТЕОРЕТИЧЕСКИЙ БЛОК ===================== */
 .theory-block {
     margin-bottom: 36px;
     border-radius: 18px;
@@ -80,27 +91,7 @@ html {
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-.theory-content .block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 60px;
-    margin: 25px 0;
-}
-
-.theory-content .block p {
-        flex: 1;
-        margin: 0;
-}
-
-.theory-content .block img {
-        width: 360px;
-        max-width: 40%;
-        height: auto;
-        border-radius: 8px;
-        display: block;
-}
-
+/* ===================== ТЕОРИЯ: ТЕКСТ + КАРТИНКИ ===================== */
 .theory-content {
     max-width: 1000px;
     margin: 0 auto;
@@ -109,36 +100,62 @@ html {
     font-size: 18px;
 }
 
-.theory-content p {
-     margin: 15px 0;
-     text-align: justify;
-}
+    .theory-content p {
+        margin: 15px 0;
+        text-align: justify;
+    }
 
-.theory-content img {
-     display: block;
-     margin: 30px auto;
-     max-width: 90%;
+    /* блок текст + изображение */
+    .theory-content .block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 60px;
+        margin: 25px 0;
+    }
+
+        .theory-content .block p {
+            flex: 1;
+            margin: 0;
+        }
+
+        .theory-content .block img {
+            width: 360px;
+            max-width: 40%;
+            height: auto;
+            border-radius: 8px;
+        display: block;
+        }
+
+    /* изображения в теории */
+    .theory-content img {
+        display: block;
+        margin: 30px auto;
+        max-width: 90%;
      border: 1px solid #ddd;
-     border-radius: 8px;
-     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
 
-.theory-content i {
-    font-weight: 600;
-}
+    /* выделение текста */
+    .theory-content i {
+        font-weight: 600;
+    }
 
-.theory-content b {
-    font-size: 19px;
-}
+    .theory-content b {
+        font-size: 19px;
+    }
 
+/* ===================== ИЗОБРАЖЕНИЯ ===================== */
 .components-img {
-    height: 300px
+    height: 300px;
 }
 
 .directed_graph-img {
-    height: 350px
+    height: 350px;
 }
 
+/* ===================== SUMMARY (раскрытие блока) ===================== */
 .theory-block summary {
     display: flex;
     justify-content: space-between;
@@ -149,27 +166,29 @@ html {
     transition: background-color 0.25s ease;
 }
 
-.theory-block summary::after {
+    .theory-block summary::after {
         content: "▸";
         font-size: 2rem;
-        transition: transform 0.25s ease; /* анимация стрелки */
+        transition: transform 0.25s ease;
         color: #f1f8e9;
-}
+    }
 
 .theory-block[open] summary::after {
-    transform: rotate(90deg); /* поворот при раскрытии */
+    transform: rotate(90deg);
 }
 
 .theory-block summary:hover {
     background: rgba(255,255,255,0.06);
 }
 
+/* ===================== ОСНОВНАЯ РАЗМЕТКА ===================== */
 .main-layout {
     display: flex;
     gap: 34px;
     align-items: flex-start;
 }
 
+/* панели */
 .left-panel {
     width: 52%;
 }
@@ -178,6 +197,7 @@ html {
     width: 52%;
 }
 
+/* ===================== КАРТОЧКА ===================== */
 .card {
     background: rgba(125,159,0,0.88);
     border: 1px solid #43A047;
@@ -187,22 +207,23 @@ html {
     backdrop-filter: blur(4px);
 }
 
-.card h2 {
+    /* заголовок карточки */
+    .card h2 {
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 20px;
         color: white;
-}
+    }
 
+/* ===================== ФОРМА ВВОДА ===================== */
 .form-group {
     display: flex;
-    flex-direction: row;
     gap: 80px;
     margin-top: 45px;
     margin-bottom: 34px;
 }
 
-.form-group input {
+    .form-group input {
         padding: 12px 10px;
         border: 1px solid rgba(255,255,255,0.25);
         font-size: 1.7rem;
@@ -211,13 +232,16 @@ html {
         font-family: 'Montserrat',sans-serif;
         flex: 1;
         min-width: 210px;
-}
+    }
 
+/* кнопки справа */
 .other-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
 }
+
+/* ===================== КНОПКИ ===================== */
 .buttons {
     display: flex;
     flex-wrap: wrap;
@@ -225,9 +249,9 @@ html {
     margin-bottom: 30px;
 }
 
-.buttons button {
+    .buttons button {
         flex: 1;
-}
+    }
 
 .btn {
     padding: 15px 22px;
@@ -236,12 +260,10 @@ html {
     cursor: pointer;
     font-size: 1.6rem;
     font-weight: 600;
-    font-family: 'Montserrat',sans-serif;
     color: white !important;
-    transition: background-color 0.25s ease; /* плавный hover */
+    transition: background-color 0.25s ease;
 }
 
-/* основные кнопки */
 .primary {
     background: #1b5e20;
 }
@@ -255,10 +277,10 @@ html {
     }
 
 .primary:hover {
-        background: #2e7d32;
+    background: #2e7d32;
 }
 
-/* убираем стрелки у input number */
+/* ===================== INPUT NUMBER FIX ===================== */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -279,6 +301,7 @@ input[type=number] {
     user-select: none;
 }
 
+/* ===================== МАТРИЦА СМЕЖНОСТИ ===================== */
 .matrix-wrapper {
     overflow-x: auto;
 }
@@ -288,7 +311,7 @@ input[type=number] {
     margin: 0 auto;
 }
 
-.matrix-table td {
+    .matrix-table td {
         width: 40px;
         height: 40px;
         min-width: 34px;
@@ -298,21 +321,22 @@ input[type=number] {
         background: rgba(255,255,255,0.08);
         font-size: 1.3rem;
         font-weight: 600;
-}
+    }
 
-.matrix-table input[type="checkbox"] {
+    .matrix-table input[type="checkbox"] {
         width: 22px;
         height: 22px;
         cursor: pointer;
         accent-color: #869942;
-}
+    }
 
 .matrix-table th {
         padding: 10px;
         font-weight: bold;
         text-align: center;
-}
+    }
 
+/* ===================== РЕЗУЛЬТАТЫ ===================== */
 .results-card {
     background: rgba(125,159,0,0.88);
     border: 1px solid #43A047;
@@ -323,15 +347,16 @@ input[type=number] {
     margin-top: 20px
 }
 
-.results-card h2 {
+    .results-card h2 {
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 20px;
         color: white;
-}
+    }
 
+/* граф */
 .graph-container {
-        margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .graph-placeholder {
@@ -348,6 +373,7 @@ input[type=number] {
     margin-bottom: 28px;
 }
 
+/* кнопка запуска */
 .animation-panel {
     display: flex;
     justify-content: center;
@@ -363,9 +389,9 @@ input[type=number] {
 }
 
 .components-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .component-item {
@@ -400,6 +426,7 @@ input[type=number] {
     background: #ffd43b;
 }
 
+/* ===================== HEADER РЕЗУЛЬТАТОВ ===================== */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -407,8 +434,8 @@ input[type=number] {
     margin-bottom: 20px;
 }
 
-.section-header h2 {
+    .section-header h2 {
         font-size: 2.5rem;
         font-weight: 700;
         color: white;
-}
+    }
