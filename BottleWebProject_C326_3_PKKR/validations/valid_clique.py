@@ -19,7 +19,7 @@ def validate_n(n_str):
     if n < 3:
         return None, 'Количество вершин должно быть не менее 3.'
 
-    if n > 16:
+    if n > 12:
         return None, 'Количество вершин не должно превышать 16.'
 
     return n, None
@@ -43,6 +43,22 @@ def validate_matrix_cell(value_str):
         return None, 'Ячейка матрицы должна содержать 0 или 1.'
 
     return v, None
+
+
+def validate_density(density_str):
+    """
+    Проверяет корректность плотности рёбер (1–100%).
+    Возвращает (int или None, str или None).
+    """
+    if density_str is None or str(density_str).strip() == '':
+        return None, 'Введите плотность рёбер.'
+    try:
+        d = int(density_str)
+    except (ValueError, TypeError):
+        return None, 'Плотность должна быть целым числом от 1 до 100.'
+    if d < 1 or d > 100:
+        return None, 'Плотность должна быть от 1 до 100.'
+    return d, None
 
 
 def validate_matrix(form, n):

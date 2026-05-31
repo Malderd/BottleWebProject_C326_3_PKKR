@@ -6,8 +6,8 @@ from datetime import datetime
 import json, io, zipfile, base64
 
 from hamillton_graph import hamillton_graph, valid_hamillton
-from algorithms.clique_detection import solve_cliques
-from validations.valid_clique import validate_n, validate_matrix
+from algorithms.clique_detection import solve_cliques, generate_random_matrix
+from validations.valid_clique import validate_n, validate_matrix, validate_density
 
 
 @route('/')
@@ -58,11 +58,31 @@ def clique_detection():
     tab = request.query.get('tab', 'manual')
     with open('./static/data/cliques_theory.json', encoding='utf-8') as f:
         theory = json.load(f)
+
+    n = None
+    matrix = None
+    errors = {}
+
+    if tab == 'random':
+        n_raw      = request.query.get('n_size', '')
+        density_raw = request.query.get('density', '')
+
+        # Генерируем матрицу только если оба параметра переданы
+        if n_raw and density_raw:
+            n, n_err = validate_n(n_raw)
+            if n_err:
+                errors['n'] = n_err
+            density, d_err = validate_density(density_raw)
+            if d_err:
+                errors['density'] = d_err
+            if not errors:
+                matrix = generate_random_matrix(n, density)
+
     return template(
         'clique_detection.tpl',
         title='Clique detection',
         request=request, theory=theory, tab=tab,
-        n=None, matrix=None, result=None, errors={},
+        n=n, matrix=matrix, result=None, errors=errors,
     )
 
 

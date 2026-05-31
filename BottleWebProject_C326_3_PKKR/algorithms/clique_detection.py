@@ -4,6 +4,7 @@
 import io
 import base64
 import math
+import random
 
 import matplotlib
 matplotlib.use('Agg')  # без GUI, только в файл/буфер
@@ -137,6 +138,24 @@ def render_graph(matrix, n, maximal_cliques):
     plt.close(fig)
     buf.seek(0)
     return base64.b64encode(buf.read()).decode('utf-8')
+
+
+# ───────────────────────────────────────────────
+#  Генерация случайного графа
+# ───────────────────────────────────────────────
+
+def generate_random_matrix(n, density):
+    """
+    Генерирует случайную симметричную матрицу смежности n×n.
+    density — плотность рёбер в процентах (1–100).
+    """
+    matrix = [[0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(i + 1, n):
+            if random.randint(1, 100) <= density:
+                matrix[i][j] = 1
+                matrix[j][i] = 1
+    return matrix
 
 
 # ───────────────────────────────────────────────
