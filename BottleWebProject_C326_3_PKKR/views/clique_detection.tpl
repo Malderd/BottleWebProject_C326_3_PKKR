@@ -89,23 +89,92 @@
                             Введите количество вершин, затем заполните матрицу смежности.
                         </p>
 
-                        <div class="form-group">
-                            <input type="number" id="n-manual" min="1" max="20"
-                                   placeholder="Количество вершин N (до 16)">
-                        </div>
+                        <form method="GET" action="/clique_detection">
+                            <input type="hidden" name="tab" value="manual">
+                            <div class="form-group">
+                                <input type="number" name="n_size"
+                                       min="3" max="16"
+                                       placeholder="Количество вершин N (3–16)"
+                                       value="{{request.query.get('n_size', n if defined('n') and n else '')}}">
+                            </div>
+                            % if defined('errors') and errors.get('n'):
+                            <p class="error-msg">{{errors['n']}}</p>
+                            % end
+                            <div class="buttons">
+                                <button type="submit" class="btn primary" id="btn-create-matrix" disabled>
+                                    Создать матрицу
+                                </button>
+                                <button type="button" class="btn secondary" id="btn-clear-matrix"
+                                        onclick="location.href='/clique_detection?tab=manual'" disabled>
+                                    Очистить
+                                </button>
+                            </div>
+                        </form>
 
-                        <div class="buttons">
-                            <button class="btn primary" id="btn-create-matrix">
-                                Создать матрицу
-                            </button>
-                            <button class="btn secondary" id="btn-clear-matrix">
-                                Очистить
-                            </button>
-                        </div>
+                        <%
+                        # После POST n приходит из шаблонной переменной,
+                        # после GET — из query-параметра
+                        if defined('n') and n:
+                            n_size = n
+                        else:
+                            n_size_raw = request.query.get('n_size', '')
+                            n_size = int(n_size_raw) if n_size_raw.isdigit() and 3 <= int(n_size_raw) <= 16 else 0
+                        end
+                        %>
 
-                        <div class="matrix-wrapper">
-                            <table class="matrix-table" id="matrix-table"></table>
-                        </div>
+                        % if n_size > 0:
+                        <form method="POST" action="/clique_detection?n_size={{n_size}}" id="matrix-form">
+                            <input type="hidden" name="tab" value="manual">
+                            <input type="hidden" name="n" value="{{n_size}}">
+
+                            <div class="matrix-wrapper">
+                                <table class="matrix-table" id="matrix-table">
+
+                                    <tr>
+                                        <td class="lbl"></td>
+                                        % for j in range(n_size):
+                                        <td class="lbl">{{j+1}}</td>
+                                        % end
+                                    </tr>
+
+                                    % for i in range(n_size):
+                                    <tr>
+                                        <td class="lbl">{{i+1}}</td>
+
+                                        % for j in range(n_size):
+
+                                        % if i == j:
+                                        <td class="diag">0</td>
+
+                                        % elif j > i:
+                                        <%
+                                        prev = matrix[i][j] if defined('matrix') and matrix else 0
+                                        %>
+                                        <td>
+                                            <input type="number"
+                                                   name="m_{{i}}_{{j}}"
+                                                   min="0" max="1"
+                                                   value="{{prev}}"
+                                                   oninput="this.value=this.value.replace(/[^01]/g,'').slice(0,1)">
+                                        </td>
+
+                                        % else:
+                                        <%
+                                        mirror = matrix[i][j] if defined('matrix') and matrix else '–'
+                                        %>
+                                        <td class="mirror-cell">{{mirror}}</td>
+
+                                        % end
+
+                                        % end
+                                    </tr>
+                                    % end
+
+                                </table>
+                            </div>
+
+                        </form>
+                        % end
 
                     </div>
                     % end
@@ -179,25 +248,51 @@
 
                     <h2>Визуализация и результаты</h2>
 
+                    % if defined('result') and result and result.get('graph_png'):
+                    <div class="graph-placeholder" style="padding:0; border:none; background:none;">
+                        <img src="data:image/png;base64,{{result['graph_png']}}"
+                             alt="Граф"
+                             style="width:100%; height:100%; object-fit:fill; border-radius:14px; display:block;">
+                    </div>
+                    % else:
                     <div class="graph-placeholder">
                         Здесь будет граф
                     </div>
+                    % end
 
                     <div class="buttons buttons-center">
-                        <button class="btn primary" id="btn-solve">
+                        <button class="btn primary" id="btn-solve" disabled>
                             Построить граф
                         </button>
-                        <button class="btn secondary">
+                        <button class="btn secondary" id="btn-save" disabled>
                             Сохранить
                         </button>
                     </div>
+
+                    <!-- Скрытая форма для сохранения архива — заполняется через JS из matrix-form -->
+                    <form method="POST" action="/clique_save" id="save-form" style="display:none"></form>
 
                     <div class="result-block">
 
                         <h2>Найденные клики</h2>
 
-                        <div class="result-list">
+                        <div class="result-list" id="result-list">
+                            % if defined('result') and result and result.get('maximal_cliques') is not None:
+                                % if result['maximal_cliques']:
+                                <p><b>Максимальных клик найдено: {{len(result['maximal_cliques'])}}</b></p>
+                                % for idx, clique in enumerate(result['maximal_cliques']):
+                                <p>{{idx + 1}}) { {{', '.join(map(str, clique))}} }</p>
+                                % end
+                                % else:
+                                <p>В данном графе максимальных клик не найдено.</p>
+                                % end
+                            % elif defined('errors') and errors:
+                                % for key, msg in errors.items():
+                                <p class="error-msg">⚠ {{msg}}</p>
+                                % end
+                            % else:
                             <p>Результаты появятся после запуска алгоритма</p>
+                            % end
                         </div>
 
                     </div>
@@ -213,3 +308,71 @@
     % include('footer.tpl')
 
 </section>
+<script>
+    var hero = document.querySelector('.hero-cliques');
+
+    // Восстанавливаем позицию скролла после перезагрузки
+    var scrollY = sessionStorage.getItem('clique_scroll');
+    if (scrollY) {
+        hero.scrollTop = parseInt(scrollY);
+        sessionStorage.removeItem('clique_scroll');
+    }
+
+    // Сохраняем скролл на любом клике, кроме ссылки «Перейти к вводу данных»
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('scroll-link')) return;
+        sessionStorage.setItem('clique_scroll', hero.scrollTop);
+    });
+
+    var btnCreate  = document.getElementById('btn-create-matrix');
+    var btnClear   = document.getElementById('btn-clear-matrix');
+    var btnSolve   = document.getElementById('btn-solve');
+    var btnSave    = document.getElementById('btn-save');
+    var nInput     = document.querySelector('input[name="n_size"]');
+    var hasMatrix  = !!document.getElementById('matrix-form');
+    var hasGraph   = !!document.querySelector('.graph-placeholder img');
+
+    function updateButtons() {
+        var nFilled = nInput && nInput.value.trim() !== '';
+        if (btnCreate) btnCreate.disabled = !nFilled;
+        if (btnClear)  btnClear.disabled  = !nFilled;
+        if (btnSolve)  btnSolve.disabled  = !hasMatrix;
+        if (btnSave)   btnSave.disabled   = !hasGraph;
+    }
+
+    // Следим за вводом N
+    if (nInput) nInput.addEventListener('input', updateButtons);
+
+    // Инициализация при загрузке
+    updateButtons();
+
+    // Построить граф
+    if (btnSolve) {
+        btnSolve.addEventListener('click', function () {
+            var form = document.getElementById('matrix-form');
+            if (form) form.submit();
+        });
+    }
+
+    // Сохранить — копируем поля matrix-form в save-form и отправляем на сервер
+    if (btnSave) {
+        btnSave.addEventListener('click', function () {
+            var matrixForm = document.getElementById('matrix-form');
+            var saveForm   = document.getElementById('save-form');
+            if (!matrixForm || !saveForm) return;
+
+            saveForm.innerHTML = '';
+            var inputs = matrixForm.querySelectorAll('input');
+            inputs.forEach(function (inp) {
+                var copy = document.createElement('input');
+                copy.type  = 'hidden';
+                copy.name  = inp.name;
+                copy.value = inp.value;
+                saveForm.appendChild(copy);
+            });
+
+            saveForm.submit();
+        });
+    }
+</script>
+
