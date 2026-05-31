@@ -39,22 +39,28 @@ def euler_grap():
 @route('/hamillton_graph')
 @view('hamillton_graph')
 def hamillton_graph():
-    return dict(
-        title='Hamillton graph',
+    return template(
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
+        result=None,
+        success=False,
+        errors={},
+        form_data={},
         request=request
     )
 
 @route('/decide_hamillton_graph', method='POST')
 @view('hamillton_graph')
 def decide_hamillton_graph():
-    
+  
     return template(
         'hamillton_graph.tpl',
         title='Hamilltom graph',
-        result=[],
+        result=None,
         success=True,
         errors={},
-        form_data=request.forms
+        form_data=request.forms,
+        request=request
     )
 
 @route('/clique_detection')
