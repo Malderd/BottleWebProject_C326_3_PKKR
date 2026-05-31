@@ -363,7 +363,7 @@
     </div>
 
 </div>
-
+% include('footer.tpl')
 <script>
 
 function createMatrix() {
