@@ -32,7 +32,6 @@ h1 {
     margin-bottom: 40px;
     border-radius: 20px;
     background: rgba(125,159,0,0.18);
-    overflow: hidden;
 }
 
     /* Заголовок раскрывающегося блока */
@@ -137,6 +136,24 @@ button {
         transform: translateY(-2px);
     }
 
+/* Стили 2-х главных кнопок */
+.button_main {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    /* Эффект наведения */
+    .button_main:hover {
+        transform: translateY(-2px);
+    }
+
 /* Таблица матрицы смежности */
 .matrix {
     margin: 0 auto 40px;
@@ -158,7 +175,7 @@ button {
 
 /* Блок визуализации графа */
 .graph-section {
-    margin-bottom: 40px;
+    margin-bottom: -50px;
 }
 
     /* Заголовок визуализации */
