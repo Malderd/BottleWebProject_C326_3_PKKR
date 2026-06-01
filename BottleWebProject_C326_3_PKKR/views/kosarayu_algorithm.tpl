@@ -4,6 +4,7 @@
 <script src="/static/scripts/matrix_generator.js"></script>
 <script src="/static/scripts/random-graph_generator.js"></script>
 <script src="/static/scripts/matrix_clear.js"></script>
+<script src="/static/scripts/matrix_prepare.js"></script>
 
 <section class="components_of_strong_connectivity">
 
@@ -68,41 +69,98 @@
                             type="number"
                             min="3"
                             max="16"
-                            placeholder="Количество вершин" id="sizeInput"
-                        >
-                         <div class="other-buttons">
-                        <button class="btn other" onclick="generateMatrix()">
-                            Создать матрицу
-                        </button>
-                        <button class="btn primary">
-                            Загрузить
-                        </button>
+                            placeholder="Количество вершин" id="sizeInput">
+                        
+                        <div class="other-buttons">
+                            
+                            <button class="btn other" onclick="generateMatrix()">
+                                Создать матрицу
+                            </button>
+
+                            <button class="btn primary">
+                                Загрузить
+                            </button>
                         </div>
                     </div>
 
-                    <div class="table_and_buttons" id="table_and_buttons">
-                    <div class="buttons">
+                    <form method="post" action="/kosarayu_algorithm/find_components">
+                        <div class="table_and_buttons" id="table_and_buttons" style="display: {{'block' if matrix else 'none'}}">
+                            <div class="buttons">
 
-                        <button class="btn primary" onclick="generateRandomGraph()">
-                            Сгенерировать
-                        </button>
+                                <button type="button" class="btn primary" onclick="generateRandomGraph()">
+                                    Сгенерировать
+                                </button>
 
-                        <button class="btn other">
-                            Найти компоненты
-                        </button>
-                        <button class="btn primary" onclick="clearMatrix()">
-                            Очистить
-                        </button>
-                    </div>
+                                <button type="submit" class="btn other" onclick="prepareMatrix()">
+                                    Найти компоненты
+                                </button>
 
-                    <div class="matrix-wrapper">
+                                <button type="button" class="btn primary" onclick="clearMatrix()">
+                                    Очистить
+                                </button>
+                            </div>
 
-                    <table class="matrix-table" id="matrixTable"></table>
+                            <div class="matrix-wrapper">
 
-                    </div>
-                    </div>
+                                
+                                <table class="matrix-table" id="matrixTable">
+                                % if matrix:
+                                    <tr>
+                                        <th></th>
+
+                                        % for j in range(len(matrix)):
+                                            <th>{{j}}</th>
+                                        % end
+
+                                    </tr>
+
+                                    % for i in range(len(matrix)):
+
+                                        <tr>
+
+                                            <th>{{i}}</th>
+
+                                            % for j in range(len(matrix)):
+
+                                                % if i == j:
+
+                                                    <td class="diagonal-cell">
+                                                        0
+                                                    </td>
+
+                                                % else:
+
+                                                    <td>
+
+                                                        <input
+                                                            type="checkbox"
+                                                            name="cell_{{i}}_{{j}}"
+
+                                                            % if matrix[i][j]:
+                                                                checked
+                                                            % end
+                                                        >
+
+                                                    </td>
+
+                                                % end
+
+                                            % end
+
+                                        </tr>
+
+                                    % end
+                                    % end
+                                </table>
+
+                            </div>
+                            <input
+                                type="hidden"
+                                name="matrix_data"
+                                id="matrixData">
+                        </div>
+                    </form>
                 </div>
-
             </div>
 
             <!-- ПРАВАЯ КОЛОНКА -->
@@ -110,65 +168,65 @@
 
                 <div class="card">
 
-                <div class="section-header">
-                    <h2>Визуализация графа и результаты</h2>
-                    <button class="btn primary">
-                         Сохранить
-                    </button>
-                </div>
-
-                <div class="graph-container">
-
-                    <div class="graph-placeholder">
-                        Здесь будет визуализация графа с выделенными компонентами сильной связности
+                    <div class="section-header">
+                        <h2>Визуализация графа и результаты</h2>
+                        <button class="btn primary">
+                             Сохранить
+                        </button>
                     </div>
 
-                </div>
+                    <div class="graph-container">
 
-                <div class="animation-panel">
+                        <div class="graph-placeholder">
+                            Здесь будет визуализация графа с выделенными компонентами сильной связности
+                        </div>
 
-                    <button class="btn primary">
-                        ▶&nbsp;&nbsp;Показать работу алгоритма
-                    </button>
+                    </div>
+
+                    <div class="animation-panel">
+
+                        <button class="btn primary">
+                            ▶&nbsp;&nbsp;Показать работу алгоритма
+                        </button>
                         
-                </div>
-
-            </div>
-
-
-            <div class="results-card">
-
-                <h2>Найденные компоненты сильной связности</h2>
-
-                <div class="results-info">
-                    Количество компонент: <b>4</b>
-                </div>
-
-                <div class="components-list">
-
-                    <div class="component-item">
-                        <span class="component-color color-1"></span>
-                        {0, 1, 2}
-                    </div>
-
-                    <div class="component-item">
-                        <span class="component-color color-2"></span>
-                        {3}
-                    </div>
-
-                    <div class="component-item">
-                        <span class="component-color color-3"></span>
-                        {4, 5}
-                    </div>
-
-                    <div class="component-item">
-                        <span class="component-color color-4"></span>
-                        {6, 7, 8}
                     </div>
 
                 </div>
 
-            </div>
+
+                <div class="results-card">
+
+                    <h2>Найденные компоненты сильной связности</h2>
+
+                    <div class="results-info">
+                        Количество компонент: <b>4</b>
+                    </div>
+
+                    <div class="components-list">
+
+                        <div class="component-item">
+                            <span class="component-color color-1"></span>
+                            {0, 1, 2}
+                        </div>
+
+                        <div class="component-item">
+                            <span class="component-color color-2"></span>
+                            {3}
+                        </div>
+
+                        <div class="component-item">
+                            <span class="component-color color-3"></span>
+                            {4, 5}
+                        </div>
+
+                        <div class="component-item">
+                            <span class="component-color color-4"></span>
+                            {6, 7, 8}
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 

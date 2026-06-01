@@ -283,10 +283,6 @@ html {
     background: #2e7d32;
 }
 
-.table_and_buttons {
-    display: none;
-}
-
 /* ===================== INPUT NUMBER FIX ===================== */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

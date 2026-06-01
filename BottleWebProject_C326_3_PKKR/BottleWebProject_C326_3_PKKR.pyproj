@@ -18,11 +18,6 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>BottleWebProject_C326_3_PKKR</Name>
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
-    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
     <TestFramework>unittest</TestFramework>
@@ -38,6 +33,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="algorithms\kosarayu_algorithm.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="algorithms\draw_graph.py" />
     <Compile Include="algorithms\euler.py">
       <SubType>Code</SubType>
@@ -138,6 +136,7 @@
     <Content Include="static\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="static\scripts\matrix_clear.js" />
     <Content Include="static\scripts\matrix_generator.js" />
+    <Content Include="static\scripts\matrix_prepare.js" />
     <Content Include="static\scripts\modernizr-2.6.2.js" />
     <Content Include="static\scripts\random-graph_generator.js" />
     <Content Include="static\scripts\respond.js" />

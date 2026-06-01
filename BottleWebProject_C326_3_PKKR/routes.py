@@ -39,8 +39,6 @@ def about():
 @route('/euler_graph')
 @view('euler_graph')
 def euler_grap():
-    return dict(title='Euler graph', request=request)
-def euler_graph():
     return dict(
         title='Euler graph',
         request=request
@@ -178,13 +176,6 @@ def decide_hamillton_graph():
         request=request
     )
 
-@route('/kosarayu_algorithm')
-@view('kosarayu_algorithm')
-def kosarayu_algorithm():
-    return dict(title='Kosarayu_algorithm', request=request)
-
-
-# ─── Клики: GET
 @route('/clique_detection')
 def clique_detection():
     tab = request.query.get('tab', 'manual')
@@ -368,6 +359,8 @@ def kosarayu_algorithm():
     return dict(
         title='Kosarayu_algorithm',
         request=request,
+        matrix=None,
+        components=None,
         theory=theory
     )
 
