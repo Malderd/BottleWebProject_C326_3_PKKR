@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-
 * {
     box-sizing: border-box;
 }
@@ -9,7 +7,7 @@
     position: fixed;
     inset: 0;
     overflow-y: auto;
-    background: linear-gradient(rgba(15,15,15,0.82)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
+    background: linear-gradient(rgba(15,15,15,0.82)), url("/static/images/cliques.png") center/cover no-repeat fixed;
     padding: 93px 45px 60px;
     font-family: 'Montserrat', sans-serif;
     color: white;
@@ -81,14 +79,78 @@
 
 /* содержимое теории */
 .theory-content {
-    padding: 15px 30px;
+    padding: 15px 30px 25px;
 }
 
-    .theory-content p {
-        font-size: 1.7rem;
-        line-height: 1.3;
-        color: #f1f8e9;
-        margin-bottom: 10px;
+/* один раздел теории */
+.theory-section {
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+    .theory-section:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+/* заголовок раздела теории */
+.theory-section-title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #c5e1a5;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* строка: текст слева, картинка справа */
+.theory-section-body {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.theory-section-text {
+    flex: 1;
+}
+
+.theory-content p {
+    font-size: 1.8rem;
+    line-height: 1.5;
+    color: #f1f8e9;
+    white-space: pre-line;
+    margin-bottom: 0;
+}
+
+/* блок с картинкой справа */
+.theory-figure {
+    flex-shrink: 0;
+    margin: 0;
+    text-align: center;
+}
+
+    .theory-figure img {
+        max-width: 500px;
+        max-height: 430px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    /* подпись под картинкой */
+    .theory-figure figcaption {
+        margin-top: 8px;
+        font-size: 1.35rem;
+        color: rgba(255,255,255,0.6);
+        font-style: italic;
+        font-family: 'Montserrat', sans-serif;
+        max-width: 320px;
     }
 
 /* двухколоночный макет: левая — ввод, правая — результат */
@@ -108,7 +170,7 @@
 
 /* зелёная карточка */
 .card {
-    background: rgba(125,159,0,0.88);
+    background: #527d05;
     border: 1px solid #43A047;
     border-radius: 18px;
     padding: 28px;
@@ -347,6 +409,12 @@ input[type=number] {
         outline: none;
         font-family: 'Montserrat', sans-serif;
     }
+
+        /* readonly-ячейки из файла — нельзя редактировать */
+        .matrix-table input[readonly] {
+            cursor: default;
+            color: rgba(255,255,255,0.5);
+        }
 
 /* место под граф, пока пустое */
 .graph-placeholder {
