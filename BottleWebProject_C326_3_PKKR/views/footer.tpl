@@ -2,7 +2,7 @@
     <div class="footer-inner">
         <div class="footer-brand">
             <span class="footer-logo">Graphora</span>
-            <span class="footer-year">© 2025</span>
+            <span class="footer-year">© 2026</span>
         </div>
         <div class="footer-col">
             <span class="footer-label">GitHub</span>

@@ -20,7 +20,7 @@
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
