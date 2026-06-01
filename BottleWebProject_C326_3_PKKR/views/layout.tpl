@@ -22,8 +22,15 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>
+                        <a style="padding: 5px 5px; background: transparent !important;">
+                            <img src="/static/images/logo.png"
+                                 alt="Логотип"
+                                 style="height: 70px; width: auto;">
+                        </a>
+                    </li>
                     <li class="{{'active' if request.path == '/home' else ''}}">
-                    <a href="/home">Домашняя страница</a>
+                    <a href="/home">Главная</a>
                     </li>
                     <li class="{{'active' if request.path == '/euler_graph' else ''}}">
                     <a href="/euler_graph">Эйлеров цикл</a>
@@ -47,10 +54,6 @@
 
     <div class="container body-content">
         {{!base}}
-        <hr />
-        <footer>
-            <p>&copy; - My Bottle Application</p>
-        </footer>
     </div>
 
     <script src="/static/scripts/jquery-1.10.2.js"></script>

@@ -9,8 +9,12 @@
 
     <div class="content">
 
-        <h1>Поиск максимальных клик графа</h1>
-
+        <div class="page-header">
+            <h1>Поиск максимальных клик графа</h1>
+            <a href="#main-layout" class="scroll-link">
+                Перейти к вводу данных ↓
+            </a>
+        </div>
         <details class="theory-block">
 
             <summary>
@@ -34,10 +38,7 @@
                             <!-- картинка отображается только если путь указан в json -->
                             % if section.get('image'):
                                 <figure class="theory-figure">
-                                    <img src="{{section['image']}}" alt="{{section.get('image_caption', '')}}">
-                                    % if section.get('image_caption'):
-                                        <figcaption>{{section['image_caption']}}</figcaption>
-                                    % end
+                                    <img src="{{section['image']}}">
                                 </figure>
                             % end
 
@@ -51,7 +52,7 @@
 
         </details>
 
-        <div class="main-layout">
+        <div class="main-layout" id="main-layout">
 
             <div class="left-panel">
 
@@ -190,13 +191,14 @@
                         Здесь будет граф
                     </div>
 
-                    <button class="btn solve-btn" id="btn-solve">
-                        Построить граф и найти максимальные клики
-                    </button>
-
-                    <button class="btn solve-btn secondary" id="btn-save">
-                        Сохранить результаты
-                    </button>
+                    <div class="buttons buttons-center">
+                            <button class="btn primary" id="btn-create-matrix">
+                                Построить граф
+                            </button>
+                            <button class="btn secondary" id="btn-clear-matrix">
+                                Сохранить
+                            </button>
+                    </div>
 
                     <div class="result-block">
 
@@ -216,7 +218,7 @@
         </div>
 
     </div>
-
+    % include('footer.tpl')
 </section>
 
 <script>
