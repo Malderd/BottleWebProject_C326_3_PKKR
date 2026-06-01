@@ -1,38 +1,23 @@
-const formData = {
-    ...window.formData
-};
+const formData = window.formData || {};
 
 function createMatrix() {
 
-    const n =
-        Number(
-            document.getElementById('size').value
-        );
-
-    const errorBox =
-        document.getElementById('matrixError');
+    const n = Number(document.getElementById('size').value);
+    const errorBox = document.getElementById('matrixError');
 
     errorBox.innerHTML = '';
 
     if (n < 3) {
-
-        errorBox.innerHTML =
-            'Количество вершин не должно быть меньше 3.';
-
+        errorBox.innerHTML = 'Количество вершин не должно быть меньше 3.';
         return;
     }
 
     if (n > 15) {
-
-        errorBox.innerHTML =
-            'Количество вершин не должно превышать 15.';
-
+        errorBox.innerHTML = 'Количество вершин не должно превышать 15.';
         return;
     }
 
-    document.getElementById(
-        'hiddenN'
-    ).value = n;
+    document.getElementById('hiddenN').value = n;
 
     let html = '<table class="matrix">';
 
@@ -42,17 +27,13 @@ function createMatrix() {
 
         for (let j = 0; j < n; j++) {
 
-            const key =
-                `cell_${i}_${j}`;
+            const key = `cell_${i}_${j}`;
 
             let value = '';
 
             if (formData[key] !== undefined) {
-
                 value = formData[key];
-
             } else if (i === j) {
-
                 value = '0';
             }
 
@@ -74,11 +55,8 @@ function createMatrix() {
 
     html += '</table>';
 
-    document.getElementById(
-        'matrixContainer'
-    ).innerHTML = html;
+    document.getElementById('matrixContainer').innerHTML = html;
 }
-
 
 function clearMatrix() {
     const n =
@@ -147,13 +125,8 @@ function clearMatrix() {
 
 function generateMatrix() {
 
-    const n =
-        Number(
-            document.getElementById('size').value
-        );
-
-    const errorBox =
-        document.getElementById('matrixError');
+    const n = Number(document.getElementById('size').value);
+    const errorBox = document.getElementById('matrixError');
 
     errorBox.innerHTML = '';
 

@@ -1,6 +1,7 @@
 import io
 import uuid
 import matplotlib
+from datetime import datetime
 
 matplotlib.use('Agg')
 
@@ -8,10 +9,8 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 
-def draw_graph(matrix):
-
+def build_graph(matrix):
     graph = nx.Graph()
-
     n = len(matrix)
 
     for i in range(n):
@@ -19,17 +18,12 @@ def draw_graph(matrix):
 
     for i in range(n):
         for j in range(i + 1, n):
-
             if matrix[i][j] == 1:
                 graph.add_edge(i, j)
 
-    plt.figure(figsize=(8, 6))
+    pos = nx.spring_layout(graph, seed=42)
 
-    pos = nx.spring_layout(
-        graph,
-        seed=42
-    )
-
+    graph1 = plt.figure(figsize=(8, 6))
     nx.draw(
         graph,
         pos,
@@ -38,15 +32,29 @@ def draw_graph(matrix):
         font_size=12
     )
 
-    filename = f"graph_{uuid.uuid4().hex}.png"
+    return graph1
 
+
+def draw_graph(matrix, save=False):
+    graph = build_graph(matrix)
+
+    if not save:
+        import io
+        import base64
+
+        buf = io.BytesIO()
+        graph.savefig(buf, format='png', bbox_inches='tight')
+        plt.close(graph)
+
+        buf.seek(0)
+        img_base64 = base64.b64encode(buf.read()).decode('utf-8')
+
+        return f"data:image/png;base64,{img_base64}"
+
+    filename = datetime.now().strftime('graph_%Y%m%d_%H%M%S.png')
     filepath = f"static/images/{filename}"
 
-    plt.savefig(
-        filepath,
-        bbox_inches='tight'
-    )
-
-    plt.close()
+    graph.savefig(filepath, bbox_inches='tight')
+    plt.close(graph)
 
     return f"/static/images/{filename}"

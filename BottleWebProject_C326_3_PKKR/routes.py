@@ -55,6 +55,7 @@ def hamillton_graph():
 @view('hamillton_graph')
 def decide_hamillton_graph():
     n = int(request.forms.get('n'))
+    action = request.forms.get('action') 
 
     matrix = []
 
@@ -93,9 +94,15 @@ def decide_hamillton_graph():
         for row in matrix
     ]
 
-    result = find_hamillton_graph(matrix)
+    graph_image = None
+    result = None
 
-    graph_image = draw_graph(matrix)
+    if action == "solve":
+        result = find_hamillton_graph(matrix)
+        graph_image = draw_graph(matrix, save=False)
+
+    elif action == "save":
+        graph_image = draw_graph(matrix, save=True)
 
     return template(
         'hamillton_graph.tpl',

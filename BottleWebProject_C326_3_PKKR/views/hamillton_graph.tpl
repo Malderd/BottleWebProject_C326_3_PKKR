@@ -343,16 +343,12 @@
 
             <div class="action-buttons">
 
-                <button type="submit" class="button_main">
-
+                <button type="submit" name="action" value="solve" class="button_main">
                     Найти решение
-
                 </button>
 
-                <button type="button" class="save-btn">
-
+                <button type="submit" name="action" value="save" class="save-btn">
                     Сохранить
-
                 </button>
 
             </div>
