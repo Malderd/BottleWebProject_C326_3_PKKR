@@ -2,11 +2,13 @@
 Routes and views for the bottle application.
 """
 
-from bottle import route, view, request, template
+from bottle import route, view, request, template, post
 from datetime import datetime
 import json
+import random
 
 from hamillton_graph import hamillton_graph, valid_hamillton
+from algorithms.euler_graph import solve_euler
 
 
 @route('/')
@@ -29,12 +31,66 @@ def about():
 
 @route('/euler_graph')
 @view('euler_graph')
-def euler_grap():
+def euler_graph():
     return dict(
         title='Euler graph',
         request=request
     )
+@post("/euler/solve")
+def euler_solve_route():
+    try:
+        data = request.json
+        if not data or "matrix" not in data:
+            return {"exists": False, "message": "Матрица не передана"}
+        
+        matrix = data["matrix"]
+        result = solve_euler(matrix)
+        return result
+    except Exception as e:
+        return {"exists": False, "message": f"Ошибка сервера: {str(e)}"}
 
+@post("/euler/random")
+def euler_random_route():
+    try:
+        data = request.json
+        n = int(data["n"])
+        density = int(data["density"]) / 100
+
+        # Инициализируем пустую матрицу NxN
+        matrix = [[0] * n for _ in range(n)]
+
+        # Генерируем симметричную матрицу смежности без петель
+        for i in range(n):
+            for j in range(i + 1, n):
+                if random.random() < density:
+                    matrix[i][j] = 1
+                    matrix[j][i] = 1
+
+        return {"matrix": matrix}
+    except Exception as e:
+        return {"error": f"Ошибка генерации: {str(e)}"}
+
+@post("/euler/from_file")
+def euler_from_file_route():
+    f = request.files.get("file")
+    if not f:
+        return {"error": "Файл не передан"}
+
+    try:
+        content = f.file.read().decode("utf-8")
+        matrix = []
+
+        for line in content.strip().splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            # Читаем числа, разделенные пробелами или табуляцией
+            row = list(map(int, line.split()))
+            matrix.append(row)
+
+        return {"matrix": matrix}
+    except Exception as e:
+        return {"error": f"Неверный формат файла: {str(e)}"}
 
 @route('/hamillton_graph')
 @view('hamillton_graph')
@@ -82,3 +138,5 @@ def kosarayu_algorithm():
         title='Kosarayu_algorithm',
         request=request
     )
+
+

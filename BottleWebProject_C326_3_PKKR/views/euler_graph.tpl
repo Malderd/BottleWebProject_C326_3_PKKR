@@ -281,8 +281,9 @@
                             <button class="btn" id="btn-create-matrix">Создать матрицу</button>
                             <button class="btn secondary" id="btn-clear-matrix">Очистить</button>
                         </div>
-                        <div class="matrix-wrapper">
-                            <table class="matrix-table" id="matrix-table"></table>
+                        
+                        <div class="matrix-wrapper" id="wrapper-manual" style="display: none;">
+                            <table class="matrix-table" id="matrix-table-manual"></table>
                         </div>
                     </div>
 
@@ -299,7 +300,10 @@
                                    placeholder="Плотность рёбер % (Пр.: 50)">
                         </div>
                         <div class="buttons">
-                            <button class="btn" id="btn-random">Сгенерировать случайный граф</button>
+                            <button class="btn solve-btn" id="btn-random">Сгенерировать случайный граф</button>
+                        </div>
+                        <div class="matrix-wrapper" id="wrapper-random" style="display: none;">
+                            <table class="matrix-table" id="matrix-table-random"></table>
                         </div>
                     </div>
 
@@ -314,8 +318,11 @@
                         </div>
                         <input type="file" id="file-input" accept=".txt" style="display:none">
                         <div class="buttons">
-                            <button class="btn" id="btn-choose-file">Выбрать файл</button>
+                            <button class="btn solve-btn" id="btn-choose-file">Выбрать файл</button>
                             <button class="btn secondary" id="btn-clear-file">Очистить</button>
+                        </div>
+                        <div class="matrix-wrapper" id="wrapper-file" style="display: none;">
+                            <table class="matrix-table" id="matrix-table-file"></table>
                         </div>
                         <div class="txt-example">
                             Пример формата файла:<br>
@@ -328,7 +335,7 @@
                 </div>
 
                
-                <div class="result-full">
+                <div class="result-full" id="result-panel" style="display: none;">
                     <div class="card result-card">
                         <div class="result-header-wrapper">
                             <h2>Результаты анализа</h2>
@@ -346,3 +353,4 @@
     </div>
     % include('footer.tpl')
 </section>
+<script src="/static/scripts/euler.js"></script>
