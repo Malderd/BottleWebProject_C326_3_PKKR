@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        <!-- Раскрывающийся блок с теорией, данные подгружаются из JSON -->
+        <!-- Раскрывающийся блок с теорией -->
         <details class="theory-block">
             <summary>Теоретические сведения</summary>
             <div class="theory-content">
