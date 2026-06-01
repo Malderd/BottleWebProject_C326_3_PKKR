@@ -56,10 +56,8 @@ def euler_random_route():
         n = int(data["n"])
         density = int(data["density"]) / 100
 
-        # Инициализируем пустую матрицу NxN
         matrix = [[0] * n for _ in range(n)]
 
-        # Генерируем симметричную матрицу смежности без петель
         for i in range(n):
             for j in range(i + 1, n):
                 if random.random() < density:

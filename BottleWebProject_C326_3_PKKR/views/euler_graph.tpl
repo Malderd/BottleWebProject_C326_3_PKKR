@@ -1,4 +1,5 @@
 % rebase('layout.tpl', title='Поиск Эйлерова маршрута')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <link rel="stylesheet" href="/static/content/euler.css">
 
@@ -337,7 +338,7 @@
                
                 <div class="result-full" id="result-panel" style="display: none;">
                     <div class="card result-card">
-                        <div class="result-header-wrapper">
+                        <div class="result-header-wrapper" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                             <h2>Результаты анализа</h2>
                             <button class="btn secondary" id="btn-save">
                                 Сохранить результаты
@@ -346,7 +347,6 @@
                         <div id="result-output"></div>
                     </div>
                 </div>
-
             </div>
         </div>
 

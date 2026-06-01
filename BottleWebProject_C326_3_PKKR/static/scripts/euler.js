@@ -51,18 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const btnClearMatrix = document.getElementById("btn-clear-matrix");
-    if (btnClearMatrix) {
-        btnClearMatrix.addEventListener("click", () => {
-            const table = document.getElementById("matrix-table-manual");
-            if (table) table.innerHTML = "";
-
-            // Скрываем контейнер таблицы
-            document.getElementById("wrapper-manual").style.display = "none";
-            hideResultPanel();
-        });
-    }
-
     // ==========================================
     // 3. СЛУЧАЙНАЯ ГЕНЕРАЦИЯ
     // ==========================================
@@ -174,7 +162,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const resPanel = document.getElementById("result-panel");
                 if (resPanel) resPanel.style.display = "block";
 
-                switchResultView("summary");
+                // ВЫЗЫВАЕМ НОВЫЙ ЕДИНЫЙ ВЫВОД РЕЗУЛЬТАТОВ
+                renderResults();
             } catch (err) {
                 console.error("Ошибка отправки на сервер:", err);
             }
@@ -182,7 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function getMatrixFromTable() {
-        // Динамически берем таблицу из активного в данный момент таба
         const currentTableId = getActiveTableId();
         const table = document.getElementById(currentTableId);
         const matrix = [];
@@ -227,18 +215,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ==========================================
-    // 6. ТАБЫ РЕЗУЛЬТАТОВ (ИТОГ / МАТРИЦА ДОСТИЖИМОСТИ / СТЕПЕНИ)
-    // ==========================================
-    document.querySelectorAll(".result-tab").forEach(tab => {
-        tab.addEventListener("click", () => {
-            document.querySelectorAll(".result-tab").forEach(t => t.classList.remove("active"));
-            tab.classList.add("active");
-            switchResultView(tab.getAttribute("data-view"));
-        });
-    });
+    const btnClearMatrix = document.getElementById("btn-clear-matrix");
+    if (btnClearMatrix) {
+        btnClearMatrix.addEventListener("click", () => {
+            const table = document.getElementById("matrix-table-manual");
+            if (table) table.innerHTML = "";
 
-    function switchResultView(viewType) {
+            // Скрываем контейнер таблицы
+            document.getElementById("wrapper-manual").style.display = "none";
+            hideResultPanel();
+        });
+    }
+
+    // ==========================================
+    // 6. ОТОБРАЖЕНИЕ РЕЗУЛЬТАТОВ (ОДНА ПАНЕЛЬ, БЕЗ ТАБОВ)
+    // ==========================================
+    function renderResults() {
         const output = document.getElementById("result-output");
         const graphPlaceholder = document.getElementById("graph-placeholder");
         if (!output || !lastData) return;
@@ -247,92 +239,162 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!lastData.exists) {
             graphPlaceholder.innerHTML = `<div style="color:#e74c3c; padding:20px; text-align:center; font-weight:bold;">Граф не удовлетворяет условиям Эйлера</div>`;
             output.innerHTML = `
-            <div class="step-card">
-                <h4 class="theory-step-title" style="color:#e74c3c;">Маршрут невозможен</h4>
-                <div class="info-panel info-warning">
-                    <p><strong>Внимание:</strong> ${lastData.message}</p>
+                <div class="step-card">
+                    <h4 class="theory-step-title" style="color:#e74c3c;">Маршрут невозможен</h4>
+                    <div class="info-panel info-warning">
+                        <p><strong>Внимание:</strong> ${lastData.message}</p>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
             return;
         }
 
-        // 2. Отображение графа
+        // 2. Отображение графа в левой панели
         if (lastData.image) {
             graphPlaceholder.innerHTML = `<img src="data:image/png;base64,${lastData.image}" class="graph-image" style="max-width:100%; height:auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">`;
         }
 
-        // 3. Вкладка "Итог" (summary)
-        if (viewType === "summary") {
-            const isCycle = lastData.type === "Эйлеров цикл";
+        // 3. Сборка единого вывода результатов
+        const isCycle = lastData.type === "Эйлеров цикл";
+        const oddVerticesHtml = lastData.odd_vertices.length
+            ? lastData.odd_vertices.map(v => `<strong>Вершина ${v}</strong>`).join(" ")
+            : "<span>отсутствуют (все вершины чётные)</span>";
 
-            const oddVerticesHtml = lastData.odd_vertices.length
-                ? lastData.odd_vertices.map(v => `<strong>Вершина ${v}</strong>`).join(" ")
-                : "<span>отсутствуют (все вершины чётные)</span>";
+        // Генерируем HTML для степеней вершин
+        let degreesHtml = "";
+        lastData.degrees.forEach((deg, idx) => {
+            const isOdd = deg % 2 !== 0;
+            const statusHtml = isOdd
+                ? `<span style="color:#e74c3c; font-weight:bold;">(нечётная)</span>`
+                : `<span style="color:#27ae60;">(чётная)</span>`;
+            degreesHtml += `<li>Вершина <strong>${idx + 1}</strong>: степень = <strong>${deg}</strong> ${statusHtml}</li>`;
+        });
 
-            output.innerHTML = `
-            <div class="step-card">
+        // Генерируем HTML для матрицы достижимости
+        let matrixHtml = `<table class="matrix-table" style="margin: 15px auto 0 auto; border-collapse: collapse;">`;
+        lastData.closure.forEach(row => {
+            matrixHtml += `<tr>`;
+            row.forEach(cell => {
+                const colorStyle = cell ? 'style="color:#2ecc71; font-weight:bold;"' : 'style="color:#e74c3c;"';
+                matrixHtml += `<td ${colorStyle} style="border:1px solid #ddd; padding:8px; text-align:center; min-width:30px;">${cell}</td>`;
+            });
+            matrixHtml += `</tr>`;
+        });
+        matrixHtml += `</table>`;
+
+        // Выводим все данные одним сплошным свитком
+        output.innerHTML = `
+            <div class="step-card" style="margin-bottom: 20px;">
                 <h4 class="theory-step-title">${lastData.type} найден${isCycle ? '' : 'а'}!</h4>
-                
-                <div class="info-panel info-success">
+                <div class="info-panel info-success" style="margin-bottom: 15px;">
                     <p>Граф связен и удовлетворяет всем условиям существования ${isCycle ? 'эйлерова цикла' : 'эйлеровой цепи'}.</p>
                 </div>
-
-                <p style="margin-top:15px;"><b>Стартовая вершина:</b> <span class="degree-badge">${lastData.start_vertex}</span></p>
+                <p><b>Стартовая вершина:</b> <span class="degree-badge">${lastData.start_vertex}</span></p>
                 <p><b>Нечётные вершины:</b> ${oddVerticesHtml}</p>
                 
-                <div class="theory-step-route main-route" style="margin-top: 20px;">
+                <div class="theory-step-route main-route" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 6px; text-align: center; font-size: 1.2em; font-weight: bold;">
                     ${lastData.path.join(" → ")}
                 </div>
-                
-                <div class="conclusion-panel" style="margin-top: 20px;">
-                    <p><strong>Вывод:</strong> Каждое ребро пройдено ровно один раз — маршрут является корректным.</p>
+            </div>
+
+            <div class="step-card" style="margin-bottom: 20px;">
+                <h4 class="theory-step-title">Степени вершин</h4>
+                <ul style="list-style: none; padding-left: 0; margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+                    ${degreesHtml}
+                </ul>
+            </div>
+
+            <div class="step-card">
+                <h4 class="theory-step-title">Матрица достижимости</h4>
+                <p style="font-size: 0.9em; color: #666;">Показывает связность графа (транзитивное замыкание):</p>
+                <div style="overflow-x: auto;">
+                    ${matrixHtml}
                 </div>
             </div>
         `;
-        }
+    }
 
-        // 4. Вкладка "Матрица достижимости" (closure)
-        else if (viewType === "closure") {
-            let matrixHtml = `
-            <div class="step-card">
-                <h4 class="theory-step-title">Матрица достижимости</h4>
-                <p>Показывает связность графа (транзитивное замыкание):</p>
-                <div style="overflow-x: auto; margin-top: 15px;">
-                    <table class="matrix-table" style="margin: 0 auto; border-collapse: collapse;">
-        `;
-            lastData.closure.forEach(row => {
-                matrixHtml += `<tr>`;
-                row.forEach(cell => {
-                    const colorStyle = cell ? 'style="color:#1e5128; font-weight:bold;"' : 'style="color:#7f1d1d;"';
-                    matrixHtml += `<td ${colorStyle} style="border:1px solid #ddd; padding:8px; text-align:center; min-width:30px;">${cell}</td>`;
+    // ==========================================
+    // 7. СБОРКА И СКАЧИВАНИЕ ZIP-АРХИВА
+    // ==========================================
+    const btnSave = document.getElementById("btn-save");
+    if (btnSave) {
+        btnSave.addEventListener("click", async () => {
+            if (!lastData) {
+                alert("Нет данных для сохранения. Сначала найдите маршрут.");
+                return;
+            }
+
+            if (typeof JSZip === "undefined") {
+                alert("Ошибка: Библиотека JSZip не загружена.");
+                return;
+            }
+
+            const zip = new JSZip();
+            const timestamp = new Date().toISOString().slice(0, 10);
+
+            // --- 1. Формируем текстовый отчет (report.txt) ---
+            let reportText = `=========================================\n`;
+            reportText += `        ОТЧЕТ ОБ АНАЛИЗЕ ГРАФА (${timestamp})  \n`;
+            reportText += `=========================================\n\n`;
+
+            if (!lastData.exists) {
+                reportText += `Статус: Граф не удовлетворяет условиям Эйлера.\n`;
+                reportText += `Причина: ${lastData.message}\n`;
+            } else {
+                reportText += `Тип маршрута: ${lastData.type}\n`;
+                reportText += `Стартовая вершина: ${lastData.start_vertex}\n`;
+
+                const oddCount = lastData.odd_vertices ? lastData.odd_vertices.length : 0;
+                reportText += `Количество нечётных вершин: ${oddCount}\n`;
+                if (oddCount > 0) {
+                    reportText += `Нечётные вершины: ${lastData.odd_vertices.join(", ")}\n`;
+                } else {
+                    reportText += `Нечётные вершины: отсутствуют (все вершины чётные)\n`;
+                }
+
+                reportText += `\nЭйлеров маршрут:\n`;
+                reportText += lastData.path.join(" -> ") + `\n\n`;
+                reportText += `Вывод: Каждое ребро пройдено ровно один раз.\n`;
+            }
+
+            reportText += `\n Степени всех вершин:\n`;
+            if (lastData.degrees) {
+                lastData.degrees.forEach((deg, idx) => {
+                    const status = deg % 2 !== 0 ? "(нечётная)" : "(чётная)";
+                    reportText += `  Вершина ${idx + 1}: степень = ${deg} ${status}\n`;
                 });
-                matrixHtml += `</tr>`;
-            });
-            matrixHtml += `</table></div></div>`;
-            output.innerHTML = matrixHtml;
-        }
+            }
 
-        // 5. Вкладка "Степени вершин" (degrees)
-        else if (viewType === "degrees") {
-            let degsHtml = `
-            <div class="step-card">
-                <h4 class="theory-step-title">Степени вершин</h4>
-                <div class="degrees-badge-container" style="flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin-top: 15px;">
-        `;
-            lastData.degrees.forEach((deg, idx) => {
-                const isOdd = deg % 2 !== 0;
-                const label = isOdd ? `deg(${idx + 1}) = ${deg} ← нечётная` : `deg(${idx + 1}) = ${deg}`;
-                // Добавляем небольшой inline-стиль только для цветовой дифференциации, как в теории
-                const statusHtml = isOdd
-                    ? `<span style="color:#e74c3c; font-weight:bold;">(нечётная)</span>`
-                    : `<span style="color:#27ae60;">(чётная)</span>`;
+            zip.file("report.txt", reportText);
 
-                degsHtml += `<li>Вершина <strong>${idx + 1}</strong>: степень = <strong>${deg}</strong> ${statusHtml}</li>`;
-            });
-            degsHtml += `</div></div>`;
-            output.innerHTML = degsHtml;
-        }
+            // --- 2. Формируем файл исходной матрицы (matrix.txt) ---
+            const currentMatrix = getMatrixFromTable();
+            if (currentMatrix && currentMatrix.length > 0) {
+                const matrixText = currentMatrix.map(row => row.join(" ")).join("\n");
+                zip.file("matrix.txt", matrixText);
+            }
+
+            // --- 3. Добавляем картинку графа (graph.png) ---
+            if (lastData.exists && lastData.image) {
+                zip.file("graph.png", lastData.image, { base64: true });
+            }
+
+            // --- 4. Генерация и скачивание архива ---
+            try {
+                const content = await zip.generateAsync({ type: "blob" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(content);
+                link.download = `euler_graph_results_${timestamp}.zip`;
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                console.error("Ошибка при создании ZIP-архива:", err);
+                alert("Не удалось создать архив результатов.");
+            }
+        });
     }
 
     function hideResultPanel() {
