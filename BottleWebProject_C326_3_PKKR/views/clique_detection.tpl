@@ -435,8 +435,20 @@
 
     if (btnSolve) {
         btnSolve.addEventListener('click', function () {
+
+            var placeholder = document.querySelector('.graph-placeholder');
+
+            if (placeholder) {
+                placeholder.innerHTML = '<p>Идёт генерация графа...</p>';
+            }
+
+            btnSolve.disabled = true;
+
             var form = document.getElementById('matrix-form');
-            if (form) form.submit();
+
+            setTimeout(function () {
+                if (form) form.submit();
+            }, 100);
         });
     }
 
