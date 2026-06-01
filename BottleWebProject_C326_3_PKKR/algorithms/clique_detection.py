@@ -7,7 +7,7 @@ import math
 import random
 
 import matplotlib
-matplotlib.use('Agg')  # без GUI, только в файл/буфер
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import networkx as nx
@@ -35,7 +35,7 @@ def is_clique(subset, matrix):
 def find_all_cliques(matrix, n):
     """
     Перебирает все подмножества вершин через битовые маски.
-    Возвращает список клик размером >= 2 (пары и выше).
+    Возвращает список клик размером >= 3.
     """
     vertices = list(range(1, n + 1))
     total = 1 << n
@@ -71,7 +71,6 @@ def find_maximal_cliques(all_cliques):
 #  Визуализация
 # ───────────────────────────────────────────────
 
-# Цвета для выделения клик (до 8 штук)
 CLIQUE_COLORS = [
     '#e53935', '#fb8c00', '#fdd835', '#43a047',
     '#039be5', '#8e24aa', '#f06292', '#00acc1',
@@ -79,7 +78,6 @@ CLIQUE_COLORS = [
 
 
 def _circle_positions(n):
-    """Расставляет n вершин по кругу, возвращает dict {vertex: (x, y)}."""
     pos = {}
     for i in range(n):
         angle = 2 * math.pi * i / n - math.pi / 2
@@ -88,56 +86,48 @@ def _circle_positions(n):
 
 
 def render_graph(matrix, n, maximal_cliques):
-    """
-    Рисует граф: вершины по кругу, рёбра, клики выделены цветом.
-    Возвращает строку base64-PNG для вставки в <img src="...">.
-    """
-    G = nx.Graph()
-    G.add_nodes_from(range(1, n + 1))
+    try:
+        G = nx.Graph()
+        G.add_nodes_from(range(1, n + 1))
 
-    for i in range(n):
-        for j in range(i + 1, n):
-            if matrix[i][j] == 1:
-                G.add_edge(i + 1, j + 1)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if matrix[i][j] == 1:
+                    G.add_edge(i + 1, j + 1)
 
-    pos = _circle_positions(n)
+        pos = _circle_positions(n)
 
-    # Назначаем каждой вершине цвет первой клики, в которую она входит
-    node_colors = {}
-    for idx, clique in enumerate(maximal_cliques):
-        color = CLIQUE_COLORS[idx % len(CLIQUE_COLORS)]
-        for v in clique:
-            if v not in node_colors:
-                node_colors[v] = color
+        node_colors = {}
+        for idx, clique in enumerate(maximal_cliques):
+            color = CLIQUE_COLORS[idx % len(CLIQUE_COLORS)]
+            for v in clique:
+                if v not in node_colors:
+                    node_colors[v] = color
 
-    colors = [node_colors.get(v, '#b0bec5') for v in G.nodes()]
+        colors = [node_colors.get(v, '#b0bec5') for v in G.nodes()]
 
-    fig, ax = plt.subplots(figsize=(7, 4.5), facecolor='#1e1e1e')
-    ax.set_facecolor('#1e1e1e')
+        fig, ax = plt.subplots(figsize=(7, 4.5), facecolor='#1e1e1e')
+        ax.set_facecolor('#1e1e1e')
 
-    nx.draw_networkx_edges(
-        G, pos, ax=ax,
-        edge_color='#78909c', width=1.8, alpha=0.7
-    )
-    nx.draw_networkx_nodes(
-        G, pos, ax=ax,
-        node_color=colors, node_size=500, linewidths=1.5,
-        edgecolors='white'
-    )
-    nx.draw_networkx_labels(
-        G, pos, ax=ax,
-        font_color='white', font_size=11, font_weight='bold'
-    )
+        if G.number_of_edges() > 0:
+            nx.draw_networkx_edges(G, pos, ax=ax, edge_color='#78909c', width=1.8, alpha=0.7)
+        nx.draw_networkx_nodes(G, pos, ax=ax, node_color=colors, node_size=500,
+                               linewidths=1.5, edgecolors='white')
+        nx.draw_networkx_labels(G, pos, ax=ax, font_color='white',
+                                font_size=11, font_weight='bold')
 
-    ax.axis('off')
-    plt.tight_layout()
+        ax.axis('off')
+        plt.tight_layout()
 
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png', dpi=120,
-                facecolor=fig.get_facecolor(), bbox_inches='tight')
-    plt.close(fig)
-    buf.seek(0)
-    return base64.b64encode(buf.read()).decode('utf-8')
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png', dpi=120,
+                    facecolor=fig.get_facecolor(), bbox_inches='tight')
+        plt.close(fig)
+        buf.seek(0)
+        return base64.b64encode(buf.read()).decode('utf-8')
+    except Exception:
+        plt.close('all')
+        raise
 
 
 # ───────────────────────────────────────────────
@@ -163,15 +153,6 @@ def generate_random_matrix(n, density):
 # ───────────────────────────────────────────────
 
 def solve_cliques(matrix, n):
-    """
-    Принимает матрицу смежности и число вершин.
-    Возвращает словарь:
-      {
-        'all_cliques':      [...],   # все клики >= 2 вершин
-        'maximal_cliques':  [...],   # только максимальные
-        'graph_png':        '...',   # base64 PNG
-      }
-    """
     all_cliques = find_all_cliques(matrix, n)
     maximal = find_maximal_cliques(all_cliques)
     graph_png = render_graph(matrix, n, maximal)

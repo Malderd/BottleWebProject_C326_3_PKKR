@@ -280,35 +280,95 @@
                     <div class="tab-content">
 
                         <p class="tab-hint">
-                            Загрузите TXT-файл с матрицей смежности.
+                            Загрузите TXT-файл с матрицей смежности (до 12×12). В имени файла разрешены только латинские буквы, цифры и специальные символы.
                         </p>
 
-                        <div class="file-zone" id="file-zone">
-                            <b>Перетащите файл сюда</b>
-                            или нажмите для выбора (.txt)
-                        </div>
+                        <form method="POST" action="/clique_detection_file"
+                              enctype="multipart/form-data" id="file-upload-form">
 
-                        <input type="file" id="file-input" accept=".txt" style="display:none">
+                            <div class="file-zone" id="file-zone"
+                                 onclick="document.getElementById('file-input').click()">
+                                % if defined('file_name') and file_name:
+                                <b>{{file_name}}</b>
+                                файл загружен
+                                % else:
+                                <b>Перетащите файл сюда</b>
+                                или нажмите для выбора (.txt)
+                                % end
+                            </div>
 
-                        <div class="buttons">
-                            <button class="btn primary" id="btn-choose-file">
-                                Выбрать файл
-                            </button>
-                            <button class="btn secondary" id="btn-clear-file">
-                                Очистить
-                            </button>
-                        </div>
+                            <input type="file" id="file-input" name="matrix_file"
+                                   accept=".txt" style="display:none"
+                                   onchange="
+                                       var name = this.files[0] ? this.files[0].name : '';
+                                       var zone = document.getElementById('file-zone');
+                                       zone.innerHTML = '<b>' + name + '</b> файл выбран';
+                                       document.getElementById('btn-upload').disabled = false;
+                                   ">
 
+                            % if defined('errors') and errors.get('file'):
+                            <p class="error-msg">{{errors['file']}}</p>
+                            % end
+
+                            <div class="buttons">
+                                <button type="submit" class="btn primary" id="btn-upload"
+                                        {{'disabled' if not (defined('file_name') and file_name) else ''}}>
+                                    Загрузить
+                                </button>
+                                <button type="button" class="btn secondary"
+                                        onclick="location.href='/clique_detection?tab=file'">
+                                    Очистить
+                                </button>
+                            </div>
+
+                        </form>
+
+                        % if defined('matrix') and matrix and tab == 'file':
+                        <form method="POST" action="/clique_detection_file_solve" id="matrix-form">
+                            <input type="hidden" name="tab" value="file">
+                            <input type="hidden" name="n" value="{{n}}">
+                            % for i in range(n):
+                            % for j in range(i + 1, n):
+                            <input type="hidden" name="m_{{i}}_{{j}}" value="{{matrix[i][j]}}">
+                            % end
+                            % end
+
+                            <div class="matrix-wrapper" style="margin-top:18px">
+                                <table class="matrix-table">
+
+                                    <tr>
+                                        <td class="lbl"></td>
+                                        % for j in range(n):
+                                        <td class="lbl">{{j+1}}</td>
+                                        % end
+                                    </tr>
+
+                                    % for i in range(n):
+                                    <tr>
+                                        <td class="lbl">{{i+1}}</td>
+                                        % for j in range(n):
+                                        % if i == j:
+                                        <td class="diag">0</td>
+                                        % else:
+                                        <td class="mirror-cell">{{matrix[i][j]}}</td>
+                                        % end
+                                        % end
+                                    </tr>
+                                    % end
+
+                                </table>
+                            </div>
+
+                        </form>
+                        % else:
                         <div class="txt-example" id="txt-example">
                             Пример формата файла:<br>
-                            <code>0 1 0 1 1 1 1</code><br>
-                            <code>1 0 1 1 0 0 1</code>
+                            <code>0 1 0 1</code><br>
+                            <code>1 0 1 1</code><br>
+                            <code>0 1 0 1</code><br>
+                            <code>1 1 1 0</code>
                         </div>
-
-                        <div class="matrix-wrapper" id="file-matrix-wrapper"
-                             style="display:none; margin-top:18px">
-                            <table class="matrix-table" id="file-matrix-table"></table>
-                        </div>
+                        % end
 
                     </div>
                     % end
@@ -351,6 +411,9 @@
 
                         <div class="result-list" id="result-list">
                             % if defined('result') and result and result.get('maximal_cliques') is not None:
+                                % if result.get('truncated'):
+                                <p class="error-msg">⚠ Граф слишком плотный — показаны первые 300 клик.</p>
+                                % end
                                 % if result['maximal_cliques']:
                                 <p><b>Максимальных клик найдено: {{len(result['maximal_cliques'])}}</b></p>
                                 % for idx, clique in enumerate(result['maximal_cliques']):
@@ -395,42 +458,36 @@
         sessionStorage.setItem('clique_scroll', hero.scrollTop);
     });
 
-    var btnCreate  = document.getElementById('btn-create-matrix');
-    var btnClear   = document.getElementById('btn-clear-matrix');
-    var btnSolve   = document.getElementById('btn-solve');
-    var btnSave    = document.getElementById('btn-save');
-
+    var btnCreate    = document.getElementById('btn-create-matrix');
+    var btnClear     = document.getElementById('btn-clear-matrix');
+    var btnSolve     = document.getElementById('btn-solve');
+    var btnSave      = document.getElementById('btn-save');
     var nInput       = document.querySelector('input[name="n_size"]');
     var densityInput = document.querySelector('input[name="density"]');
-
-    var hasMatrix  = !!document.getElementById('matrix-form');
-    var hasGraph   = !!document.querySelector('.graph-placeholder img');
+    var hasMatrix    = !!document.getElementById('matrix-form');
+    var hasGraph     = !!document.querySelector('.graph-placeholder img');
 
     function updateButtons() {
-
         var nFilled = nInput && nInput.value.trim() !== '';
-
         if (densityInput) {
             var densityFilled = densityInput.value.trim() !== '';
-
-            if (btnCreate) {
-                btnCreate.disabled = !(nFilled && densityFilled);
-            }
+            if (btnCreate) btnCreate.disabled = !(nFilled && densityFilled);
+        } else {
+            if (btnCreate) btnCreate.disabled = !nFilled;
         }
-        else {
-            if (btnCreate) {
-                btnCreate.disabled = !nFilled;
-            }
-        }
-
         if (btnClear) btnClear.disabled = !nFilled;
+        // Если нет nInput (вкладка file) — кнопка активна если есть matrix-form
         if (btnSolve) btnSolve.disabled = !hasMatrix;
-        if (btnSave) btnSave.disabled = !hasGraph;
+        if (btnSave)  btnSave.disabled  = !hasGraph;
     }
 
-    if (nInput) nInput.addEventListener('input', updateButtons);
-    if (densityInput) densityInput.addEventListener('input', updateButtons);
+    // Для вкладки file: если matrix-form уже есть на странице — сразу активируем btnSolve
+    if (!nInput && hasMatrix && btnSolve) {
+        btnSolve.disabled = false;
+    }
 
+    if (nInput)       nInput.addEventListener('input', updateButtons);
+    if (densityInput) densityInput.addEventListener('input', updateButtons);
     updateButtons();
 
     if (btnSolve) {
@@ -457,18 +514,36 @@
             var matrixForm = document.getElementById('matrix-form');
             var saveForm   = document.getElementById('save-form');
             if (!matrixForm || !saveForm) return;
-
             saveForm.innerHTML = '';
-            var inputs = matrixForm.querySelectorAll('input');
-            inputs.forEach(function (inp) {
+            matrixForm.querySelectorAll('input').forEach(function (inp) {
                 var copy = document.createElement('input');
-                copy.type  = 'hidden';
-                copy.name  = inp.name;
-                copy.value = inp.value;
+                copy.type = 'hidden'; copy.name = inp.name; copy.value = inp.value;
                 saveForm.appendChild(copy);
             });
-
             saveForm.submit();
+        });
+    }
+
+    // Drag-and-drop для зоны файла
+    var fileZone  = document.getElementById('file-zone');
+    var fileInput = document.getElementById('file-input');
+    if (fileZone && fileInput) {
+        fileZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            fileZone.style.borderColor = 'rgba(255,255,255,0.8)';
+        });
+        fileZone.addEventListener('dragleave', function () {
+            fileZone.style.borderColor = '';
+        });
+        fileZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            fileZone.style.borderColor = '';
+            var file = e.dataTransfer.files[0];
+            if (!file) return;
+            fileInput.files = e.dataTransfer.files;
+            fileZone.innerHTML = '<b>' + file.name + '</b> файл выбран';
+            var btnUpload = document.getElementById('btn-upload');
+            if (btnUpload) btnUpload.disabled = false;
         });
     }
 </script>

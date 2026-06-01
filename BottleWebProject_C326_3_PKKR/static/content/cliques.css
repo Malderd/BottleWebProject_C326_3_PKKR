@@ -514,7 +514,7 @@ input[type=number] {
 /* Сообщение об ошибке валидации */
 .error-msg {
     color: #ef9a9a;
-    font-size: 1.35rem;
+    font-size: 1.55rem;
     margin-bottom: 10px;
 }
 
