@@ -363,9 +363,11 @@ def clique_save():
 @route('/kosarayu_algorithm')
 @view('kosarayu_algorithm')
 def kosarayu_algorithm():
+    with open('./static/data/kosarayu_theory.json', encoding='utf-8') as f:
+        theory = json.load(f)
     return dict(
         title='Kosarayu_algorithm',
-        request=request
+        request=request,
+        theory=theory
     )
-
 
