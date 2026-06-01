@@ -204,8 +204,11 @@ def clique_save():
 
     result = solve_cliques(matrix, n)
 
+    current_time = datetime.now().strftime('%d.%m.%Y %H:%M:%S')
+
     lines = [f'Количество вершин: {n}', '']
-    lines.append('Матрица смежности:')
+    lines.append(f'Дата и время сохранения: {current_time}')
+    lines.append('\nМатрица смежности:')
     lines.append('   ' + '  '.join(str(j + 1).rjust(2) for j in range(n)))
     for i in range(n):
         lines.append(str(i + 1).rjust(2) + ' ' + '  '.join(str(matrix[i][j]).rjust(2) for j in range(n)))

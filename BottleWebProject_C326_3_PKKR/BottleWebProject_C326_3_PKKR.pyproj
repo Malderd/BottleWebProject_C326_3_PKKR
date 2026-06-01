@@ -32,9 +32,6 @@
     <Compile Include="algorithms\clique_detection.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="algorithms\clique_save.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="app.py" />
     <Compile Include="hamillton_graph\hamillton_graph.py">
       <SubType>Code</SubType>
