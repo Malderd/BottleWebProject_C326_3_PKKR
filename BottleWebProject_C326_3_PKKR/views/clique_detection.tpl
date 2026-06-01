@@ -333,7 +333,7 @@
                             % end
                             % end
 
-                            <div class="matrix-wrapper" style="margin-top:18px">
+                            <div class="matrix-wrapper matrix-wrapper-file">
                                 <table class="matrix-table">
 
                                     <tr>
@@ -383,10 +383,10 @@
                     <h2>Визуализация и результаты</h2>
 
                     % if defined('result') and result and result.get('graph_png'):
-                    <div class="graph-placeholder" style="padding:0; border:none; background:none;">
+                    <div class="graph-placeholder graph-placeholder-image">
                         <img src="data:image/png;base64,{{result['graph_png']}}"
                              alt="Граф"
-                             style="width:100%; height:100%; object-fit:fill; border-radius:14px; display:block;">
+                              class="graph-image">
                     </div>
                     % else:
                     <div class="graph-placeholder">
@@ -403,7 +403,7 @@
                         </button>
                     </div>
 
-                    <form method="POST" action="/clique_save" id="save-form" style="display:none"></form>
+                    <form method="POST" action="/clique_save" id="save-form" class="hidden-form"></form>
 
                     <div class="result-block">
 
