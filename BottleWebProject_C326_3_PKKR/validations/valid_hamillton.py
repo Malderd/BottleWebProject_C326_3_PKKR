@@ -19,7 +19,7 @@ def valid_hamillton(matrix):
             value = matrix[i][j]
 
             if value == '':
-                errors[f'cell_{i}_{j}'] = 'Заполните ячейку.'
+                errors[f'cell_{i}_{j}'] = 'Заполните ячейки.'
                 return errors
 
             if value not in ('0', '1'):

@@ -7,7 +7,8 @@ from datetime import datetime
 import json
 
 from algorithms.hamillton_graph import find_hamillton_graph
-from algorithms.valid_hamillton import valid_hamillton
+from validations.valid_hamillton import valid_hamillton
+from algorithms.draw_graph import draw_graph
 
 @route('/')
 @route('/home')
@@ -43,6 +44,7 @@ def hamillton_graph():
         'hamillton_graph.tpl',
         title='Hamilltom graph',
         result=None,
+        graph_image=None,
         success=False,
         errors={},
         form_data={},
@@ -79,6 +81,7 @@ def decide_hamillton_graph():
             'hamillton_graph.tpl',
             title='Hamilltom graph',
             result=None,
+            graph_image=None,
             success=False,
             errors=errors,
             form_data=request.forms,
@@ -92,10 +95,13 @@ def decide_hamillton_graph():
 
     result = find_hamillton_graph(matrix)
 
+    graph_image = draw_graph(matrix)
+
     return template(
         'hamillton_graph.tpl',
         title='Hamilltom graph',
         result=result,
+        graph_image=graph_image,
         success=True,
         errors={},
         form_data=request.forms,

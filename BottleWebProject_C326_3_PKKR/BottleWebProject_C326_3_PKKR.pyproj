@@ -32,11 +32,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="algorithms\draw_graph.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app.py" />
     <Compile Include="algorithms\hamillton_graph.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="algorithms\valid_hamillton.py">
+    <Compile Include="validations\valid_hamillton.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes.py" />
@@ -83,6 +86,7 @@
     <Content Include="static\images\cliques.png" />
     <Content Include="static\images\danya.png" />
     <Content Include="static\images\example.png" />
+    <Content Include="static\images\graphs - Copy.png" />
     <Content Include="static\images\graphs.png" />
     <Content Include="static\images\kostya.png" />
     <Content Include="static\images\logo.png" />
@@ -91,6 +95,9 @@
     <Content Include="static\images\friend_graph.png" />
     <Content Include="static\scripts\bootstrap.js" />
     <Content Include="static\scripts\bootstrap.min.js" />
+    <Content Include="static\scripts\hamillton_graph.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="static\scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="static\scripts\jquery-1.10.2.js" />
     <Content Include="static\scripts\jquery-1.10.2.min.js" />
