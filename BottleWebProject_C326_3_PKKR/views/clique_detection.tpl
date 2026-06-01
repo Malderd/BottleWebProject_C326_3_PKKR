@@ -1,4 +1,4 @@
-% rebase('layout.tpl', title='Поиск максимальных клик')
+% rebase('layout.tpl', title='Поиск клик')
 
 <link rel="stylesheet" href="/static/content/cliques.css">
 <link rel="stylesheet" href="/static/content/fonts.css">
@@ -7,7 +7,7 @@
     <div class="overlay"></div>
     <div class="content">
         <div class="page-header">
-            <h1>Поиск максимальных клик графа</h1>
+            <h1>Поиск клик графа</h1>
             <a href="#main-layout" class="scroll-link">
                 Перейти к вводу данных ↓
             </a>
@@ -385,17 +385,17 @@
                         <h2>Найденные клики</h2>
 
                         <div class="result-list" id="result-list">
-                            % if defined('result') and result and result.get('maximal_cliques') is not None:
+                            % if defined('result') and result and result.get('all_cliques') is not None:
                                 % if result.get('truncated'):
-                                <p class="error-msg">⚠ Граф слишком плотный — показаны первые 300 клик.</p>
+                                <p class="error-msg">Граф слишком плотный — показаны первые 100 клик.</p>
                                 % end
-                                % if result['maximal_cliques']:
-                                <p><b>Максимальных клик найдено: {{len(result['maximal_cliques'])}}</b></p>
-                                % for idx, clique in enumerate(result['maximal_cliques']):
+                                % if result['all_cliques']:
+                                <p><b>Найдено клик: {{len(result['all_cliques'])}}</b></p>
+                                % for idx, clique in enumerate(result['all_cliques'][:100]):
                                 <p>{{idx + 1}}) { {{', '.join(map(str, clique))}} }</p>
                                 % end
                                 % else:
-                                <p>В данном графе максимальных клик не найдено.</p>
+                                <p>В данном графе клик не найдено.</p>
                                 % end
                             % elif defined('errors') and errors:
                                 % for key, msg in errors.items():
