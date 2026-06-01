@@ -2,6 +2,7 @@
     position: fixed;
     inset: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     background: linear-gradient(135deg, #1f2a10 0%, #111 100%);
     font-family: 'Arial', sans-serif;
     padding: 160px 60px 80px;

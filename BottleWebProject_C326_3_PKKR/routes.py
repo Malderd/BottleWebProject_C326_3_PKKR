@@ -54,8 +54,7 @@ def kosarayu_algorithm():
     return dict(title='Kosarayu_algorithm', request=request)
 
 
-# ─── Клики: GET ──────────────────────────────────────────────────────────────
-
+# ─── Клики: GET
 @route('/clique_detection')
 def clique_detection():
     tab = request.query.get('tab', 'manual')
@@ -83,8 +82,7 @@ def clique_detection():
                     file_name=None)
 
 
-# ─── Клики: POST (построить граф — ручной и случайный) ───────────────────────
-
+# Клики: POST (построить граф — ручной и случайный)
 @route('/clique_detection', method='POST')
 def clique_detection_post():
     tab = request.forms.get('tab', 'manual')
@@ -118,8 +116,7 @@ def clique_detection_post():
                     file_name=None)
 
 
-# ─── Клики: POST (загрузка TXT-файла) ────────────────────────────────────────
-
+# ─── Клики: POST (загрузка TXT-файла)
 @route('/clique_detection_file', method='POST')
 def clique_detection_file():
     theory = _load_theory()
@@ -156,10 +153,10 @@ def clique_detection_file():
                     file_name=upload.filename)
 
 
-# ─── Клики: POST (построить граф из файла) ───────────────────────────────────
-
+# ─── Клики: POST (построить граф из файла)
 @route('/clique_detection_file_solve', method='POST')
 def clique_detection_file_solve():
+    saved_file_name = request.forms.get('file_name', None) or None
     theory = _load_theory()
 
     n, n_err = validate_n(request.forms.get('n'))
@@ -167,14 +164,14 @@ def clique_detection_file_solve():
         return template('clique_detection.tpl', title='Clique detection',
                         request=request, theory=theory, tab='file',
                         n=None, matrix=None, result=None, errors={'n': n_err},
-                        file_name=None)
+                       file_name=saved_file_name)
 
     matrix, matrix_errors = validate_matrix(request.forms, n)
     if matrix_errors:
         return template('clique_detection.tpl', title='Clique detection',
                         request=request, theory=theory, tab='file',
                         n=n, matrix=None, result=None, errors=matrix_errors,
-                        file_name=None)
+                        file_name=saved_file_name)
 
     try:
         result = solve_cliques(matrix, n)
@@ -183,15 +180,14 @@ def clique_detection_file_solve():
                         request=request, theory=theory, tab='file',
                         n=n, matrix=matrix, result=None,
                         errors={'file': f'Ошибка при построении графа: {e}'},
-                        file_name=None)
+                        file_name=saved_file_name)
     return template('clique_detection.tpl', title='Clique detection',
                     request=request, theory=theory, tab='file',
                     n=n, matrix=matrix, result=result, errors={},
-                    file_name=None)
+                    file_name=saved_file_name)
 
 
-# ─── Клики: POST (сохранить ZIP) ─────────────────────────────────────────────
-
+# ─── Клики: POST (сохранить ZIP)
 @route('/clique_save', method='POST')
 def clique_save():
     n, n_err = validate_n(request.forms.get('n'))
