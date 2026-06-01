@@ -6,8 +6,8 @@ from bottle import route, view, request, template
 from datetime import datetime
 import json
 
-from hamillton_graph import hamillton_graph, valid_hamillton
-
+from algorithms.hamillton_graph import find_hamillton_graph
+from algorithms.valid_hamillton import valid_hamillton
 
 @route('/')
 @route('/home')
@@ -52,11 +52,50 @@ def hamillton_graph():
 @route('/decide_hamillton_graph', method='POST')
 @view('hamillton_graph')
 def decide_hamillton_graph():
-  
+    n = int(request.forms.get('n'))
+
+    matrix = []
+
+    for i in range(n):
+
+        row = []
+
+        for j in range(n):
+
+            row.append(
+                request.forms.get(
+                    f'cell_{i}_{j}',
+                    ''
+                )
+            )
+
+        matrix.append(row)
+
+    errors = valid_hamillton(matrix)
+
+    if errors:
+
+        return template(
+            'hamillton_graph.tpl',
+            title='Hamilltom graph',
+            result=None,
+            success=False,
+            errors=errors,
+            form_data=request.forms,
+            request=request
+        )
+
+    matrix = [
+        [int(cell) for cell in row]
+        for row in matrix
+    ]
+
+    result = find_hamillton_graph(matrix)
+
     return template(
         'hamillton_graph.tpl',
         title='Hamilltom graph',
-        result=None,
+        result=result,
         success=True,
         errors={},
         form_data=request.forms,

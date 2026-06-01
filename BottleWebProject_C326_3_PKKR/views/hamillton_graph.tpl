@@ -291,7 +291,7 @@
                     Количество вершин:
                 </label>
 
-                <input type="number" id="size" min="1" max="15" value="5">
+                <input type="number" id="size" min="3" max="15" value="{{ form_data.get('n', 5) }}">
 
             </div>
 
@@ -315,7 +315,7 @@
 
                 </button>
 
-                <button type="button" onclick="createMatrix()">
+                <button type="button" onclick="clearMatrix()">
 
                     Очистить
 
@@ -324,6 +324,16 @@
             </div>
 
         </div>
+
+        % if errors: 
+            <div class="error"> 
+                % for key, value in errors.items(): 
+                    <p>{{ value }}</p> 
+                % end 
+            </div> 
+        % end 
+        
+        <div id="matrixError" class="error"></div>
 
         <form action="/decide_hamillton_graph" method="post">
 
@@ -367,12 +377,43 @@
 
 <script>
 
+const formData = {
+
+% for key, value in form_data.items():
+
+    "{{key}}": "{{value}}",
+
+% end
+
+};
+
 function createMatrix() {
 
     const n =
         Number(
             document.getElementById('size').value
         );
+
+    const errorBox =
+        document.getElementById('matrixError');
+
+    errorBox.innerHTML = '';
+
+    if (n < 3) {
+
+        errorBox.innerHTML =
+            'Количество вершин не должно быть меньше 3.';
+
+        return;
+    }
+
+    if (n > 15) {
+
+        errorBox.innerHTML =
+            'Количество вершин не должно превышать 15.';
+
+        return;
+    }
 
     document.getElementById(
         'hiddenN'
@@ -386,6 +427,20 @@ function createMatrix() {
 
         for (let j = 0; j < n; j++) {
 
+            const key =
+                `cell_${i}_${j}`;
+
+            let value = '';
+
+            if (formData[key] !== undefined) {
+
+                value = formData[key];
+
+            } else if (i === j) {
+
+                value = '0';
+            }
+
             html += `
                 <td>
                     <input
@@ -393,7 +448,73 @@ function createMatrix() {
                         type="number"
                         min="0"
                         max="1"
-                        value="${i === j ? 0 : ''}"
+                        value="${value}"
+                        name="${key}">
+                </td>
+            `;
+        }
+
+        html += '</tr>';
+    }
+
+    html += '</table>';
+
+    document.getElementById(
+        'matrixContainer'
+    ).innerHTML = html;
+}
+
+
+function clearMatrix() {
+    const n =
+        Number(
+            document.getElementById('size').value
+        );
+
+    const errorBox =
+        document.getElementById('matrixError');
+
+    errorBox.innerHTML = '';
+
+    if (n < 3) {
+
+        errorBox.innerHTML =
+            'Количество вершин не должно быть меньше 3.';
+
+        return;
+    }
+
+    if (n > 15) {
+
+        errorBox.innerHTML =
+            'Количество вершин не должно превышать 15.';
+
+        return;
+    }
+
+    document.getElementById(
+        'hiddenN'
+    ).value = n;
+
+    let html = '<table class="matrix">';
+
+    for (let i = 0; i < n; i++) {
+
+        html += '<tr>';
+
+        for (let j = 0; j < n; j++) {
+
+            const value =
+                i === j ? '0' : '';
+
+            html += `
+                <td>
+                    <input
+                        class="cell"
+                        type="number"
+                        min="0"
+                        max="1"
+                        value="${value}"
                         name="cell_${i}_${j}">
                 </td>
             `;
@@ -411,12 +532,33 @@ function createMatrix() {
 
 function generateMatrix() {
 
-    createMatrix();
-
-    const n =
+     const n =
         Number(
             document.getElementById('size').value
         );
+
+     const errorBox =
+        document.getElementById('matrixError');
+
+    errorBox.innerHTML = '';
+
+    if (n < 3) {
+
+        errorBox.innerHTML =
+            'Количество вершин не должно быть меньше 3.';
+
+        return;
+    }
+
+    if (n > 15) {
+
+        errorBox.innerHTML =
+            'Количество вершин не должно превышать 15.';
+
+        return;
+    }
+
+    createMatrix();
 
     for (let i = 0; i < n; i++) {
 

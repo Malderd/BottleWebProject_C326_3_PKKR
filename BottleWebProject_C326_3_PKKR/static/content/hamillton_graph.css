@@ -205,10 +205,12 @@ button {
 
 /* Сообщение об ошибке */
 .error {
+    text-align: center;
     color: #ff7b7b;
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: 700;
     margin-top: 5px;
-    margin-bottom: 1px;
+    margin-bottom: 15px;
 }
 
 /* Карточка примера работы алгоритма */

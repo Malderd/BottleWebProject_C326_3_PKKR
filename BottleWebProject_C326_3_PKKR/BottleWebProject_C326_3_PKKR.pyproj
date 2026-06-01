@@ -21,7 +21,7 @@
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,16 +33,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.py" />
-    <Compile Include="hamillton_graph\hamillton_graph.py">
+    <Compile Include="algorithms\hamillton_graph.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hamillton_graph\valid_hamillton.py">
+    <Compile Include="algorithms\valid_hamillton.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="hamillton_graph\" />
     <Folder Include="algorithms\" />
     <Folder Include="static\data\" />
     <Folder Include="validations\" />
