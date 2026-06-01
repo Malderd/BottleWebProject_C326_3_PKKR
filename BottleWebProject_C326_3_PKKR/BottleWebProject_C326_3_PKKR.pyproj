@@ -136,7 +136,10 @@
     <Content Include="static\scripts\jquery.validate.min.js" />
     <Content Include="static\scripts\jquery.validate.unobtrusive.js" />
     <Content Include="static\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="static\scripts\matrix_clear.js" />
+    <Content Include="static\scripts\matrix_generator.js" />
     <Content Include="static\scripts\modernizr-2.6.2.js" />
+    <Content Include="static\scripts\random-graph_generator.js" />
     <Content Include="static\scripts\respond.js" />
     <Content Include="static\scripts\respond.min.js" />
     <Content Include="static\scripts\_references.js" />

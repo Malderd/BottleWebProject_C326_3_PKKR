@@ -1,6 +1,9 @@
 % rebase('layout.tpl', title='Поиск компонент сильной связности')
 
 <link rel="stylesheet" href="/static/content/kosarayu_algorithm.css">
+<script src="/static/scripts/matrix_generator.js"></script>
+<script src="/static/scripts/random-graph_generator.js"></script>
+<script src="/static/scripts/matrix_clear.js"></script>
 
 <section class="components_of_strong_connectivity">
 
@@ -65,10 +68,10 @@
                             type="number"
                             min="3"
                             max="16"
-                            placeholder="Количество вершин"
+                            placeholder="Количество вершин" id="sizeInput"
                         >
                          <div class="other-buttons">
-                        <button class="btn other">
+                        <button class="btn other" onclick="generateMatrix()">
                             Создать матрицу
                         </button>
                         <button class="btn primary">
@@ -77,57 +80,27 @@
                         </div>
                     </div>
 
+                    <div class="table_and_buttons" id="table_and_buttons">
                     <div class="buttons">
 
-                        <button class="btn primary">
+                        <button class="btn primary" onclick="generateRandomGraph()">
                             Сгенерировать
                         </button>
 
                         <button class="btn other">
                             Найти компоненты
                         </button>
-                        <button class="btn primary">
+                        <button class="btn primary" onclick="clearMatrix()">
                             Очистить
                         </button>
                     </div>
 
                     <div class="matrix-wrapper">
 
-                    <table class="matrix-table">
-
-                        <tr>
-                            <th></th>
-                            % for j in range(16):
-                                <th>{{j}}</th>
-                            % end
-                        </tr>
-
-                        % for i in range(16):
-                            <tr>
-
-                                <th>{{i}}</th>
-
-                                % for j in range(16):
-
-                                    % if i == j:
-                                        <td class="diagonal-cell">0</td>
-                                    % else:
-                                        <td>
-                                            <input
-                                                type="checkbox"
-                                                name="cell_{{i}}_{{j}}">
-                                        </td>
-                                    % end
-
-                                % end
-
-                            </tr>
-                        % end
-
-                    </table>
+                    <table class="matrix-table" id="matrixTable"></table>
 
                     </div>
-
+                    </div>
                 </div>
 
             </div>
