@@ -297,13 +297,13 @@
 
             <div class="panel-buttons">
 
-                <button type="button" onclick="createMatrix()" style="background: linear-gradient(135deg, #4CAF50, #2E7D32);">
+                <button class="button_main" onclick="createMatrix()">
 
                     Создать
 
                 </button>
 
-                <button type="button">
+                <button type="button" onclick="generateMatrix()">
 
                     Сгенерировать
 
@@ -333,7 +333,7 @@
 
             <div class="action-buttons">
 
-                <button type="submit" class="submit-btn"  style="background: linear-gradient(135deg, #4CAF50, #2E7D32);">
+                <button type="submit" class="button_main">
 
                     Найти решение
 
@@ -364,6 +364,7 @@
 
 </div>
 % include('footer.tpl')
+
 <script>
 
 function createMatrix() {
@@ -407,6 +408,40 @@ function createMatrix() {
         'matrixContainer'
     ).innerHTML = html;
 }
+
+function generateMatrix() {
+
+    createMatrix();
+
+    const n =
+        Number(
+            document.getElementById('size').value
+        );
+
+    for (let i = 0; i < n; i++) {
+
+        for (let j = i; j < n; j++) {
+
+            const value =
+                i === j ? 0 : Math.random() < 0.5 ? 0 : 1;
+
+            const first =
+                document.getElementsByName(
+                    `cell_${i}_${j}`
+                )[0];
+
+            const second =
+                document.getElementsByName(
+                    `cell_${j}_${i}`
+                )[0];
+
+            first.value = value;
+            second.value = value;
+        }
+    }
+}
+
+window.onload = createMatrix;
 
 </script>
 
