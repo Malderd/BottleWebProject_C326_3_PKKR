@@ -9,6 +9,7 @@
 .hero-euler {
     position: fixed;
     inset: 0;
+    overflow-x: hidden;
     overflow-y: auto;
     background: linear-gradient(135deg, #2d3e1a 0%, #1a1a1a 100%);
     padding: 93px 45px 60px;
