@@ -98,6 +98,7 @@
     <Content Include="static\images\friend_graph.png" />
     <Content Include="static\scripts\bootstrap.js" />
     <Content Include="static\scripts\bootstrap.min.js" />
+    <Content Include="static\scripts\cliques.js" />
     <Content Include="static\scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="static\scripts\jquery-1.10.2.js" />
     <Content Include="static\scripts\jquery-1.10.2.min.js" />
