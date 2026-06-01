@@ -1,6 +1,9 @@
 import io
-import uuid
+import os
+import zipfile
+import tempfile
 import matplotlib
+import base64
 from datetime import datetime
 
 matplotlib.use('Agg')
@@ -35,26 +38,39 @@ def build_graph(matrix):
     return graph1
 
 
-def draw_graph(matrix, save=False):
+def draw_graph(matrix):
     graph = build_graph(matrix)
 
-    if not save:
-        import io
-        import base64
+    buf = io.BytesIO()
+    graph.savefig(buf, format='png', bbox_inches='tight')
+    plt.close(graph)
+    buf.seek(0)
+    img_base64 = base64.b64encode(buf.read()).decode('utf-8')
 
-        buf = io.BytesIO()
-        graph.savefig(buf, format='png', bbox_inches='tight')
-        plt.close(graph)
+    return f"data:image/png;base64,{img_base64}"
 
-        buf.seek(0)
-        img_base64 = base64.b64encode(buf.read()).decode('utf-8')
 
-        return f"data:image/png;base64,{img_base64}"
+def save_graph_archive(matrix):
+    temp_dir = tempfile.mkdtemp()
 
-    filename = datetime.now().strftime('graph_%Y%m%d_%H%M%S.png')
-    filepath = f"static/images/{filename}"
+    png_path = os.path.join(temp_dir,'graph.png')
+    txt_path = os.path.join(temp_dir,'matrix.txt')
+    zip_name = datetime.now().strftime('graph_%Y%m%d_%H%M%S.zip')
+    zip_path = os.path.join(temp_dir,zip_name)
+    graph = build_graph(matrix)
 
-    graph.savefig(filepath, bbox_inches='tight')
+    graph.savefig(png_path,bbox_inches='tight')
+
     plt.close(graph)
 
-    return f"/static/images/{filename}"
+    with open(txt_path, 'w',
+             encoding='utf-8') as f:
+
+        for row in matrix:
+            f.write(' '.join(map(str, row)) + '\n')
+
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as archive:
+        archive.write(png_path, arcname='graph.png')
+        archive.write(txt_path, arcname='matrix.txt')
+
+    return zip_name, temp_dir

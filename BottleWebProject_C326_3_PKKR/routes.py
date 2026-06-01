@@ -2,13 +2,13 @@
 Routes and views for the bottle application.
 """
 
-from bottle import route, view, request, template
+from bottle import route, view, request, template, static_file
 from datetime import datetime
 import json
 
 from algorithms.hamillton_graph import find_hamillton_graph
 from validations.valid_hamillton import valid_hamillton
-from algorithms.draw_graph import draw_graph
+from algorithms.draw_graph import draw_graph, save_graph_archive
 
 @route('/')
 @route('/home')
@@ -99,10 +99,19 @@ def decide_hamillton_graph():
 
     if action == "solve":
         result = find_hamillton_graph(matrix)
-        graph_image = draw_graph(matrix, save=False)
+        graph_image = draw_graph(matrix)
 
     elif action == "save":
-        graph_image = draw_graph(matrix, save=True)
+
+        zip_name, temp_dir = save_graph_archive(
+            matrix
+        )
+
+        return static_file(
+            zip_name,
+            root=temp_dir,
+            download=zip_name
+        )
 
     return template(
         'hamillton_graph.tpl',
