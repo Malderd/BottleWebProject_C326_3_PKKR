@@ -16,7 +16,7 @@
     padding-bottom: 0
 }
 
-/* Полупрозрачный слой поверх картинки */
+/* Полупрозрачный слой */
 .overlay {
     position: absolute;
     inset: 0;

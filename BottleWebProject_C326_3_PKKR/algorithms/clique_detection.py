@@ -33,43 +33,21 @@ def is_clique(subset, matrix):
                 return False
     return True
 
+# Нахождение сообществ
 def find_all_cliques(matrix, n):
-    """
-    Перебирает все подмножества вершин через битовые маски.
-    Возвращает список клик размером >= 3.
-    """
-    vertices = list(range(1, n + 1))  # Вершины 1..n
-    total = 1 << n  # Всего подмножеств: 2^n
+    vertices = list(range(1, n + 1))
+    total = 1 << n # количество подмножеств 2^n
+
     cliques = []
 
-    # Перебираем все возможные маски от 1 до 2^n
     for mask in range(1, total):
-        # Собираем вершины, у которых бит в маске = 1
         subset = [vertices[j] for j in range(n) if mask & (1 << j)]
-        # Фильтруем: размер >= 3 и проверка на клику
+
         if len(subset) >= 3 and is_clique(subset, matrix):
             cliques.append(subset)
 
-    return cliques
-
-def find_maximal_cliques(all_cliques):
-    """
-    Из всех клик оставляет только максимальные —
-    те, которые не являются подмножеством другой клики.
-    """
-    maximal = []
-    for clique in all_cliques:
-        clique_set = set(clique)
-        dominated = False
-        # Проверяем, не содержится ли текущая клика в другой
-        for other in all_cliques:
-            if set(other) != clique_set and clique_set.issubset(set(other)):
-                dominated = True
-                break
-        # Если не содержится ни в одной — добавляем в результат
-        if not dominated:
-            maximal.append(clique)
-    return maximal
+    truncated = len(cliques) > 100
+    return cliques, truncated
 
 #  Визуализация
 
@@ -173,19 +151,12 @@ def generate_random_matrix(n, density):
 
 #  Точка входа для routes.py
 def solve_cliques(matrix, n):
-    """
-    Главная функция: ищет клики, рисует граф, возвращает результат для шаблона.
-    """
-    # Шаг 1: находим все клики размера >= 3
-    all_cliques = find_all_cliques(matrix, n)
-    # Шаг 2: оставляем только максимальные
-    maximal = find_maximal_cliques(all_cliques)
-    # Шаг 3: визуализируем граф с раскрашенными кликами
-    graph_png = render_graph(matrix, n, maximal)
+    all_cliques, truncated = find_all_cliques(matrix, n)
 
-    # Возвращаем словарь для передачи в Jinja2-шаблон
+    graph_png = render_graph(matrix, n, all_cliques)
+
     return {
         'all_cliques': all_cliques,
-        'maximal_cliques': maximal,
+        'truncated': truncated,
         'graph_png': graph_png,
     }

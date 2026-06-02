@@ -339,13 +339,14 @@ def clique_save():
     for i in range(n):
         lines.append(str(i + 1).rjust(2) + ' ' + '  '.join(str(matrix[i][j]).rjust(2) for j in range(n)))
     lines.append('')
-    cliques = result['maximal_cliques']
+    cliques = result['all_cliques']
+
     if cliques:
-        lines.append(f'Максимальных клик найдено: {len(cliques)}')
+        lines.append(f'Найдено клик: {len(cliques)}')
         for idx, clique in enumerate(cliques):
             lines.append(f'{idx + 1}) {{{", ".join(map(str, clique))}}}')
     else:
-        lines.append('Максимальных клик не найдено.')
+        lines.append('Клик не найдено.')
 
     txt_bytes = '\n'.join(lines).encode('utf-8')
     png_bytes = base64.b64decode(result['graph_png'])
