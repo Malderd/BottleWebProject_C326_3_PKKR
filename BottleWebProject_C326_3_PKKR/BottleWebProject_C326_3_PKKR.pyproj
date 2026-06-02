@@ -25,6 +25,9 @@
     <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
+    <TestFramework>unittest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +47,12 @@
     </Compile>
     <Compile Include="app.py" />
     <Compile Include="algorithms\hamillton_graph.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_cliques.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="validations\valid_hamillton.py">
