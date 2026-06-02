@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="algorithms\" />
+    <Folder Include="tests\" />
     <Folder Include="static\data\" />
     <Folder Include="validations\" />
     <Folder Include="static\" />
