@@ -382,7 +382,7 @@
                     <form method="POST" action="/clique_save" id="save-form" class="hidden-form"></form>
 
                     <div class="result-block">
-                        <h2>Найденные клики</h2>
+                        <h2>Результат</h2>
 
                         <div class="result-list" id="result-list">
                             % if defined('result') and result and result.get('all_cliques') is not None:
