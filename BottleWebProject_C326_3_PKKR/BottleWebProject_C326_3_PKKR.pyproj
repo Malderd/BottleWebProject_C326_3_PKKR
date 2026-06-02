@@ -35,7 +35,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="algorithms\draw_graph.py">
+    <Compile Include="algorithms\draw_graph.py" />
     <Compile Include="algorithms\euler.py">
       <SubType>Code</SubType>
     </Compile>
