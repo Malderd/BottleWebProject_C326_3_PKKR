@@ -682,7 +682,7 @@ input[type=number] {
     box-shadow: 0 4px 14px rgba(67, 160, 71, 0.4);
 }
 
-/* Кнопка запуска на всю ширину */
+/* Кнопка запуска */
 .solve-btn {
     width: 100%;
     margin-top: 24px;
