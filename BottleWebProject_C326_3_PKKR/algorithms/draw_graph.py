@@ -24,7 +24,7 @@ def build_graph(matrix):
             if matrix[i][j] == 1:
                 graph.add_edge(i, j)
 
-    pos = nx.spring_layout(graph, seed=42)
+    pos = nx.circular_layout(graph)
 
     graph1 = plt.figure(figsize=(8, 6))
     nx.draw(

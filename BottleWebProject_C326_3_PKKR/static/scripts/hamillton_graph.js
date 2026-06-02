@@ -171,4 +171,98 @@ function generateMatrix() {
     }
 }
 
+function loadMatrixFile(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+
+        const text = e.target.result.trim();
+
+        const rows = text
+            .split(/\r?\n/)
+            .map(row => row.trim())
+            .filter(row => row.length > 0);
+
+        const matrix = rows.map(
+            row => row.split(/\s+/)
+        );
+
+        const n = matrix.length;
+
+        const errorBox =
+            document.getElementById(
+                'matrixError'
+            );
+
+        errorBox.innerHTML = '';
+
+        if (n < 3 || n > 15) {
+
+            errorBox.innerHTML =
+                'Размер матрицы должен быть от 3 до 15.';
+
+            return;
+        }
+
+        for (const row of matrix) {
+
+            if (row.length !== n) {
+
+                errorBox.innerHTML =
+                    'Матрица должна быть квадратной.';
+
+                return;
+            }
+        }
+
+        document.getElementById(
+            'size'
+        ).value = n;
+
+        document.getElementById(
+            'hiddenN'
+        ).value = n;
+
+        createMatrix();
+
+        for (let i = 0; i < n; i++) {
+
+            for (let j = 0; j < n; j++) {
+
+                const cell =
+                    document.getElementsByName(
+                        `cell_${i}_${j}`
+                    )[0];
+
+                cell.value =
+                    matrix[i][j];
+            }
+        }
+    };
+
+    reader.readAsText(file);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const fileInput =
+        document.getElementById('matrixFile');
+
+    if (!fileInput) {
+        return;
+    }
+
+    fileInput.addEventListener(
+        'change',
+        loadMatrixFile
+    );
+});
+
 window.onload = createMatrix;

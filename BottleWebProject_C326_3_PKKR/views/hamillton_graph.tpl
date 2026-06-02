@@ -309,11 +309,18 @@
 
                 </button>
 
-                <button type="button">
+                <button type="button" onclick="document.getElementById('matrixFile').click()">
 
                     Загрузить
 
                 </button>
+
+                
+                <input
+                    type="file"
+                    id="matrixFile"
+                    accept=".txt"
+                    style="display:none">
 
                 <button type="button" onclick="clearMatrix()">
 
