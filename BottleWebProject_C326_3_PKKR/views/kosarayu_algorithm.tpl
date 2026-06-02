@@ -5,6 +5,8 @@
 <script src="/static/scripts/random-graph_generator.js"></script>
 <script src="/static/scripts/matrix_clear.js"></script>
 <script src="/static/scripts/matrix_prepare.js"></script>
+<script src="/static/scripts/button_state.js"></script>
+<script src="/static/scripts/button_find_state.js"></script>
 
 <section class="components_of_strong_connectivity">
 
@@ -73,7 +75,7 @@
                         
                         <div class="other-buttons">
                             
-                            <button class="btn other" onclick="generateMatrix()">
+                            <button class="btn primary" onclick="generateMatrix()" id="createMatrixButton">
                                 Создать матрицу
                             </button>
 
@@ -91,7 +93,7 @@
                                     Сгенерировать
                                 </button>
 
-                                <button type="submit" class="btn other" onclick="prepareMatrix()">
+                                <button type="submit" class="btn" onclick="prepareMatrix()" id="findComponentsButton">
                                     Найти компоненты
                                 </button>
 
@@ -210,6 +212,10 @@
                                     </div>
                                 % end
 
+                            </div>
+                            % else:
+                            <div class="results-info">
+                                Результаты алгоритма появятся после обработки графа
                             </div>
                         % end
 

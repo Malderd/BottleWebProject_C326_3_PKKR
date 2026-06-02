@@ -122,6 +122,8 @@
     <Content Include="static\images\friend_graph.png" />
     <Content Include="static\scripts\bootstrap.js" />
     <Content Include="static\scripts\bootstrap.min.js" />
+    <Content Include="static\scripts\button_find_state.js" />
+    <Content Include="static\scripts\button_state.js" />
     <Content Include="static\scripts\hamillton_graph.js">
       <SubType>Code</SubType>
     </Content>

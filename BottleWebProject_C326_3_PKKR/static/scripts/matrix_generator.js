@@ -5,8 +5,8 @@ function generateMatrix() {
 
     table.innerHTML = ""; // очистка старой таблицы
 
-    if (!n || n < 3 || n > 16) {
-        alert("Введите число от 3 до 16");
+    if (!n || n < 3 || n > 14) {
+        alert("Введите число от 3 до 14");
         block.style.display = "none";
         return;
     }

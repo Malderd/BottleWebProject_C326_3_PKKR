@@ -9,4 +9,5 @@ function clearMatrix() {
             if (cb) cb.checked = false;
         }
     }
+    updateFindButtonState();
 }

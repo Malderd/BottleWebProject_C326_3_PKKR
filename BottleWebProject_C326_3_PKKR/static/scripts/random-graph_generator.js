@@ -23,7 +23,7 @@
             if (!cb_ij || !cb_ji) continue;
 
             if (!cb_ij.checked && !cb_ji.checked) {
-                if (Math.random() < 0.6) {
+                if (Math.random() < (0.25 + Math.sin((i + j) * 12.9898) * 0.05 + 0.05)) {
                     cb_ij.checked = true;
                 }
             }
@@ -55,5 +55,6 @@
             const cb = rows[i].cells[j].querySelector("input[type='checkbox']");
             if (cb) cb.checked = true;
         }
+        updateFindButtonState();
     }
 }
