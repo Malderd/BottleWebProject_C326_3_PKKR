@@ -5,6 +5,8 @@ from bottle import route, view, request, template, response
 
 from bottle import route, view, request, template, post, static_file
 from datetime import datetime
+from algorithms.kosarayu_algorithm import find_components
+from kosarayu_algorithm.graph_visualizer import draw_graph
 import json, io, zipfile, base64
 import json
 import random
@@ -361,6 +363,31 @@ def kosarayu_algorithm():
         request=request,
         matrix=None,
         components=None,
-        theory=theory
+        theory=theory,
+        graph_image=None
     )
 
+@post('/kosarayu_algorithm/find_components')
+@view('kosarayu_algorithm')
+def find_components_route():
+
+    with open('./static/data/kosarayu_theory.json', encoding='utf-8') as f:
+        theory = json.load(f)
+
+    matrix_json = request.forms.get('matrix_data')
+
+    matrix = json.loads(matrix_json)
+    components = find_components(matrix)
+    draw_graph(
+        matrix,
+        components,
+        "static/images/result_graph.png"
+    )
+    return dict(
+        title='Kosarayu_algorithm',
+        request=request,
+        theory=theory,
+        matrix=matrix,
+        components=components,
+        graph_image="/static/images/result_graph.png"
+    )

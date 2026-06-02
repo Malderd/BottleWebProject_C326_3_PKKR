@@ -377,10 +377,11 @@ input[type=number] {
     margin-bottom: 28px;
 }
 
-/* кнопка запуска */
-.animation-panel {
-    display: flex;
-    justify-content: center;
+.graph-image {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
 }
 
 .results-info {

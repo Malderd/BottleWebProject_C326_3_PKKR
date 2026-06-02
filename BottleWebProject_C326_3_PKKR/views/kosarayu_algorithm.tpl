@@ -68,7 +68,7 @@
                         <input
                             type="number"
                             min="3"
-                            max="16"
+                            max="14"
                             placeholder="Количество вершин" id="sizeInput">
                         
                         <div class="other-buttons">
@@ -177,18 +177,17 @@
 
                     <div class="graph-container">
 
-                        <div class="graph-placeholder">
-                            Здесь будет визуализация графа с выделенными компонентами сильной связности
-                        </div>
+                        % if graph_image:
+                            <img
+                                src="{{graph_image}}"
+                                class="graph-image"
+                                alt="Граф">
+                        % else:
+                            <div class="graph-placeholder">
+                                Здесь будет визуализация графа
+                            </div>
+                        % end
 
-                    </div>
-
-                    <div class="animation-panel">
-
-                        <button class="btn primary">
-                            ▶&nbsp;&nbsp;Показать работу алгоритма
-                        </button>
-                        
                     </div>
 
                 </div>
@@ -198,31 +197,21 @@
 
                     <h2>Найденные компоненты сильной связности</h2>
 
-                    <div class="results-info">
-                        Количество компонент: <b>4</b>
-                    </div>
+                        % if components:
+                            <div class="results-info">
+                                Количество компонент: <b>{{len(components)}}</b>
+                            </div>
 
-                    <div class="components-list">
+                            <div class="components-list">
 
-                        <div class="component-item">
-                            <span class="component-color color-1"></span>
-                            {0, 1, 2}
-                        </div>
+                                % for component in components:
+                                    <div class="component-item">
+                                        {{"{" + ", ".join(map(str, component)) + "}"}}
+                                    </div>
+                                % end
 
-                        <div class="component-item">
-                            <span class="component-color color-2"></span>
-                            {3}
-                        </div>
-
-                        <div class="component-item">
-                            <span class="component-color color-3"></span>
-                            {4, 5}
-                        </div>
-
-                        <div class="component-item">
-                            <span class="component-color color-4"></span>
-                            {6, 7, 8}
-                        </div>
+                            </div>
+                        % end
 
                     </div>
 
