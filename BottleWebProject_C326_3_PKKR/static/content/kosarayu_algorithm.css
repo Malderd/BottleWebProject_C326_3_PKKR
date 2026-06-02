@@ -233,7 +233,7 @@ html {
         outline: none;
         font-family: 'Montserrat',sans-serif;
         height: 48px;
-        margin-top: 1px;
+        margin-top: 2px;
         flex: 0.87;
     }
 
@@ -272,15 +272,15 @@ html {
 }
 
 .other {
-    background: #388E3C;
+    background: #45a049;
 }
 
     .other:hover {
-        background: #43A047;
+        background: #4CAF50;
     }
 
 .primary:hover {
-    background: #2e7d32;
+    background: #406D32;
 }
 
 /* ===================== INPUT NUMBER FIX ===================== */
@@ -444,3 +444,22 @@ input[type=number] {
         font-weight: 700;
         color: white;
     }
+
+.error-box {
+    color: #b80f02;
+    font-weight: 550;
+    font-size: 15px;
+    margin-top: -11px;
+    margin-bottom: 20px
+}
+.error-box p {
+    font-size: 19px;
+    margin-top: -13px;
+    margin-bottom: 1px;
+}
+
+
+/* Скрытие настоящего input */
+label.btn.primary input[type="file"] {
+    display: none;
+}

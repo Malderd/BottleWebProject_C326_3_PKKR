@@ -7,8 +7,9 @@ from bottle import route, view, request, template, post, static_file
 from datetime import datetime
 from algorithms.kosarayu_algorithm import find_components
 from kosarayu_algorithm.graph_visualizer import draw_graph
-import json, io, zipfile, base64
+from validations.valid_kosarayu import validate_matrix, validate_matrix_text
 import json
+import os
 import random
 
 from algorithms.hamillton_graph import find_hamillton_graph
@@ -364,7 +365,8 @@ def kosarayu_algorithm():
         matrix=None,
         components=None,
         theory=theory,
-        graph_image=None
+        graph_image=None,
+        errors = None
     )
 
 @post('/kosarayu_algorithm/find_components')
@@ -375,8 +377,22 @@ def find_components_route():
         theory = json.load(f)
 
     matrix_json = request.forms.get('matrix_data')
-
     matrix = json.loads(matrix_json)
+
+    errors = validate_matrix(matrix)
+
+    # если есть ошибки — не считаем
+    if errors:
+        return dict(
+            title='Kosarayu_algorithm',
+            request=request,
+            theory=theory,
+            matrix=matrix,
+            components=None,
+            graph_image=None,
+            errors=errors
+        )
+
     components = find_components(matrix)
     draw_graph(
         matrix,
@@ -389,5 +405,38 @@ def find_components_route():
         theory=theory,
         matrix=matrix,
         components=components,
-        graph_image="/static/images/result_graph.png"
+        graph_image="/static/images/result_graph.png",
+        errors = None
+    )
+
+@post('/kosarayu_algorithm/load_matrix')
+@view('kosarayu_algorithm')
+def load_matrix_route():
+    errors = []
+    matrix = None
+    file = request.files.get('matrix_file')
+    allowed_extension = ".txt"
+    extension = os.path.splitext(file.filename)[1].lower()
+
+    if not file:
+        errors.append("Файл не выбран")
+    elif extension != allowed_extension:
+        errors.append("Загружаемый файл должен быть расширения TXT")
+    else:
+        text = file.file.read().decode("utf-8").strip()
+        valid, result = validate_matrix_text(text)
+        if not valid:
+            errors.append(result)
+        else:
+            matrix = result
+
+    # Передаем matrix в шаблон, чтоб JS потом построил таблицу
+    return dict(
+        title='Kosarayu_algorithm',
+        request=request,
+        matrix=matrix,
+        components=None,
+        graph_image=None,
+        theory=json.load(open('./static/data/kosarayu_theory.json', encoding='utf-8')),
+        errors=errors
     )

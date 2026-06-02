@@ -79,12 +79,24 @@
                                 Создать матрицу
                             </button>
 
-                            <button class="btn primary">
-                                Загрузить
-                            </button>
+                            <form method="POST" action="/kosarayu_algorithm/load_matrix" enctype="multipart/form-data">
+                                <label class="btn primary">
+                                    Загрузить
+                                    <input type="file" name="matrix_file" accept=".txt" onchange="this.form.submit()" hidden>
+                                </label>
+                            </form>
                         </div>
                     </div>
-
+                        % if errors:
+                            <div class="error-box">
+                                <p>Ошибки:</p>
+                                <ul>
+                                    % for e in errors:
+                                        <li>{{e}}</li>
+                                    % end
+                                </ul>
+                            </div>
+                        % end
                     <form method="post" action="/kosarayu_algorithm/find_components">
                         <div class="table_and_buttons" id="table_and_buttons" style="display: {{'block' if matrix else 'none'}}">
                             <div class="buttons">

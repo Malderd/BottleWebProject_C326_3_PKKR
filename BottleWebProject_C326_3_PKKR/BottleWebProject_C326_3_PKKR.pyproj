@@ -66,6 +66,9 @@
     <Compile Include="validations\valid_clique.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="validations\valid_kosarayu.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="algorithms\" />
