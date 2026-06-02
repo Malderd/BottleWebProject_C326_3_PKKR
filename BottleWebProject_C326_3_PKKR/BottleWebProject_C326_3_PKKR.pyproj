@@ -21,6 +21,7 @@
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
@@ -34,6 +35,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="algorithms\draw_graph.py">
     <Compile Include="algorithms\euler.py">
       <SubType>Code</SubType>
     </Compile>
@@ -41,10 +43,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="app.py" />
-    <Compile Include="hamillton_graph\hamillton_graph.py">
+    <Compile Include="algorithms\hamillton_graph.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hamillton_graph\valid_hamillton.py">
+    <Compile Include="validations\valid_hamillton.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes.py" />
@@ -56,7 +58,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="hamillton_graph\" />
     <Folder Include="algorithms\" />
     <Folder Include="static\data\" />
     <Folder Include="validations\" />
@@ -98,6 +99,7 @@
     <Content Include="static\images\cliques.png" />
     <Content Include="static\images\danya.png" />
     <Content Include="static\images\example.png" />
+    <Content Include="static\images\graphs - Copy.png" />
     <Content Include="static\images\graphs.png" />
     <Content Include="static\images\kostya.png" />
     <Content Include="static\images\logo.png" />
@@ -106,6 +108,9 @@
     <Content Include="static\images\friend_graph.png" />
     <Content Include="static\scripts\bootstrap.js" />
     <Content Include="static\scripts\bootstrap.min.js" />
+    <Content Include="static\scripts\hamillton_graph.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="static\scripts\euler.js">
       <SubType>Code</SubType>
     </Content>

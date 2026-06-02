@@ -3,12 +3,15 @@ Routes and views for the bottle application.
 """
 from bottle import route, view, request, template, response
 
-from bottle import route, view, request, template, post
+from bottle import route, view, request, template, post, static_file
 from datetime import datetime
 import json, io, zipfile, base64
 import json
 import random
 
+from algorithms.hamillton_graph import find_hamillton_graph
+from validations.valid_hamillton import valid_hamillton
+from algorithms.draw_graph import draw_graph, save_graph_archive
 from hamillton_graph import hamillton_graph, valid_hamillton
 from algorithms.clique_detection import solve_cliques, generate_random_matrix
 from validations.valid_clique import validate_n, validate_matrix, validate_density, validate_txt_file
@@ -97,16 +100,84 @@ def euler_from_file_route():
 @route('/hamillton_graph')
 @view('hamillton_graph')
 def hamillton_graph():
-    return template('hamillton_graph.tpl', title='Hamilltom graph',
-                    result=None, success=False, errors={}, form_data={}, request=request)
-
+    return template(
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
+        result=None,
+        graph_image=None,
+        success=False,
+        errors={},
+        form_data={},
+        request=request
+    )
 
 @route('/decide_hamillton_graph', method='POST')
 @view('hamillton_graph')
 def decide_hamillton_graph():
-    return template('hamillton_graph.tpl', title='Hamilltom graph',
-                    result=None, success=True, errors={}, form_data=request.forms, request=request)
+    n = int(request.forms.get('n'))
 
+    # Получение нажатой кнопки
+    action = request.forms.get('action') 
+    
+    # Чтение матрицы из формы
+    matrix = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            row.append(
+                request.forms.get(
+                    f'{i}_{j}',
+                    ''
+                )
+            )
+        matrix.append(row)
+
+    # Проверка валидности
+    errors = valid_hamillton(matrix)
+
+    if errors:
+
+        return template(
+            'hamillton_graph.tpl',
+            title='Hamilltom graph',
+            result=None,
+            graph_image=None,
+            success=False,
+            errors=errors,
+            form_data=request.forms,
+            request=request
+        )
+
+    # Преобразование строк в чисоа
+    matrix = [[int(cell) for cell in row]for row in matrix]
+
+    graph_image = None
+    result = None
+
+    if action == "solve":
+        result = find_hamillton_graph(matrix)
+        graph_image = draw_graph(matrix)
+
+    elif action == "save":
+
+        zip_name, temp_dir = save_graph_archive(matrix)
+
+        return static_file(
+            zip_name,
+            root=temp_dir,
+            download=zip_name
+        )
+
+    return template(
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
+        result=result,
+        graph_image=graph_image,
+        success=True,
+        errors={},
+        form_data=request.forms,
+        request=request
+    )
 
 @route('/kosarayu_algorithm')
 @view('kosarayu_algorithm')
