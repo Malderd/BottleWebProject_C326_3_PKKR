@@ -1,11 +1,13 @@
+/* Базовый сброс: чтобы padding не увеличивал ширину блоков */
 * {
     box-sizing: border-box;
 }
 
-/* основной контейнер страницы, фиксируем на весь экран */
+/* Основной контейнер */
 .hero-cliques {
     position: fixed;
     inset: 0;
+    overflow-x: hidden;
     overflow-y: auto;
     background: linear-gradient(rgba(15,15,15,0.82)), url("/static/images/cliques.png") center/cover no-repeat fixed;
     padding: 60px 45px 60px;
@@ -14,14 +16,14 @@
     padding-bottom: 0
 }
 
-/* полупрозрачный слой поверх фона */
+/* Полупрозрачный слой */
 .overlay {
     position: absolute;
     inset: 0;
     backdrop-filter: blur(2px);
 }
 
-/* обёртка для всего контента, чтобы не расползался на широких экранах */
+/* Обёртка контента */
 .content {
     position: relative;
     z-index: 2;
@@ -29,7 +31,7 @@
     margin: 0 auto;
 }
 
-/* заголовок страницы */
+/* Заголовок страницы */
 .hero-cliques h1 {
     text-align: center;
     font-size: 3.1rem;
@@ -39,7 +41,7 @@
     letter-spacing: 0.04em;
 }
 
-/* блок теории — раскрывающийся details */
+/* Блок теории */
 .theory-block {
     margin-bottom: 36px;
     margin-left: auto;
@@ -52,7 +54,7 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
-    /* заголовок теории, убираем стандартный маркер */
+    /* Заголовок details */
     .theory-block summary {
         display: flex;
         align-items: center;
@@ -65,7 +67,7 @@
         transition: background-color 0.25s ease;
     }
 
-        /* стрелка справа, поворачивается при открытии */
+        /* Кастомная стрелка справа */
         .theory-block summary::after {
             content: "▸";
             font-size: 1.6rem;
@@ -73,20 +75,22 @@
             color: #f1f8e9;
         }
 
+    /* Когда блок открыт, стрелка поворачивается на 90 градусов */
     .theory-block[open] summary::after {
         transform: rotate(90deg);
     }
 
+    /* Лёгкая подсветка при наведении на заголовок */
     .theory-block summary:hover {
         background: rgba(255,255,255,0.06);
     }
 
-/* содержимое теории */
+/* Отступы внутри раскрытого блока теории */
 .theory-content {
     padding: 15px 30px 25px;
 }
 
-/* один раздел теории */
+/* Каждый раздел теории: отступ снизу и разделительная линия */
 .theory-section {
     margin-bottom: 10px;
     padding-bottom: 15px;
@@ -95,13 +99,14 @@
     flex-direction: column;
 }
 
+    /* У последнего раздела убираем линию и отступ */
     .theory-section:last-child {
         margin-bottom: 0;
         padding-bottom: 0;
         border-bottom: none;
     }
 
-/* заголовок раздела теории */
+/* Заголовок раздела */
 .theory-section-title {
     font-size: 1.9rem;
     font-weight: 700;
@@ -110,17 +115,19 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-/* строка: текст слева, картинка справа */
+/* Flex-строка: текст слева, картинка справа, выравнивание по верху */
 .theory-section-body {
     display: flex;
     gap: 24px;
     align-items: flex-start;
 }
 
+/* Текст растягивается на всё доступное место */
 .theory-section-text {
     flex: 1;
 }
 
+/* Абзацы */
 .theory-content p {
     font-size: 1.55rem;
     line-height: 1.5;
@@ -129,13 +136,14 @@
     margin-bottom: 0;
 }
 
-/* блок с картинкой справа */
+/* Блок картинки */
 .theory-figure {
     flex-shrink: 0;
     margin: 0;
     text-align: center;
 }
 
+    /* Сама картинка */
     .theory-figure img {
         max-width: 500px;
         max-height: 430px;
@@ -147,7 +155,7 @@
         box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     }
 
-/* двухколоночный макет: левая — ввод, правая — результат */
+/* Двухколоночная раскладка */
 .main-layout {
     display: flex;
     gap: 25px;
@@ -162,7 +170,7 @@
     width: 55%;
 }
 
-/* зелёная карточка */
+/* Зелёная карточка */
 .card {
     background: #527d05;
     border: 1px solid #43A047;
@@ -171,7 +179,6 @@
     box-shadow: 0 12px 34px rgba(0,0,0,0.35);
     backdrop-filter: blur(4px);
 }
-
     .card h2 {
         font-size: 2.3rem;
         font-weight: 700;
@@ -179,7 +186,7 @@
         color: white;
     }
 
-/* вкладки: вручную / случайно / из txt */
+/* Контейнер вкладок */
 .tabs {
     display: flex;
     gap: 8px;
@@ -187,6 +194,7 @@
     flex-wrap: wrap;
 }
 
+/* Кнопки вкладок */
 .tab {
     padding: 10px 16px;
     border-radius: 10px;
@@ -200,14 +208,14 @@
     transition: background 0.2s, border-color 0.2s;
 }
 
-    /* активная и hover-вкладка */
+    /* Активная вкладка */
     .tab.active,
     .tab:hover {
         background: rgba(255,255,255,0.22);
         border-color: rgba(255,255,255,0.7);
     }
 
-/* подсказка под вкладкой, объясняет что делать */
+/* Подсказка под вкладками */
 .tab-hint {
     font-size: 1.4rem;
     color: #e8f5e9;
@@ -219,7 +227,7 @@
     border-left: 3px solid rgba(255,255,255,0.4);
 }
 
-/* группа полей ввода */
+/* Группа полей */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -227,6 +235,7 @@
     margin-bottom: 14px;
 }
 
+    /* Поля ввода */
     .form-group input {
         padding: 14px;
         border: 1px solid rgba(255,255,255,0.25);
@@ -243,7 +252,7 @@
             color: rgba(255,255,255,0.6);
         }
 
-/* ряд кнопок */
+/* Контейнер для кнопок */
 .buttons {
     display: flex;
     flex-wrap: wrap;
@@ -251,12 +260,12 @@
     margin-bottom: 14px;
 }
 
-/* кнопки по центру карточки */
+/* Модификатор */
 .buttons-center {
     justify-content: center;
 }
 
-/* базовый стиль кнопки */
+/* Базовый стиль всех кнопок */
 .btn {
     padding: 15px 22px;
     border: none;
@@ -269,7 +278,7 @@
     transition: background-color 0.25s ease;
 }
 
-/* тёмно-зелёная кнопка — основное действие */
+/* Основная кнопка */
 .primary {
     background: #1b5e20;
 }
@@ -278,7 +287,7 @@
         background: #2e7d32;
     }
 
-/* прозрачная кнопка — второстепенное действие */
+/* Второстепенная кнопка */
 .secondary {
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.3);
@@ -288,7 +297,7 @@
         background: rgba(255,255,255,0.2);
     }
 
-/* кнопка на всю ширину для правой панели */
+/* Кнопка "Решить" */
 .solve-btn {
     width: 100%;
     background: #1b5e20;
@@ -300,7 +309,7 @@
         background: #2e7d32;
     }
 
-/* зона для drag-and-drop файла */
+/* Зона для файла */
 .file-zone {
     border: 2px dashed rgba(255,255,255,0.35);
     border-radius: 12px;
@@ -325,7 +334,7 @@
         margin-bottom: 6px;
     }
 
-/* пример формата txt-файла */
+/* Пример формата txt-файла */
 .txt-example {
     font-size: 1.67rem;
     color: white;
@@ -334,6 +343,7 @@
     text-align: center;
 }
 
+    /* Стили для тега code */
     .txt-example code {
         font-size: 1.67rem;
         background: rgba(0,0,0,0.25);
@@ -341,18 +351,19 @@
         font-family: monospace;
     }
 
-/* убираем стрелки у input type=number */
+/* Убираем стандартные стрелки у input[type=number] в Chrome/Safari */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
+/* Убираем стрелки в Firefox */
 input[type=number] {
     -moz-appearance: textfield;
 }
 
-/* обёртка матрицы, отрицательные отступы чтобы таблица не упиралась в края карточки */
+/* Обёртка матрицы */
 .matrix-wrapper {
     overflow-x: auto;
     margin-left: -28px;
@@ -361,12 +372,13 @@ input[type=number] {
     padding-right: 28px;
 }
 
-/* сама таблица матрицы смежности */
+/* Таблица смежности */
 .matrix-table {
     border-collapse: collapse;
     margin: 0 auto;
 }
 
+    /* Ячейки */
     .matrix-table td {
         width: 40px;
         height: 40px;
@@ -379,14 +391,14 @@ input[type=number] {
         font-weight: 600;
     }
 
-        /* диагональ — всегда 0 */
+        /* Диагональ: всегда 0 */
         .matrix-table td.diag {
             background: rgba(0,0,0,0.3);
             color: rgba(255,255,255,0.4);
             font-size: 1.2rem;
         }
 
-        /* подписи строк и столбцов */
+        /* Подписи строк и столбцов */
         .matrix-table td.lbl {
             background: rgba(0,0,0,0.4);
             font-size: 1.2rem;
@@ -395,7 +407,7 @@ input[type=number] {
             font-weight: 700;
         }
 
-    /* поле ввода внутри ячейки матрицы */
+    /* Инпут внутри ячейки */
     .matrix-table input {
         width: 100%;
         height: 100%;
@@ -408,14 +420,12 @@ input[type=number] {
         outline: none;
         font-family: 'Montserrat', sans-serif;
     }
-
-        /* readonly-ячейки из файла — нельзя редактировать */
         .matrix-table input[readonly] {
             cursor: default;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.7);
         }
 
-/* место под граф, пока пустое */
+/* Плейсхолдер для графа */
 .graph-placeholder {
     min-height: 400px;
     border-radius: 14px;
@@ -430,16 +440,15 @@ input[type=number] {
     margin-bottom: 14px;
 }
 
-/* блок результатов */
+/* Блок результатов */
 .result-block {
     margin-top: 10px;
 }
-
     .result-block h2 {
         margin-bottom: 12px;
     }
 
-/* список найденных клик */
+/* Список найденных клик */
 .result-list {
     padding: 18px;
     border-radius: 14px;
@@ -448,6 +457,7 @@ input[type=number] {
     border: 1px solid rgba(255,255,255,0.16);
 }
 
+    /* Абзацы внутри списка результатов */
     .result-list p {
         font-size: 1.55rem;
         line-height: 1.6;
@@ -455,11 +465,12 @@ input[type=number] {
         color: #f1f8e9;
     }
 
+        /* У последнего абзаца убираем нижний отступ */
         .result-list p:last-child {
             margin-bottom: 0;
         }
 
-/* заголовок со ссылкой — h1 по центру, ссылка справа */
+/* Шапка страницы */
 .page-header {
     position: relative;
     display: flex;
@@ -469,6 +480,7 @@ input[type=number] {
     border-bottom: none;
 }
 
+/* Переопределение h1 для шапки */
 .hero-cliques h1 {
     text-align: center;
     font-size: 3.1rem;
@@ -478,7 +490,7 @@ input[type=number] {
     letter-spacing: 0.04em;
 }
 
-/* ссылка прибита к правому краю через absolute */
+/* Ссылка-кнопка справа */
 .scroll-link {
     position: absolute;
     margin-top: 50px;
@@ -493,8 +505,75 @@ input[type=number] {
     background: rgba(0,0,0,0.3);
     transition: background 0.2s, color 0.2s;
 }
-
     .scroll-link:hover {
         background: rgba(255,255,255,0.1);
         color: #fff;
     }
+
+/* Нижний треугольник матрицы: */
+.matrix-table td.mirror-cell {
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: default;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+/* Сообщение об ошибке */
+.error-msg {
+    color: #ef9a9a;
+    font-size: 1.55rem;
+    margin-bottom: 10px;
+}
+
+/* Переопределение result-list */
+.result-list {
+    padding: 18px;
+    border-radius: 14px;
+    min-height: 80px;
+    height: auto; /* переопределяем фиксированную высоту */
+    max-height: 260px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+/* Отключённые кнопки */
+.btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Отступ для матрицы, загруженной из файла */
+.matrix-wrapper-file {
+    margin-top: 18px;
+}
+
+/* Обёртка картинки графа */
+.graph-placeholder-image {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+/* Картинка графа */
+.graph-image {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: 14px;
+    display: block;
+}
+
+/* Скрываем форму через display: none */
+.hidden-form {
+    display: none;
+}
+
+/* Скрываем инпут через display: none */
+.hidden-input {
+    display: none;
+}

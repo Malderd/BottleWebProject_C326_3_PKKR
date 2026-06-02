@@ -1,4 +1,4 @@
-﻿/* ===================== ПОДКЛЮЧЕНИЕ ШРИФТА ===================== */
+/* ===================== ПОДКЛЮЧЕНИЕ ШРИФТА ===================== */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
 /* ===================== ОБЩИЕ СТИЛИ ===================== */
@@ -16,8 +16,10 @@ html {
     position: fixed;
     inset: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     background: linear-gradient(rgba(15,15,15,0.82)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&auto=format&fit=crop') center/cover no-repeat fixed;
     padding: 93px 45px 60px;
+    padding-bottom: 0px;
     font-family: 'Montserrat',sans-serif;
     color: white;
 }
