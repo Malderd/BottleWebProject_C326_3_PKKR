@@ -1,0 +1,134 @@
+def validation_euler(matrix):
+    """
+    Модуль валидации матрицы смежности для поиска Эйлерова маршрута.
+    Возвращает кортеж: (is_valid, error_response)
+    """
+    if not matrix or not isinstance(matrix, list):
+        return False, {"exists": False, "message": "Матрица не передана или имеет неверный формат."}
+
+    n = len(matrix)
+    if n == 0:
+        return False, {"exists": False, "message": "Матрица пуста. Граф не содержит вершин."}
+
+    # 1. Проверка на квадратную матрицу и корректность значений (0 или 1, отсутствие петель)
+    for i in range(n):
+        if not isinstance(matrix[i], list) or len(matrix[i]) != n:
+            return False, {
+                "exists": False, 
+                "message": f"Ошибка структуры: строка {i + 1} должна содержать ровно {n} элементов."
+            }
+        
+        for j in range(n):
+            # Проверка на петли (символы на главной диагонали должны быть 0)
+            if i == j and matrix[i][j] != 0:
+                return False, {
+                    "exists": False,
+                    "message": f"Обнаружена петля у вершины {i + 1}. Алгоритм обрабатывает только простые графы без петель."
+                }
+            # Проверка значений
+            if matrix[i][j] not in (0, 1):
+                return False, {
+                    "exists": False,
+                    "message": f"Недопустимое значение ({matrix[i][j]}) в ячейке [{i+1}][{j+1}]. Разрешены только 0 и 1."
+                }
+            # Проверка на симметричность (неориентированный граф)
+            if matrix[i][j] != matrix[j][i]:
+                return False, {
+                    "exists": False,
+                    "message": f"Матрица несимметрична относительно главной диагонали между вершинами {i+1} и {j+1}. Граф должен быть неориентированным."
+                }
+
+    # 2. Расчёт степеней и проверка на наличие рёбер
+    degrees = [sum(row) for row in matrix]
+    total_edges = sum(degrees) // 2
+
+    if total_edges == 0:
+        return False, {
+            "exists": False,
+            "message": "В графе нет рёбер. Эйлеров маршрут не существует."
+        }
+
+    # 3. Проверка связности через DFS (только для компонент с рёбрами)
+    visited = [False] * n
+    start_dfs = next((idx for idx, deg in enumerate(degrees) if deg > 0), None)
+
+    if start_dfs is not None:
+        stack = [start_dfs]
+        while stack:
+            v = stack.pop()
+            if not visited[v]:
+                visited[v] = True
+                for to, connected in enumerate(matrix[v]):
+                    if connected and not visited[to]:
+                        stack.append(to)
+
+    # Если есть вершина с рёбрами, которую мы не посетили — граф несвязен
+    for i in range(n):
+        if degrees[i] > 0 and not visited[i]:
+            return False, {
+                "exists": False,
+                "message": "Граф несвязен (компоненты с рёбрами изолированы друг от друга)."
+            }
+
+    # Если все проверки пройдены
+    return True, None
+
+def validation_random_params(n_param, density_param):
+    """
+    Валидирует параметры для случайной генерации графа.
+    Возвращает кортеж: (is_valid, n_int, density_int, error_response)
+    """
+    try:
+        n = int(n_param)
+        density = int(density_param)
+    except (ValueError, TypeError):
+        return False, None, None, {"error": "Параметры должны быть целыми числами."}
+
+    if not (2 <= n <= 20):
+        return False, None, None, {"error": "Количество вершин N должно быть от 2 до 20."}
+        
+    if not (1 <= density <= 100):
+        return False, None, None, {"error": "Плотность должна быть в диапазоне от 1 до 100%."}
+
+    return True, n, density, None
+
+def validation_and_parse_file(file_item):
+    """
+    Валидирует наличие файла, читает его содержимое и проверяет базовую структуру матрицы.
+    Возвращает кортеж: (is_valid, matrix, error_response)
+    """
+    if not file_item:
+        return False, None, {"error": "Файл не передан."}
+
+    try:
+        content = file_item.file.read().decode("utf-8")
+        matrix = []
+
+        for idx, line in enumerate(content.strip().splitlines()):
+            line = line.strip()
+            if not line:
+                continue
+            
+            # Пытаемся распарсить строку в числа
+            try:
+                row = list(map(int, line.split()))
+            except ValueError:
+                return False, None, {"error": f"Ошибка в строке {idx + 1}: файл должен содержать только числа."}
+                
+            matrix.append(row)
+
+        n = len(matrix)
+        if n == 0:
+            return False, None, {"error": "Файл пуст или содержит только пустые строки."}
+
+        # Проверка на квадратность матрицы прямо при чтении
+        for idx, row in enumerate(matrix):
+            if len(row) != n:
+                return False, None, {
+                    "error": f"Строка {idx + 1} содержит {len(row)} элементов. Ожидалось {n} (матрица должна быть квадратной)."
+                }
+
+        return True, matrix, None
+
+    except Exception as e:
+        return False, None, {"error": f"Не удалось прочитать файл: {str(e)}"}

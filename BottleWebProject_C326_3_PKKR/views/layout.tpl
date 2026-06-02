@@ -38,7 +38,7 @@
                     <li class="{{'active' if request.path == '/hamillton_graph' else ''}}">
                     <a href="/hamillton_graph">Гамильтонов цикл</a>
                     </li>
-                    <li class="{{'active' if request.path == '/clique_detection' else ''}}">
+                    <li class="{{'active' if request.path.startswith('/clique_detection') else ''}}">
                     <a href="/clique_detection">Выявление сообществ</a>
                     </li>
                     <li class="{{'active' if request.path == '/kosarayu_algorithm' else ''}}">

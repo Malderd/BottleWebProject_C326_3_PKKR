@@ -231,5 +231,5 @@
         </div>
 
     </div>
-
+% include('footer.tpl')
 </section>

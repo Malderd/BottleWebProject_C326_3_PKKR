@@ -1,26 +1,32 @@
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* Основной контейнер страницы */
 .hero-euler {
     position: fixed;
     inset: 0;
+    overflow-x: hidden;
     overflow-y: auto;
-    background: linear-gradient(135deg, #32441a 0%, #1a1a1a 100%);
+    background: linear-gradient(135deg, #2d3e1a 0%, #1a1a1a 100%);
     padding: 93px 45px 60px;
     font-family: 'Montserrat', sans-serif;
     color: white;
     padding-bottom: 0
 }
 
+/* Размытый оверлей поверх фона */
 .overlay {
     position: absolute;
     inset: 0;
     backdrop-filter: blur(2px);
+    z-index: 1;
 }
 
+/* Центрирующий контейнер содержимого */
 .content {
     position: relative;
     z-index: 2;
@@ -28,67 +34,492 @@
     margin: 0 auto;
 }
 
-/* Заголовок */
+/* Заголовок страницы */
 .hero-euler h1 {
-    text-align: left;
-    font-size: 3.4rem;
+    text-align: center;
+    font-size: 4.2rem;
     font-weight: 700;
-    margin-bottom: 30px;
-    border-left: 6px solid #43A047;
-    padding-left: 18px;
+    margin-bottom: 35px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+    background: linear-gradient(135deg, #ffffff, #c8e6c9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-/* Теория */
+
+/* Блок теоретических сведений  */
 .theory-block {
-    margin-bottom: 36px;
-    border-radius: 18px;
+    border-radius: 24px;
+    max-width: 1400px;
+    margin: 0 auto 36px auto;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.55);
-    border: 1px solid #43A047;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(67, 160, 71, 0.6);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
 }
 
+    .theory-block:hover {
+        border-color: rgba(67, 160, 71, 0.9);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Шапка-аккордеон */
     .theory-block summary {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 24px 30px;
-        font-size: 2.1rem;
+        padding: 28px 35px;
+        font-size: 2.4rem;
         font-weight: 700;
         list-style: none;
         cursor: pointer;
-        transition: background-color .25s ease;
+        transition: all 0.3s ease;
+        background: linear-gradient(90deg, rgba(67, 160, 71, 0.15), transparent);
+        letter-spacing: 0.02em;
     }
 
+        /* Стрелка-индикатор открытия */
         .theory-block summary::after {
-            content: "▸";
-            font-size: 1.6rem;
-            transition: transform .25s ease;
-            color: #f1f8e9;
+            content: "▼";
+            font-size: 1.4rem;
+            transition: transform 0.3s ease;
+            color: #81C784;
+            opacity: 0.8;
         }
 
     .theory-block[open] summary::after {
-        transform: rotate(90deg);
+        transform: rotate(180deg);
     }
 
     .theory-block summary:hover {
-        background: rgba(255,255,255,.06);
+        background: rgba(67, 160, 71, 0.25);
     }
 
+        .theory-block summary:hover::after {
+            opacity: 1;
+        }
+
+/* Тело раскрытого блока */
 .theory-content {
-    padding: 15px 30px;
+    padding: 30px 40px;
+    background: rgba(0, 0, 0, 0.3);
 }
 
     .theory-content p {
-        font-size: 1.7rem;
-        line-height: 1.3;
-        color: #f1f8e9;
-        margin-bottom: 10px;
+        font-size: 1.8rem;
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.92);
+        margin-bottom: 20px;
     }
 
-/* Основной макет */
+/* Вводный абзац с зелёной левой полосой */
+.theory-lead-text {
+    font-size: 2rem !important;
+    background: linear-gradient(135deg, rgba(67, 160, 71, 0.2), rgba(67, 160, 71, 0.05));
+    padding: 20px 28px;
+    border-radius: 16px;
+    border-left: 5px solid #81C784;
+    margin-bottom: 30px !important;
+    font-weight: 500;
+}
+
+    .theory-lead-text strong {
+        color: #81C784;
+    }
+
+/* Выделение ключевых слов внутри текста */
+.highlight {
+    color: #ffb74d;
+    font-weight: 600;
+    background: rgba(255, 183, 77, 0.15);
+    padding: 0 6px;
+    border-radius: 6px;
+}
+
+
+/* Карточки (Эйлеров цикл / Эйлерова цепь) */
+.theory-cards-row {
+    display: flex;
+    gap: 25px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.theory-mini-card {
+    flex: 1 1 280px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 22px;
+    border-radius: 18px;
+    transition: all 0.3s ease;
+}
+
+    .theory-mini-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(129, 199, 132, 0.4);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .theory-mini-card p {
+        font-size: 1.65rem;
+        line-height: 1.55;
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, 0.88);
+    }
+
+/* Бейдж-метка типа маршрута */
+.theory-card-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    border-radius: 30px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+    .theory-card-badge.type-cycle {
+        background: rgba(46, 125, 50, 0.35);
+        color: #81C784;
+        border: 1px solid rgba(129, 199, 132, 0.5);
+    }
+
+    .theory-card-badge.type-chain {
+        background: rgba(230, 126, 34, 0.25);
+        color: #ffb74d;
+        border: 1px solid rgba(255, 183, 77, 0.5);
+    }
+
+/* Подпись внизу карточки */
+.card-footer {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    text-align: right;
+}
+
+
+/*Заголовки и разделители внутри теории */
+.theory-subtitle {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 25px 0 15px 0;
+    color: #ffffff;
+    letter-spacing: -0.3px;
+}
+
+/* Обёртка заголовка раздела с зелёной подчёркивающей линией */
+.theory-section-header {
+    margin: 35px 0 15px 0;
+}
+
+    .theory-section-header .theory-subtitle {
+        margin: 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(129, 199, 132, 0.5);
+        display: inline-block;
+    }
+
+/* Пунктирный разделитель между блоками */
+.theory-divider {
+    border: 0;
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    margin: 35px 0;
+}
+
+.list-title {
+    font-weight: 600;
+    margin-bottom: 12px !important;
+    font-size: 1.8rem;
+}
+
+/* Маркированный список в теории */
+.theory-list {
+    font-size: 1.7rem;
+    line-height: 1.65;
+    margin-bottom: 25px;
+    padding-left: 25px;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+    .theory-list li {
+        margin-bottom: 12px;
+    }
+
+        .theory-list li::marker {
+            color: #81C784;
+        }
+
+/* Блок с математической формулой */
+.theory-formula {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2rem;
+    margin: 25px 0;
+    color: #81C784;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 18px 25px;
+    border-radius: 14px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    border: 1px solid rgba(129, 199, 132, 0.3);
+}
+
+
+/*Информационные панели (нейтральная / предупреждение / успех)*/
+.info-panel {
+    background: rgba(0, 0, 0, 0.35);
+    border-left: 4px solid #81C784;
+    padding: 18px 24px;
+    border-radius: 12px;
+    margin: 25px 0;
+}
+
+    .info-panel p {
+        margin-bottom: 0;
+    }
+
+/* Оранжевый акцент — предупреждение */
+.info-warning {
+    border-left-color: #ffb74d;
+    background: rgba(255, 183, 77, 0.08);
+}
+
+/* Зелёный акцент — успех/вывод */
+.info-success {
+    border-left-color: #43A047;
+    background: rgba(67, 160, 71, 0.08);
+}
+
+/* Блок описания алгоритма */
+.algorithm-panel {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25));
+    border-radius: 14px;
+    padding: 22px 28px;
+    border: 1px solid rgba(129, 199, 132, 0.35);
+    margin: 20px 0;
+}
+
+    .algorithm-panel p {
+        margin-bottom: 0;
+    }
+
+    .algorithm-panel strong {
+        color: #81C784;
+    }
+
+
+/*Карточки шагов разобранного примера*/
+.step-card {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 18px;
+    padding: 22px 28px;
+    margin: 30px 0;
+    transition: all 0.3s ease;
+}
+
+    .step-card:hover {
+        background: rgba(0, 0, 0, 0.35);
+    }
+
+/* Заголовок шага */
+.theory-step-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 18px 0;
+    color: #81C784;
+    letter-spacing: -0.2px;
+}
+
+/* Маршрут-строка (промежуточные шаги) */
+.theory-step-route {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin: 20px 0;
+    color: #81C784;
+    letter-spacing: 2px;
+    background: rgba(129, 199, 132, 0.1);
+    padding: 15px;
+    border-radius: 40px;
+    font-family: monospace;
+}
+
+    /* Итоговый маршрут — оранжевый акцент */
+    .theory-step-route.main-route {
+        font-size: 2.4rem;
+        color: #ffb74d;
+        background: rgba(255, 183, 77, 0.12);
+    }
+
+.example-desc {
+    margin-bottom: 20px !important;
+    font-style: italic;
+}
+
+/* Контейнер бейджей степеней вершин */
+.degrees-badge-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 25px 0;
+}
+
+/* Бейдж степени вершины */
+.degree-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    font-family: monospace;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+    .degree-badge:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: scale(1.02);
+    }
+
+/* Бейдж нечётной вершины — оранжевый */
+.degree-odd {
+    background: rgba(255, 183, 77, 0.25);
+    border: 1px solid rgba(255, 183, 77, 0.5);
+    color: #ffb74d;
+}
+
+/* Итоговая панель-вывод в конце примера */
+.conclusion-panel {
+    background: linear-gradient(135deg, rgba(67, 160, 71, 0.2), rgba(67, 160, 71, 0.05));
+    border-radius: 16px;
+    padding: 22px 28px;
+    margin-top: 35px;
+    text-align: center;
+    border: 1px solid rgba(67, 160, 71, 0.4);
+}
+
+    .conclusion-panel p {
+        margin-bottom: 0;
+        font-size: 1.8rem;
+    }
+
+    .conclusion-panel strong {
+        color: #81C784;
+    }
+
+
+.theory-flex-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 40px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 18px;
+    max-width: 1200px;
+    flex-wrap: wrap;
+}
+
+/* Блок изображения с подписью */
+.theory-image-block {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.theory-inline-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+    .theory-inline-img:hover {
+        border-color: rgba(129, 199, 132, 0.5);
+        transform: scale(1.01);
+    }
+
+
+.matrix-grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 55px);
+    gap: 5px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+    border-radius: 12px;
+}
+
+/* Базовая ячейка матрицы */
+.grid-cell {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+/* Заголовочная ячейка (номер вершины) */
+.label-cell {
+    background: rgba(0, 0, 0, 0.6);
+    color: #81C784;
+    font-weight: 700;
+}
+
+/* Ячейка с нулём — приглушённая */
+.zero-cell {
+    background: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.35);
+}
+
+/* Белый блок с картинкой графа */
+.graph-img-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    max-width: 300px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+    .graph-img-wrapper:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .graph-img-wrapper img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 10px;
+    }
+
+    .graph-img-wrapper .img-caption {
+        color: #1a1a1a;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 14px;
+    }
+
+
 .main-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -108,13 +539,13 @@
     gap: 24px;
 }
 
-/* Карточки */
+/* Базовая карточка интерфейса */
 .card {
     background: #2d5200;
     border: 1px solid #43A047;
-    border-radius: 18px;
+    border-radius: 22px;
     padding: 28px;
-    box-shadow: 0 12px 34px rgba(0,0,0,.35);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(4px);
 }
 
@@ -125,168 +556,88 @@
         color: white;
     }
 
-/* Вкладки */
+.graph-card {
+    background: #2d5200;
+}
+
+
 .tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 18px;
     flex-wrap: wrap;
 }
 
 .tab {
-    padding: 10px 16px;
-    border-radius: 10px;
-    font-size: 1.45rem;
+    padding: 10px 20px;
+    border-radius: 40px;
+    font-size: 1.5rem;
     font-weight: 600;
     font-family: 'Montserrat', sans-serif;
-    border: 1.5px solid rgba(255,255,255,.35);
-    background: rgba(255,255,255,.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.08);
     color: white;
     cursor: pointer;
-    transition: .2s;
+    transition: all 0.25s ease;
 }
 
     .tab.active,
     .tab:hover {
-        background: rgba(255,255,255,.22);
-        border-color: rgba(255,255,255,.7);
+        background: rgba(255, 255, 255, 0.22);
+        border-color: rgba(255, 255, 255, 0.7);
     }
 
-/* Подсказка */
+/* Подсказка под вкладкой */
 .tab-hint {
     font-size: 1.6rem;
     color: #e8f5e9;
-    margin-bottom: 14px;
-    line-height: 1.4;
-    padding: 10px 14px;
-    background: rgba(0,0,0,.25);
-    border-radius: 10px;
-    border-left: 3px solid rgba(255,255,255,.4);
+    margin-bottom: 18px;
+    line-height: 1.45;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    border-left: 3px solid #81C784;
 }
 
-/* Поля */
+
+/* Поля ввода и группы кнопок*/
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 14px;
+    gap: 14px;
+    margin-bottom: 18px;
 }
 
     .form-group input {
-        padding: 14px;
-        border: 1px solid rgba(255,255,255,.25);
-        border-radius: 10px;
-        background: rgba(255,255,255,.12);
+        padding: 14px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.12);
         color: white;
         font-size: 1.6rem;
         width: 100%;
         outline: none;
         font-family: 'Montserrat', sans-serif;
+        transition: all 0.2s ease;
     }
 
-        .form-group input::placeholder {
-            color: rgba(255,255,255,.6);
+        .form-group input:focus {
+            border-color: #81C784;
+            background: rgba(255, 255, 255, 0.18);
         }
 
-/* Кнопки */
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
 .buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
-    margin-bottom: 14px;
+    gap: 16px;
+    margin-bottom: 18px;
 }
 
-.btn {
-    padding: 15px 22px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: white !important;
-    font-family: 'Montserrat', sans-serif;
-    transition: .25s;
-}
-
-.primary {
-    background: #1b5e20;
-}
-
-    .primary:hover {
-        background: #2e7d32;
-    }
-
-.secondary {
-    background: rgba(255,255,255,.1);
-    border: 1px solid rgba(255,255,255,.3);
-}
-
-    .secondary:hover {
-        background: rgba(255,255,255,.2);
-    }
-
-.solve-btn {
-    width: 100%;
-    background: #1b5e20;
-    margin-top: 24px; /* Разъединяем кнопку и контейнер графа сверху */
-    margin-bottom: 14px;
-    padding: 30px;
-}
-
-    .solve-btn:hover {
-        background: #2e7d32;
-    }
-
-    .solve-btn.secondary {
-        background: rgba(255,255,255,.1);
-        border: 1px solid rgba(255,255,255,.3);
-        margin-top: 0; /* Для кнопки сохранения результатов обнуляем верхний отступ */
-    }
-
-        .solve-btn.secondary:hover {
-            background: rgba(255,255,255,.2);
-        }
-
-/* Загрузка файла */
-.file-zone {
-    border: 2px dashed rgba(255,255,255,.35);
-    border-radius: 12px;
-    padding: 28px;
-    text-align: center;
-    font-size: 1.5rem;
-    color: rgba(255,255,255,.7);
-    margin-bottom: 14px;
-    cursor: pointer;
-    transition: .2s;
-}
-
-    .file-zone:hover {
-        border-color: rgba(255,255,255,.7);
-        background: rgba(255,255,255,.05);
-    }
-
-    .file-zone b {
-        display: block;
-        font-size: 1.7rem;
-        color: white;
-        margin-bottom: 6px;
-    }
-
-.txt-example {
-    font-size: 1.67rem;
-    color: white;
-    margin-top: 6px;
-    line-height: 1.6;
-    text-align: center;
-}
-
-    .txt-example code {
-        font-size: 1.67rem;
-        background: rgba(0,0,0,.25);
-        color: white;
-    }
-
-/* Input number */
+/* Скрыть стрелки у числовых инпутов */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -297,7 +648,103 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-/* Матрица */
+
+/* Кнопки действий */
+.btn, .solve-btn, #btn-save {
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 14px;
+    font-size: 1.65rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Второстепенные кнопки (очистить, сохранить) */
+.secondary {
+    padding: 14px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+    .secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+/* Основные зелёные кнопки */
+#btn-create-matrix,
+.solve-btn,
+#btn-save {
+    padding: 16px 36px;
+    background: #43A047;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    box-shadow: 0 4px 14px rgba(67, 160, 71, 0.4);
+}
+
+/* Кнопка запуска на всю ширину */
+.solve-btn {
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 14px;
+    padding: 18px;
+}
+
+    #btn-create-matrix:hover,
+    .solve-btn:hover,
+    #btn-save:hover {
+        background: #2E7D32;
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 6px 20px rgba(67, 160, 71, 0.6);
+        transform: translateY(-2px);
+    }
+
+    #btn-create-matrix:active,
+    .solve-btn:active,
+    #btn-save:active {
+        transform: translateY(1px);
+    }
+
+
+/* Зона загрузки файла */
+.file-zone {
+    border: 2px dashed rgba(255, 255, 255, 0.35);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 18px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+    .file-zone:hover {
+        border-color: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .file-zone b {
+        display: block;
+        font-size: 1.7rem;
+        color: white;
+        margin-bottom: 8px;
+    }
+
+/* Пример формата файла */
+.txt-example {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 12px;
+    line-height: 1.6;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    border-radius: 10px;
+}
+
+
+/*Интерактивная матрица смежности (ввод пользователя)*/
 .matrix-wrapper {
     overflow-x: auto;
     margin-left: -28px;
@@ -312,26 +759,28 @@ input[type=number] {
 }
 
     .matrix-table td {
-        width: 40px;
-        height: 40px;
-        min-width: 34px;
-        min-height: 34px;
-        border: 1px solid rgba(255,255,255,.18);
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+        min-height: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         text-align: center;
-        background: rgba(255,255,255,.08);
-        font-size: 1.3rem;
+        background: rgba(255, 255, 255, 0.08);
+        font-size: 1.6rem;
         font-weight: 600;
     }
 
+        /* Ячейка главной диагонали */
         .matrix-table td.diag {
-            background: rgba(0,0,0,.3);
-            color: rgba(255,255,255,.4);
+            background: rgba(0, 0, 0, 0.4);
+            color: rgba(255, 255, 255, 0.4);
         }
 
+        /* Ячейка-заголовок (номер строки/столбца) */
         .matrix-table td.lbl {
-            background: rgba(0,0,0,.4);
+            background: rgba(0, 0, 0, 0.5);
             border: none;
-            color: rgba(255,255,255,.6);
+            color: #81C784;
             font-weight: 700;
         }
 
@@ -342,27 +791,33 @@ input[type=number] {
         border: none;
         color: white;
         text-align: center;
-        font-size: 1.3rem;
-        font-weight: 700;
+        font-size: 1.6rem;
+        font-weight: 600;
         outline: none;
     }
 
-/* Граф */
+        .matrix-table input:focus {
+            background: rgba(129, 199, 132, 0.2);
+        }
+
+
+/* Область визуализации графа*/
 .graph-placeholder {
-    min-height: 700px;
+    min-height: 550px;
     border-radius: 18px;
-    border: 2px dashed rgba(255,255,255,.24);
+    border: 2px dashed rgba(255, 255, 255, 0.24);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     color: #f1f8e9;
-    background: rgba(255,255,255,.05);
-    padding: 0; /* Чистый паддинг без деформаций */
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
 }
 
-/* Результаты */
+
+/* Блок результатов анализа*/
 .result-full {
     width: 100%;
     margin-top: 32px;
@@ -373,54 +828,47 @@ input[type=number] {
     background: #314e12;
 }
 
-.result-list {
-    padding: 18px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.16);
-}
-
-    .result-list p {
-        font-size: 1.6rem;
-        line-height: 1.6;
-        color: #f1f8e9;
-        margin-bottom: 10px;
+    .result-card h2 {
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+        padding: 0;
+        line-height: 1.2;
     }
 
-        .result-list p:last-child {
-            margin-bottom: 0;
-        }
-
-/* Цвета карточек */
-.graph-card {
-    background: #233112;
+/* Шапка блока результатов (заголовок + кнопка сохранения) */
+.result-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
 }
 
-.result-card h2 {
-    margin-bottom: 18px;
-}
-
-/* Бейджи */
+/* Бейджи статуса результата (генерируются JS-ом) */
 .badge {
     display: inline-block;
-    padding: 6px 16px;
-    border-radius: 20px;
+    padding: 6px 18px;
+    border-radius: 30px;
     font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .badge-cycle {
-    background: rgba(27,94,32,.8);
+    background: rgba(27, 94, 32, 0.8);
     border: 1px solid #43A047;
 }
 
 .badge-path {
-    background: rgba(230,126,34,.7);
+    background: rgba(230, 126, 34, 0.7);
     border: 1px solid #f39c12;
 }
 
 .badge-none {
-    background: rgba(150,0,0,.7);
+    background: rgba(150, 0, 0, 0.7);
     border: 1px solid #e74c3c;
 }
+
