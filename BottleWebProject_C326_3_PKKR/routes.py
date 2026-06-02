@@ -9,6 +9,7 @@ import random
 
 from hamillton_graph import hamillton_graph, valid_hamillton
 from algorithms.euler_graph import solve_euler
+from validations.valid_euler import validation_euler,validation_random_params, validation_and_parse_file
 
 
 @route('/')
@@ -43,9 +44,12 @@ def euler_solve_route():
         if not data or "matrix" not in data:
             return {"exists": False, "message": "Матрица не передана"}
         
-        matrix = data["matrix"]
-        result = solve_euler(matrix)
-        return result
+        # 1. Валидация матрицы перед решением
+        is_valid, error_res = validation_euler(data["matrix"])
+        if not is_valid:
+            return error_res
+            
+        return solve_euler(data["matrix"])
     except Exception as e:
         return {"exists": False, "message": f"Ошибка сервера: {str(e)}"}
 
@@ -53,42 +57,36 @@ def euler_solve_route():
 def euler_random_route():
     try:
         data = request.json
-        n = int(data["n"])
-        density = int(data["density"]) / 100
+        if not data or "n" not in data or "density" not in data:
+            return {"error": "Не переданы параметры генерации"}
 
+        # 2. Валидация входных параметров для генерации
+        is_valid, n, density, error_res = validation_random_params(data["n"], data["density"])
+        if not is_valid:
+            return error_res
+
+        # Чистая генерация, так как параметры уже проверены и безопасны
         matrix = [[0] * n for _ in range(n)]
-
+        density_p = density / 100
         for i in range(n):
             for j in range(i + 1, n):
-                if random.random() < density:
+                if random.random() < density_p:
                     matrix[i][j] = 1
                     matrix[j][i] = 1
 
         return {"matrix": matrix}
     except Exception as e:
-        return {"error": f"Ошибка генерации: {str(e)}"}
+        return {"error": f"Ошибка сервера при генерации: {str(e)}"}
 
 @post("/euler/from_file")
 def euler_from_file_route():
-    f = request.files.get("file")
-    if not f:
-        return {"error": "Файл не передан"}
+    # 3. Валидация и парсинг файла в одном месте
+    is_valid, matrix, error_res = validation_and_parse_file(request.files.get("file"))
+    if not is_valid:
+        return error_res
 
-    try:
-        content = f.file.read().decode("utf-8")
-        matrix = []
+    return {"matrix": matrix}
 
-        for line in content.strip().splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            # Читаем числа, разделенные пробелами или табуляцией
-            row = list(map(int, line.split()))
-            matrix.append(row)
-
-        return {"matrix": matrix}
-    except Exception as e:
-        return {"error": f"Неверный формат файла: {str(e)}"}
 
 @route('/hamillton_graph')
 @view('hamillton_graph')

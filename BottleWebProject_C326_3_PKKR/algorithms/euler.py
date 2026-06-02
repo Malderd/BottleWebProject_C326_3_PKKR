@@ -3,7 +3,6 @@ from email import message
 import io
 import base64
 import matplotlib
-# Используем невизуальный бэкэнд, чтобы matplotlib работал на сервере без GUI
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import networkx as nx
