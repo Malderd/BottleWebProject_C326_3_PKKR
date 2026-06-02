@@ -21,6 +21,7 @@
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
@@ -33,6 +34,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="algorithms\euler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="algorithms\clique_detection.py">
       <SubType>Code</SubType>
     </Compile>
@@ -44,6 +48,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes.py" />
+    <Compile Include="validations\valid_euler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="validations\valid_clique.py">
       <SubType>Code</SubType>
     </Compile>
@@ -99,6 +106,9 @@
     <Content Include="static\images\friend_graph.png" />
     <Content Include="static\scripts\bootstrap.js" />
     <Content Include="static\scripts\bootstrap.min.js" />
+    <Content Include="static\scripts\euler.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="static\scripts\cliques.js" />
     <Content Include="static\scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="static\scripts\jquery-1.10.2.js" />

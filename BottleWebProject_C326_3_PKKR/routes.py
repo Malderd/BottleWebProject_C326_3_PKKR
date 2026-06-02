@@ -2,12 +2,18 @@
 Routes and views for the bottle application.
 """
 from bottle import route, view, request, template, response
+
+from bottle import route, view, request, template, post
 from datetime import datetime
 import json, io, zipfile, base64
+import json
+import random
 
 from hamillton_graph import hamillton_graph, valid_hamillton
 from algorithms.clique_detection import solve_cliques, generate_random_matrix
 from validations.valid_clique import validate_n, validate_matrix, validate_density, validate_txt_file
+from algorithms.euler_graph import solve_euler
+from validations.valid_euler import validation_euler,validation_random_params, validation_and_parse_file
 
 
 def _load_theory():
@@ -32,6 +38,60 @@ def about():
 @view('euler_graph')
 def euler_grap():
     return dict(title='Euler graph', request=request)
+def euler_graph():
+    return dict(
+        title='Euler graph',
+        request=request
+    )
+@post("/euler/solve")
+def euler_solve_route():
+    try:
+        data = request.json
+        if not data or "matrix" not in data:
+            return {"exists": False, "message": "Матрица не передана"}
+        
+        # 1. Валидация матрицы перед решением
+        is_valid, error_res = validation_euler(data["matrix"])
+        if not is_valid:
+            return error_res
+            
+        return solve_euler(data["matrix"])
+    except Exception as e:
+        return {"exists": False, "message": f"Ошибка сервера: {str(e)}"}
+
+@post("/euler/random")
+def euler_random_route():
+    try:
+        data = request.json
+        if not data or "n" not in data or "density" not in data:
+            return {"error": "Не переданы параметры генерации"}
+
+        # 2. Валидация входных параметров для генерации
+        is_valid, n, density, error_res = validation_random_params(data["n"], data["density"])
+        if not is_valid:
+            return error_res
+
+        # Чистая генерация, так как параметры уже проверены и безопасны
+        matrix = [[0] * n for _ in range(n)]
+        density_p = density / 100
+        for i in range(n):
+            for j in range(i + 1, n):
+                if random.random() < density_p:
+                    matrix[i][j] = 1
+                    matrix[j][i] = 1
+
+        return {"matrix": matrix}
+    except Exception as e:
+        return {"error": f"Ошибка сервера при генерации: {str(e)}"}
+
+@post("/euler/from_file")
+def euler_from_file_route():
+    # 3. Валидация и парсинг файла в одном месте
+    is_valid, matrix, error_res = validation_and_parse_file(request.files.get("file"))
+    if not is_valid:
+        return error_res
+
+    return {"matrix": matrix}
 
 
 @route('/hamillton_graph')
@@ -229,3 +289,12 @@ def clique_save():
     response.content_type = 'application/zip'
     response.headers['Content-Disposition'] = 'attachment; filename="clique_results.zip"'
     return zip_buf.read()
+@route('/kosarayu_algorithm')
+@view('kosarayu_algorithm')
+def kosarayu_algorithm():
+    return dict(
+        title='Kosarayu_algorithm',
+        request=request
+    )
+
+
