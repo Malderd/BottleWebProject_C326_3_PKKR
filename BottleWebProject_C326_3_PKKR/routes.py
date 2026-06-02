@@ -55,25 +55,24 @@ def hamillton_graph():
 @view('hamillton_graph')
 def decide_hamillton_graph():
     n = int(request.forms.get('n'))
+
+    # Получение нажатой кнопки
     action = request.forms.get('action') 
-
+    
+    # Чтение матрицы из формы
     matrix = []
-
     for i in range(n):
-
         row = []
-
         for j in range(n):
-
             row.append(
                 request.forms.get(
-                    f'cell_{i}_{j}',
+                    f'{i}_{j}',
                     ''
                 )
             )
-
         matrix.append(row)
 
+    # Проверка валидности
     errors = valid_hamillton(matrix)
 
     if errors:
@@ -89,10 +88,8 @@ def decide_hamillton_graph():
             request=request
         )
 
-    matrix = [
-        [int(cell) for cell in row]
-        for row in matrix
-    ]
+    # Преобразование строк в чисоа
+    matrix = [[int(cell) for cell in row]for row in matrix]
 
     graph_image = None
     result = None
@@ -103,9 +100,7 @@ def decide_hamillton_graph():
 
     elif action == "save":
 
-        zip_name, temp_dir = save_graph_archive(
-            matrix
-        )
+        zip_name, temp_dir = save_graph_archive(matrix)
 
         return static_file(
             zip_name,

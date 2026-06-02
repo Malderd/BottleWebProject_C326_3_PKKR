@@ -1,5 +1,6 @@
 const formData = window.formData || {};
 
+// Создание таблицы матрицы
 function createMatrix() {
 
     const n = Number(document.getElementById('size').value);
@@ -7,11 +8,11 @@ function createMatrix() {
 
     errorBox.innerHTML = '';
 
+    // Проверки количества вершин
     if (n < 3) {
         errorBox.innerHTML = 'Количество вершин не должно быть меньше 3.';
         return;
     }
-
     if (n > 15) {
         errorBox.innerHTML = 'Количество вершин не должно превышать 15.';
         return;
@@ -19,16 +20,14 @@ function createMatrix() {
 
     document.getElementById('hiddenN').value = n;
 
-    let html = '<table class="matrix">';
+    let html = '<table class="matrix">'; // Начало таблицы
 
+    // Цикл по строкам
     for (let i = 0; i < n; i++) {
-
-        html += '<tr>';
+        html += '<tr>'; // Добавление строки таблицы
 
         for (let j = 0; j < n; j++) {
-
-            const key = `cell_${i}_${j}`;
-
+            const key = `${i}_${j}`;
             let value = '';
 
             if (formData[key] !== undefined) {
@@ -37,6 +36,7 @@ function createMatrix() {
                 value = '0';
             }
 
+            // Добавление ячейки
             html += `
                 <td>
                     <input
@@ -55,9 +55,11 @@ function createMatrix() {
 
     html += '</table>';
 
+    // Вывод таблицы на страницу
     document.getElementById('matrixContainer').innerHTML = html;
 }
 
+// Очищение матрицы
 function clearMatrix() {
     const n =
         Number(
@@ -69,6 +71,7 @@ function clearMatrix() {
 
     errorBox.innerHTML = '';
 
+    // Проверки количества вершин
     if (n < 3) {
 
         errorBox.innerHTML =
@@ -76,7 +79,6 @@ function clearMatrix() {
 
         return;
     }
-
     if (n > 15) {
 
         errorBox.innerHTML =
@@ -85,15 +87,13 @@ function clearMatrix() {
         return;
     }
 
-    document.getElementById(
-        'hiddenN'
-    ).value = n;
+    document.getElementById('hiddenN').value = n;
 
-    let html = '<table class="matrix">';
+    let html = '<table class="matrix">'; // Начало таблицы
 
+    // Цикл по строкам
     for (let i = 0; i < n; i++) {
-
-        html += '<tr>';
+        html += '<tr>'; // Добавление строки таблицы
 
         for (let j = 0; j < n; j++) {
 
@@ -108,7 +108,7 @@ function clearMatrix() {
                         min="0"
                         max="1"
                         value="${value}"
-                        name="cell_${i}_${j}">
+                        name="${i}_${j}">
                 </td>
             `;
         }
@@ -123,6 +123,7 @@ function clearMatrix() {
     ).innerHTML = html;
 }
 
+// Создание случайной симметричной матрицы
 function generateMatrix() {
 
     const n = Number(document.getElementById('size').value);
@@ -130,6 +131,7 @@ function generateMatrix() {
 
     errorBox.innerHTML = '';
 
+    // Проверки количества вершин
     if (n < 3) {
 
         errorBox.innerHTML =
@@ -137,7 +139,6 @@ function generateMatrix() {
 
         return;
     }
-
     if (n > 15) {
 
         errorBox.innerHTML =
@@ -155,24 +156,29 @@ function generateMatrix() {
             const value =
                 i === j ? 0 : Math.random() < 0.5 ? 0 : 1;
 
+            // Поиск первой клетки
             const first =
                 document.getElementsByName(
-                    `cell_${i}_${j}`
+                    `${i}_${j}`
                 )[0];
 
+            // Поиск зеркальной клетки
             const second =
                 document.getElementsByName(
-                    `cell_${j}_${i}`
+                    `${j}_${i}`
                 )[0];
 
+            // Запись значений
             first.value = value;
             second.value = value;
         }
     }
 }
 
+// Загрузка матрицы из txt
 function loadMatrixFile(event) {
 
+    // Получение файоа
     const file = event.target.files[0];
 
     if (!file) {
@@ -183,13 +189,16 @@ function loadMatrixFile(event) {
 
     reader.onload = function (e) {
 
+        // Получение текста
         const text = e.target.result.trim();
 
+        // Разбиение на строки
         const rows = text
             .split(/\r?\n/)
             .map(row => row.trim())
             .filter(row => row.length > 0);
 
+        // Создание матрицы
         const matrix = rows.map(
             row => row.split(/\s+/)
         );
@@ -222,13 +231,9 @@ function loadMatrixFile(event) {
             }
         }
 
-        document.getElementById(
-            'size'
-        ).value = n;
+        document.getElementById('size').value = n;
 
-        document.getElementById(
-            'hiddenN'
-        ).value = n;
+        document.getElementById('hiddenN').value = n;
 
         createMatrix();
 
@@ -238,7 +243,7 @@ function loadMatrixFile(event) {
 
                 const cell =
                     document.getElementsByName(
-                        `cell_${i}_${j}`
+                        `${i}_${j}`
                     )[0];
 
                 cell.value =
@@ -250,6 +255,7 @@ function loadMatrixFile(event) {
     reader.readAsText(file);
 }
 
+// Обработчик выбора файла
 document.addEventListener('DOMContentLoaded', () => {
 
     const fileInput =

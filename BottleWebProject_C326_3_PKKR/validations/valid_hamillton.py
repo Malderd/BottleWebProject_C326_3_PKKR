@@ -5,7 +5,7 @@ def valid_hamillton(matrix):
     n = len(matrix)
 
     if n < 3:
-        errors['matrix'] = 'Количество вершин не должно быть меньше 3.'
+        errors['matrix'] = 'Количество вершин не должно быть больше 3.'
         return errors
 
     if n > 15:
@@ -19,18 +19,18 @@ def valid_hamillton(matrix):
             value = matrix[i][j]
 
             if value == '':
-                errors[f'cell_{i}_{j}'] = 'Заполните ячейки.'
+                errors[f'{i}_{j}'] = 'Заполните ячейки.'
                 return errors
 
             if value not in ('0', '1'):
-                errors[f'cell_{i}_{j}'] = \
+                errors[f'{i}_{j}'] = \
                     'Допустимы только значения 0 или 1.'
                 return errors
 
     for i in range(n):
 
         if matrix[i][i] != '0':
-            errors[f'cell_{i}_{i}'] = \
+            errors[f'{i}_{i}'] = \
                 'На главной диагонали должны быть нули.'
             return errors
 
