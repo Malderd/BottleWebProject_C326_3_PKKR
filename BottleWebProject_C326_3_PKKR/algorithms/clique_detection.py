@@ -33,9 +33,10 @@ def is_clique(subset, matrix):
                 return False
     return True
 
+# Нахождение сообществ
 def find_all_cliques(matrix, n):
     vertices = list(range(1, n + 1))
-    total = 1 << n
+    total = 1 << n # количество подмножеств 2^n
 
     cliques = []
 
