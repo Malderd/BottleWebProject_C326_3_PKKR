@@ -19,7 +19,7 @@
     <Name>BottleWebProject_C326_3_PKKR</Name>
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
+	<InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
@@ -56,7 +56,7 @@
     <Compile Include="validations\valid_hamillton.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="kosarayu_algorithm\graph_visualizer.py">
+    <Compile Include="algorithms\graph_visualizer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="routes.py" />
@@ -72,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="algorithms\" />
-    <Folder Include="kosarayu_algorithm\" />
     <Folder Include="tests\" />
     <Folder Include="static\data\" />
     <Folder Include="validations\" />

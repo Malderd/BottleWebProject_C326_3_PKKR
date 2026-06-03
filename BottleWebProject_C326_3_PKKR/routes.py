@@ -1,14 +1,9 @@
 """
 Routes and views for the bottle application.
 """
-from bottle import route, view, request, template, response
-
-from bottle import route, view, request, template, post, static_file
+from bottle import route, view, request, template, post, static_file, response
 from datetime import datetime
-from algorithms.kosarayu_algorithm import find_components
-from kosarayu_algorithm.graph_visualizer import draw_graph
-from validations.valid_kosarayu import validate_matrix, validate_matrix_text
-import json
+import json, io, zipfile, base64
 import os
 import ast
 import random
@@ -20,7 +15,9 @@ from algorithms.clique_detection import solve_cliques, generate_random_matrix
 from validations.valid_clique import validate_n, validate_matrix, validate_density, validate_txt_file
 from algorithms.euler_graph import solve_euler
 from validations.valid_euler import validation_euler,validation_random_params, validation_and_parse_file
-
+from algorithms.kosarayu_algorithm import find_components
+from algorithms.graph_visualizer import draw_directed_graph
+from validations.valid_kosarayu import validate_matrix_kosarayu, validate_matrix_text
 
 def _load_theory():
     with open('./static/data/cliques_theory.json', encoding='utf-8') as f:
@@ -380,7 +377,7 @@ def find_components_route():
     matrix_json = request.forms.get('matrix_data')
     matrix = json.loads(matrix_json)
 
-    errors = validate_matrix(matrix)
+    errors = validate_matrix_kosarayu(matrix)
 
     # если есть ошибки — не считаем
     if errors:
@@ -395,7 +392,7 @@ def find_components_route():
         )
 
     components = find_components(matrix)
-    draw_graph(
+    draw_directed_graph(
         matrix,
         components,
         "static/images/result_graph.png"

@@ -1,5 +1,5 @@
 import re
-def validate_matrix(matrix):
+def validate_matrix_kosarayu(matrix):
     n = len(matrix)
     errors = []
 

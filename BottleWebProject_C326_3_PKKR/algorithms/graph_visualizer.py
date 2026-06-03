@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
-def draw_graph(matrix, components, filename):
+def draw_directed_graph(matrix, components, filename):
     G = nx.DiGraph()
 
     n = len(matrix)
