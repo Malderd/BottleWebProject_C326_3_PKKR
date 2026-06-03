@@ -18,6 +18,86 @@ from validations.valid_euler import validation_euler,validation_random_params, v
 from algorithms.kosarayu_algorithm import find_components
 from algorithms.graph_visualizer import draw_directed_graph
 from validations.valid_kosarayu import validate_matrix_kosarayu, validate_matrix_text
+from algorithms.euler import draw_graph, find_eulerian_path
+
+# Эйлеров граф - маршруты для рисования и решения
+@route('/euler/draw', method='POST')
+def euler_draw_route():
+    """Маршрут для отрисовки графа"""
+    try:
+        data = request.json
+        if not data or "matrix" not in data:
+            return {"error": "Матрица не передана"}
+        
+        matrix = data.get("matrix", [])
+        if not matrix:
+            return {"error": "Пустая матрица"}
+        
+        image_base64 = draw_graph(matrix)
+        return {"image": image_base64}
+    except Exception as e:
+        return {"error": f"Ошибка при отрисовке графа: {str(e)}"}
+
+@route('/euler/solve', method='POST')
+def euler_solve_route():
+    """Маршрут для поиска Эйлерова маршрута"""
+    try:
+        data = request.json
+        if not data or "matrix" not in data:
+            return {"exists": False, "message": "Матрица не передана"}
+        
+        matrix = data.get("matrix", [])
+        if not matrix:
+            return {"exists": False, "message": "Пустая матрица"}
+        
+        is_valid, error_res = validation_euler(matrix)
+        if not is_valid:
+            return error_res
+            
+        result = find_eulerian_path(matrix)
+        return result
+    except Exception as e:
+        return {"exists": False, "message": f"Ошибка сервера: {str(e)}"}
+
+@route('/euler/random', method='POST')
+def euler_random_route():
+    """Маршрут для генерации случайного графа"""
+    try:
+        data = request.json
+        if not data or "n" not in data or "density" not in data:
+            return {"error": "Не переданы параметры генерации"}
+
+        is_valid, n, density, error_res = validation_random_params(data["n"], data["density"])
+        if not is_valid:
+            return error_res
+
+        matrix = [[0] * n for _ in range(n)]
+        density_p = density / 100
+        for i in range(n):
+            for j in range(i + 1, n):
+                if random.random() < density_p:
+                    matrix[i][j] = 1
+                    matrix[j][i] = 1
+
+        return {"matrix": matrix}
+    except Exception as e:
+        return {"error": f"Ошибка сервера при генерации: {str(e)}"}
+
+@route('/euler/from_file', method='POST')
+def euler_from_file_route():
+    """Маршрут для загрузки матрицы из файла"""
+    try:
+        uploaded_file = request.files.get("file")
+        if not uploaded_file:
+            return {"error": "Файл не передан"}
+        
+        is_valid, matrix, error_res = validation_and_parse_file(uploaded_file)
+        if not is_valid:
+            return error_res
+
+        return {"matrix": matrix}
+    except Exception as e:
+        return {"error": f"Ошибка сервера при загрузке файла: {str(e)}"}
 
 def _load_theory():
     with open('./static/data/cliques_theory.json', encoding='utf-8') as f:
@@ -40,60 +120,12 @@ def about():
 @route('/euler_graph')
 @view('euler_graph')
 def euler_grap():
+    return dict(title='Euler graph', request=request)
+def euler_graph():
     return dict(
         title='Euler graph',
         request=request
     )
-@post("/euler/solve")
-def euler_solve_route():
-    try:
-        data = request.json
-        if not data or "matrix" not in data:
-            return {"exists": False, "message": "Матрица не передана"}
-        
-        # 1. Валидация матрицы перед решением
-        is_valid, error_res = validation_euler(data["matrix"])
-        if not is_valid:
-            return error_res
-            
-        return solve_euler(data["matrix"])
-    except Exception as e:
-        return {"exists": False, "message": f"Ошибка сервера: {str(e)}"}
-
-@post("/euler/random")
-def euler_random_route():
-    try:
-        data = request.json
-        if not data or "n" not in data or "density" not in data:
-            return {"error": "Не переданы параметры генерации"}
-
-        # 2. Валидация входных параметров для генерации
-        is_valid, n, density, error_res = validation_random_params(data["n"], data["density"])
-        if not is_valid:
-            return error_res
-
-        # Чистая генерация, так как параметры уже проверены и безопасны
-        matrix = [[0] * n for _ in range(n)]
-        density_p = density / 100
-        for i in range(n):
-            for j in range(i + 1, n):
-                if random.random() < density_p:
-                    matrix[i][j] = 1
-                    matrix[j][i] = 1
-
-        return {"matrix": matrix}
-    except Exception as e:
-        return {"error": f"Ошибка сервера при генерации: {str(e)}"}
-
-@post("/euler/from_file")
-def euler_from_file_route():
-    # 3. Валидация и парсинг файла в одном месте
-    is_valid, matrix, error_res = validation_and_parse_file(request.files.get("file"))
-    if not is_valid:
-        return error_res
-
-    return {"matrix": matrix}
-
 
 @route('/hamillton_graph')
 @view('hamillton_graph')
