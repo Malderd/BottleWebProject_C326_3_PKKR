@@ -1,148 +1,198 @@
-
-from email import message
-import io
-import base64
+import json
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import networkx as nx
+import base64
+from io import BytesIO
 
-def solve_euler(matrix):
-    """
-    Основная функция анализа графа на наличие Эйлерова маршрута.
-    Возвращает словарь с результатами, который ожидает JS-фронтенд.
-    """
-    n = len(matrix)
+def draw_graph(matrix):
+    """Рисует граф и возвращает base64 строку изображения"""
+    N = len(matrix)
+    G = nx.Graph()
     
-    # 1. Расчёт степеней вершин
+    # Добавляем все вершины
+    for i in range(N):
+        G.add_node(i + 1)
+    
+    # Добавляем рёбра
+    for i in range(N):
+        for j in range(i + 1, N):
+            if matrix[i][j] > 0:
+                G.add_edge(i + 1, j + 1)
+    
+    # Создаём рисунок
+    plt.figure(figsize=(10, 8))
+    
+    # Используем разные цвета для изолированных вершин
+    pos = nx.spring_layout(G, k=2, iterations=50) if N > 0 else {}
+    
+    # Определяем цвета для вершин
+    node_colors = []
+    for i in range(N):
+        if G.degree(i + 1) == 0:
+            node_colors.append('#ffcccc')  # Светло-красный для изолированных
+        else:
+            node_colors.append('#a5d6a7')  # Зелёный для связных
+    
+    nx.draw(G, pos, with_labels=True, node_color=node_colors,
+            node_size=500, font_size=16, font_weight='bold',
+            edge_color='#666666', width=2)
+    
+    # Сохраняем в буфер
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png', bbox_inches='tight', dpi=100)
+    buffer.seek(0)
+    image_base64 = base64.b64encode(buffer.read()).decode()
+    plt.close()
+    
+    return image_base64
+
+def check_connectivity(matrix):
+    """Проверяет связность графа (все вершины с рёбрами должны быть связны)"""
+    N = len(matrix)
+    
+    # Находим все вершины, у которых есть рёбра (степень > 0)
+    vertices_with_edges = [i for i in range(N) if sum(matrix[i]) > 0]
+    
+    # Если нет ни одной вершины с рёбрами или только одна вершина с рёбрами
+    if len(vertices_with_edges) <= 1:
+        return True, []
+    
+    # BFS для проверки связности только между вершинами с рёбрами
+    start = vertices_with_edges[0]
+    visited = [False] * N
+    queue = [start]
+    visited[start] = True
+    
+    while queue:
+        v = queue.pop(0)
+        for u in range(N):
+            if matrix[v][u] > 0 and not visited[u]:
+                visited[u] = True
+                queue.append(u)
+    
+    # Находим непосещённые вершины, у которых есть рёбра
+    isolated_components = []
+    for i in vertices_with_edges:
+        if not visited[i]:
+            isolated_components.append(i + 1)
+    
+    return len(isolated_components) == 0, isolated_components
+
+def find_eulerian_path(matrix):
+    """Находит Эйлеров цикл или цепь в графе"""
+    N = len(matrix)
+    
+    # Степени вершин
     degrees = [sum(row) for row in matrix]
-    odd_vertices = [i + 1 for i, deg in enumerate(degrees) if deg % 2 != 0]
-    
-    # Подсчёт количества рёбер (для неориентированного графа сумма степеней / 2)
-    total_edges = sum(degrees) // 2
-    if total_edges == 0:
+    isolated_vertices = [i + 1 for i, deg in enumerate(degrees) if deg == 0]
+
+    if isolated_vertices:
         return {
-            "exists": False,
-            "message": "В графе нет рёбер. Эйлеров маршрут не существует."
+            "type": "isolated_vertex",
+            "message": f"Нельзя посчитать граф, потому что есть несвязная вершина: {', '.join(map(str, isolated_vertices))}",
+            "degrees": degrees,
+            "odd_vertices": [],
+            "path": [],
+            "is_connected": False,
+            "isolated_vertices": isolated_vertices,
+            "has_edges": True
         }
-
-    # 2. Проверка связности (проверяем только вершины со степенью > 0)
-    visited = [False] * n
-    # Находим первую вершину с рёбрами для старта DFS
-    start_dfs = next((i for i, deg in enumerate(degrees) if deg > 0), None)
     
-    if start_dfs is not None:
-        def dfs(v):
-            visited[v] = True
-            for to, connected in enumerate(matrix[v]):
-                if connected and not visited[to]:
-                    dfs(to)
-        dfs(start_dfs)
-        
-    # Если есть вершина с рёбрами, которую мы не посетили — граф несвязен
-    for i in range(n):
-        if degrees[i] > 0 and not visited[i]:
-            return {
-                "exists": False,
-                "message": "Граф несвязен (компоненты с рёбрами изолированы друг от друга)."
-            }
-
-    # 3. Валидация условий Эйлера
-    # Цикл: все степени чётные. Цепь: ровно 2 нечётные вершины.
-    if len(odd_vertices) == 0:
-        graph_type = "Эйлеров цикл"
-        # Стартовать можно с любой вершины, где есть рёбра
-        start_vertex = start_dfs
-    elif len(odd_vertices) == 2:
-        graph_type = "Эйлерова цепь"
-        # Стартовать обязаны из одной из нечётных вершин
-        start_vertex = odd_vertices[0] - 1
+    # Проверка на существование рёбер
+    has_edges = any(deg > 0 for deg in degrees)
+    
+    # Если нет рёбер
+    if not has_edges:
+        result_type = "no_edges"
+        result_message = "В графе нет рёбер. Эйлеров маршрут не существует."
+        return {
+            "type": result_type,
+            "message": result_message,
+            "degrees": degrees,
+            "odd_vertices": [],
+            "path": [],
+            "is_connected": True,
+            "has_edges": False
+        }
+    
+    # Проверка связности (только вершины с рёбрами должны быть связны)
+    is_connected, isolated_components = check_connectivity(matrix)
+    
+    # Если граф не связный (есть несколько компонент с рёбрами)
+    if not is_connected:
+        result_type = "disconnected"
+        result_message = f"Граф не связный! Обнаружены изолированные компоненты: вершины {', '.join(map(str, isolated_components))}"
+        return {
+            "type": result_type,
+            "message": result_message,
+            "degrees": degrees,
+            "odd_vertices": [],
+            "path": [],
+            "is_connected": False,
+            "isolated_components": isolated_components,
+            "has_edges": True
+        }
+    
+    # Проверка на существование Эйлерова цикла/цепи
+    odd_vertices = [i for i, deg in enumerate(degrees) if deg % 2 == 1]
+    odd_count = len(odd_vertices)
+    
+    if odd_count == 0:
+        result_type = "cycle"
+        result_message = "В графе существует Эйлеров цикл"
+    elif odd_count == 2:
+        result_type = "path"
+        result_message = "В графе существует Эйлерова цепь"
     else:
+        result_type = "none"
+        result_message = f"В графе нет Эйлерова цикла или цепи (нечётных вершин: {odd_count})"
         return {
-            "exists": False,
-            "message": f"Найдено нечётное количество вершин с нечётной степенью ({len(odd_vertices)}). Маршрут невозможен.",
-            "odd_vertices": odd_vertices
+            "type": result_type,
+            "message": result_message,
+            "degrees": degrees,
+            "odd_vertices": odd_vertices,
+            "path": [],
+            "is_connected": True,
+            "has_edges": True
         }
-
-    # 4. Поиск маршрута (Алгоритм Иерхольцера)
-    # Копируем матрицу, так как в процессе мы будем стирать рёбра
-    temp_matrix = [row[:] for row in matrix]
+    
+    # Находим стартовую вершину
+    if odd_count == 0:
+        # Для цикла начинаем с любой вершины, у которой есть рёбра
+        start_vertex = next((i for i, deg in enumerate(degrees) if deg > 0), 0)
+    else:
+        # Для цепи начинаем с нечётной вершины
+        start_vertex = odd_vertices[0]
+    
+    # Алгоритм Иерхольцера
+    graph = [row[:] for row in matrix]
     stack = [start_vertex]
-    path = []
-
+    result_path = []
+    
     while stack:
         v = stack[-1]
-        # Ищем первое доступное ребро из текущей вершины
         has_edge = False
-        for to in range(n):
-            if temp_matrix[v][to] > 0:
-                # Удаляем ребро в обоих направлениях
-                temp_matrix[v][to] -= 1
-                temp_matrix[to][v] -= 1
-                stack.append(to)
+        for u in range(N):
+            if graph[v][u] > 0:
+                graph[v][u] -= 1
+                graph[u][v] -= 1
+                stack.append(u)
                 has_edge = True
                 break
         if not has_edge:
-            # Если идти некуда, выталкиваем вершину в финальный путь
-            path.append(stack.pop() + 1) # Переводим в 1-индексацию для пользователя
-
-    # Разворачиваем путь, так как сборка шла с конца
-    path.reverse()
-
-    # 5. Построение матрицы достижимости (Транзитивное замыкание по алгоритму Уоршелла)
-    closure = [row[:] for row in matrix]
-    # Диагональ матрицы достижимости всегда 1 (вершина достижима из самой себя)
-    for i in range(n):
-        closure[i][i] = 1
-        
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                closure[i][j] = closure[i][j] or (closure[i][k] and closure[k][j])
-
-    # 6. Генерация изображения графа через NetworkX
-    img_base64 = ""
-    try:
-        plt.figure(figsize=(5, 4))
-        G = nx.Graph()
-        
-        # Добавляем только вершины, у которых есть связи, чтобы не перегружать экран
-        for i in range(n):
-            G.add_node(i + 1)
-            
-        for i in range(n):
-            for j in range(i + 1, n):
-                if matrix[i][j] > 0:
-                    G.add_edge(i + 1, j + 1)
-
-        pos = nx.spring_layout(G, seed=42)
-        
-        # Отрисовка
-        nx.draw_networkx_nodes(G, pos, node_color='#3498db', node_size=500)
-        nx.draw_networkx_labels(G, pos, font_color='white', font_weight='bold')
-        nx.draw_networkx_edges(G, pos, width=2, edge_color='#bdc3c7')
-        
-        plt.axis('off')
-        plt.tight_layout()
-
-        # Сохраняем в буфер памяти
-        buf = io.BytesIO()
-        plt.savefig(buf, format='png', bbox_inches='tight', transparent=True)
-        buf.seek(0)
-        img_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
-        plt.close()
-    except Exception as e:
-        print(f"Ошибка визуализации: {e}")
-
-    # Возвращаем полный набор данных, который затребовал наш euler.js
+            result_path.append(stack.pop() + 1)  # Приводим к 1-индексации
+    
+    result_path.reverse()
+    
     return {
-        "exists": True,
-        "type": graph_type,
-        "message": message,
-        "start_vertex": start_vertex + 1,
-        "odd_vertices": odd_vertices,
-        "path": path,
+        "type": result_type,
+        "message": result_message,
         "degrees": degrees,
-        "closure": closure,
-        "image": img_base64
+        "odd_vertices": odd_vertices,
+        "path": result_path,
+        "start_vertex": start_vertex + 1,
+        "is_connected": True,
+        "has_edges": True
     }
