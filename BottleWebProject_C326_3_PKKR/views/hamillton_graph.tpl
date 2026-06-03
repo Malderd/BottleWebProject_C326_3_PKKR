@@ -1,17 +1,7 @@
 % rebase('layout.tpl', title=title)
 
-<head>
-    <meta charset="UTF-8">
-
-    <title>
-        Поиск гамильтонова цикла и цепи
-    </title>
-
-    <link rel="stylesheet"
-          href="/static/content/hamillton_graph.css">
-</head>
-
-<body>
+<link rel="stylesheet"
+      href="/static/content/hamillton_graph.css">
 
 <div class="hamilton-page">
 
@@ -198,8 +188,6 @@
                             </tr>
 
                         </table>
-
-                        </div>
 
                     </div>
 
@@ -444,4 +432,3 @@
 </script>
 
 <script src="/static/scripts/hamillton_graph.js"></script>
-</body>
