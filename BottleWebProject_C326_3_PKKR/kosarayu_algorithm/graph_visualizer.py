@@ -18,14 +18,20 @@ def draw_graph(matrix, components, filename):
     pos = nx.circular_layout(G)
 
     component_colors = [
-        "#e74c3c",
-        "#3498db",
-        "#2ecc71",
-        "#f1c40f",
-        "#9b59b6",
-        "#1abc9c",
-        "#e67e22",
-        "#34495e"
+        "#e74c3c",  # красный
+        "#3498db",  # синий
+        "#2ecc71",  # зелёный
+        "#f1c40f",  # жёлтый
+        "#9b59b6",  # фиолетовый
+        "#1abc9c",  # бирюзовый
+        "#e67e22",  # оранжевый
+        "#5d6d7e",  # черничный
+        "#ff6b6b",  # светло-красный
+        "#74b9ff",  # светло-синий
+        "#55efc4",  # мятный
+        "#fdcb6e",  # светло-жёлтый
+        "#a29bfe",  # светло-фиолетовый
+        "#fab1a0"   # персиковый
     ]
 
     colors = ["lightgray"] * n
@@ -64,7 +70,8 @@ def draw_graph(matrix, components, filename):
         edge_color=edge_colors,
         width=edge_widths,
         arrows=True,
-        font_size=18
+        font_size=18,
+        arrowsize = 20
     )
 
     plt.savefig(

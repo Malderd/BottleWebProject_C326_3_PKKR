@@ -10,6 +10,7 @@ from kosarayu_algorithm.graph_visualizer import draw_graph
 from validations.valid_kosarayu import validate_matrix, validate_matrix_text
 import json
 import os
+import ast
 import random
 
 from algorithms.hamillton_graph import find_hamillton_graph
@@ -440,3 +441,33 @@ def load_matrix_route():
         theory=json.load(open('./static/data/kosarayu_theory.json', encoding='utf-8')),
         errors=errors
     )
+
+@post('/kosarayu_algorithm/save_matrix')
+def save_matrix():
+
+    matrix = ast.literal_eval(
+        request.forms.get("matrix")
+    )
+
+    components = ast.literal_eval(
+        request.forms.get("components")
+    )
+
+    text = f'Дата: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\n\n'
+
+    text += "Матрица смежности:\n"
+
+    for row in matrix:
+        text += " ".join(map(str, row)) + "\n"
+
+    text += "\nКомпоненты сильной связности:\n"
+
+    for component in components:
+        text += "{" + ", ".join(map(str, component)) + "}\n"
+
+    response.content_type = "text/plain; charset=utf-8"
+    response.headers[
+        "Content-Disposition"
+    ] = 'attachment; filename="result.txt"'
+
+    return text

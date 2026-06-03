@@ -184,9 +184,22 @@
 
                     <div class="section-header">
                         <h2>Визуализация графа и результаты</h2>
-                        <button class="btn primary">
-                             Сохранить
-                        </button>
+                        % if matrix and components:
+                        <form method="post" action="/kosarayu_algorithm/save_matrix">
+
+                            <input type="hidden"
+                                   name="matrix"
+                                   value="{{matrix}}">
+
+                            <input type="hidden"
+                                   name="components"
+                                   value="{{components}}">
+
+                            <button type="submit" class="btn primary">
+                                Сохранить
+                            </button>
+                        </form>
+                        % end
                     </div>
 
                     <div class="graph-container">
