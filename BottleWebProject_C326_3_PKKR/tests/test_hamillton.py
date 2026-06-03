@@ -4,7 +4,7 @@ from algorithms.hamillton_graph import find_hamillton_graph
 from validations.valid_hamillton import valid_hamillton, validate_txt_file
 
 # Тестирование алгоритма поиска гамильтонова цепи и цикла
-class TestHamiltonAlgorithm(unittest.TestCase):
+class TestHamilltonAlgorithm(unittest.TestCase):
     
     # Проверка наличия в графе гамильтонова цикла
     def test_cycle_exists(self):
@@ -51,7 +51,7 @@ class TestHamiltonAlgorithm(unittest.TestCase):
         self.assertIsNone(result)
 
 # Тестирование валидности матрицы смежности
-class TestHamiltonValidation(unittest.TestCase):
+class TestHamilltonValidation(unittest.TestCase):
     # Проверка корректной матрицы
     def test_valid_matrix(self):
 
@@ -109,7 +109,7 @@ class TestHamiltonValidation(unittest.TestCase):
         self.assertNotEqual(valid_hamillton(matrix), {})
 
 # Тестирование валидности матрицы смежности, загруженной из txt-файла
-class TestHamiltonValidationFile(unittest.TestCase):
+class TestHamilltonValidationFile(unittest.TestCase):
     # Проверка корректной матрицы
     def test_txt_ok(self):
 
