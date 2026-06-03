@@ -1,12 +1,11 @@
 """
 Routes and views for the bottle application.
 """
-from bottle import route, view, request, template, response
-
-from bottle import route, view, request, template, post, static_file
+from bottle import route, view, request, template, post, static_file, response
 from datetime import datetime
 import json, io, zipfile, base64
-import json
+import os
+import ast
 import random
 
 from algorithms.hamillton_graph import find_hamillton_graph
@@ -16,7 +15,9 @@ from algorithms.clique_detection import solve_cliques, generate_random_matrix
 from validations.valid_clique import validate_n, validate_matrix, validate_density, validate_txt_file
 from algorithms.euler_graph import solve_euler
 from validations.valid_euler import validation_euler,validation_random_params, validation_and_parse_file
-
+from algorithms.kosarayu_algorithm import find_components
+from algorithms.graph_visualizer import draw_directed_graph
+from validations.valid_kosarayu import validate_matrix_kosarayu, validate_matrix_text
 
 def _load_theory():
     with open('./static/data/cliques_theory.json', encoding='utf-8') as f:
@@ -39,8 +40,6 @@ def about():
 @route('/euler_graph')
 @view('euler_graph')
 def euler_grap():
-    return dict(title='Euler graph', request=request)
-def euler_graph():
     return dict(
         title='Euler graph',
         request=request
@@ -178,13 +177,6 @@ def decide_hamillton_graph():
         request=request
     )
 
-@route('/kosarayu_algorithm')
-@view('kosarayu_algorithm')
-def kosarayu_algorithm():
-    return dict(title='Kosarayu_algorithm', request=request)
-
-
-# ─── Клики: GET
 @route('/clique_detection')
 def clique_detection():
     tab = request.query.get('tab', 'manual')
@@ -363,9 +355,116 @@ def clique_save():
 @route('/kosarayu_algorithm')
 @view('kosarayu_algorithm')
 def kosarayu_algorithm():
+    with open('./static/data/kosarayu_theory.json', encoding='utf-8') as f:
+        theory = json.load(f)
     return dict(
         title='Kosarayu_algorithm',
-        request=request
+        request=request,
+        matrix=None,
+        components=None,
+        theory=theory,
+        graph_image=None,
+        errors = None
     )
 
+@post('/kosarayu_algorithm/find_components')
+@view('kosarayu_algorithm')
+def find_components_route():
 
+    with open('./static/data/kosarayu_theory.json', encoding='utf-8') as f:
+        theory = json.load(f)
+
+    matrix_json = request.forms.get('matrix_data')
+    matrix = json.loads(matrix_json)
+
+    errors = validate_matrix_kosarayu(matrix)
+
+    # если есть ошибки — не считаем
+    if errors:
+        return dict(
+            title='Kosarayu_algorithm',
+            request=request,
+            theory=theory,
+            matrix=matrix,
+            components=None,
+            graph_image=None,
+            errors=errors
+        )
+
+    components = find_components(matrix)
+    draw_directed_graph(
+        matrix,
+        components,
+        "static/images/result_graph.png"
+    )
+    return dict(
+        title='Kosarayu_algorithm',
+        request=request,
+        theory=theory,
+        matrix=matrix,
+        components=components,
+        graph_image="/static/images/result_graph.png",
+        errors = None
+    )
+
+@post('/kosarayu_algorithm/load_matrix')
+@view('kosarayu_algorithm')
+def load_matrix_route():
+    errors = []
+    matrix = None
+    file = request.files.get('matrix_file')
+    allowed_extension = ".txt"
+    extension = os.path.splitext(file.filename)[1].lower()
+
+    if not file:
+        errors.append("Файл не выбран")
+    elif extension != allowed_extension:
+        errors.append("Загружаемый файл должен быть расширения TXT")
+    else:
+        text = file.file.read().decode("utf-8").strip()
+        valid, result = validate_matrix_text(text)
+        if not valid:
+            errors.append(result)
+        else:
+            matrix = result
+
+    # Передаем matrix в шаблон, чтоб JS потом построил таблицу
+    return dict(
+        title='Kosarayu_algorithm',
+        request=request,
+        matrix=matrix,
+        components=None,
+        graph_image=None,
+        theory=json.load(open('./static/data/kosarayu_theory.json', encoding='utf-8')),
+        errors=errors
+    )
+
+@post('/kosarayu_algorithm/save_matrix')
+def save_matrix():
+
+    matrix = ast.literal_eval(
+        request.forms.get("matrix")
+    )
+
+    components = ast.literal_eval(
+        request.forms.get("components")
+    )
+
+    text = f'Дата: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\n\n'
+
+    text += "Матрица смежности:\n"
+
+    for row in matrix:
+        text += " ".join(map(str, row)) + "\n"
+
+    text += "\nКомпоненты сильной связности:\n"
+
+    for component in components:
+        text += "{" + ", ".join(map(str, component)) + "}\n"
+
+    response.content_type = "text/plain; charset=utf-8"
+    response.headers[
+        "Content-Disposition"
+    ] = 'attachment; filename="result.txt"'
+
+    return text
