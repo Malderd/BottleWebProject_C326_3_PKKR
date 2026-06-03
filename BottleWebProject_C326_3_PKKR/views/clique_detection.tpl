@@ -19,14 +19,14 @@
             <div class="theory-content">
                 % for section in theory['sections']:
                 <div class="theory-section">
-                    <h3 class="theory-section-title">{{section['title']}}</h3>
+                    <h2 class="theory-section-title">{{section['title']}}</h2>
                     <div class="theory-section-body">
                         <div class="theory-section-text">
                             <p>{{section['text']}}</p>
                         </div>
                         % if section.get('image'):
                         <figure class="theory-figure">
-                            <img src="{{section['image']}}">
+                            <img src="{{section['image']}}" alt="Иллюстрация к разделу теории">
                         </figure>
                         % end
                     </div>
