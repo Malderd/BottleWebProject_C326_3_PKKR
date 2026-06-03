@@ -23,7 +23,7 @@
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

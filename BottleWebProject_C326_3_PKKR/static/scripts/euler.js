@@ -150,6 +150,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            // --- ПРОВЕРКА НА ИЗОЛИРОВАННЫЕ ВЕРШИНЫ (СТРОКА ИЗ НУЛЕЙ) ---
+            let hasDisconnectedVertex = false;
+            let disconnectedVertices = [];
+
+            for (let i = 0; i < matrix.length; i++) {
+                // Считаем сумму элементов в строке i
+                const rowSum = matrix[i].reduce((sum, val) => sum + val, 0);
+                if (rowSum === 0) {
+                    hasDisconnectedVertex = true;
+                    disconnectedVertices.push(i + 1); // Запоминаем номер вершины (с 1)
+                }
+            }
+
             try {
                 const response = await fetch("/euler/solve", {
                     method: "POST",
@@ -157,12 +170,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     body: JSON.stringify({ matrix })
                 });
                 const data = await response.json();
+
+              
+                if (hasDisconnectedVertex) {
+                    data.exists = false;
+                    data.message = `Обнаружены отделенные/изолированные вершины: ${disconnectedVertices.join(", ")}. Граф несвязен!`;
+                }
+
                 lastData = data;
 
                 const resPanel = document.getElementById("result-panel");
                 if (resPanel) resPanel.style.display = "block";
 
-                // ВЫЗЫВАЕМ НОВЫЙ ЕДИНЫЙ ВЫВОД РЕЗУЛЬТАТОВ
+                // Вызываем отрисовку результатов
                 renderResults();
             } catch (err) {
                 console.error("Ошибка отправки на сервер:", err);
@@ -194,6 +214,9 @@ document.addEventListener("DOMContentLoaded", function () {
         table.innerHTML = "";
         const n = matrix.length;
 
+        // Массив для хранения ссылок на инпуты, чтобы легко находить "зеркало"
+        const inputGrid = Array.from({ length: n }, () => Array(n).fill(null));
+
         for (let i = 0; i < n; i++) {
             const tr = document.createElement("tr");
             for (let j = 0; j < n; j++) {
@@ -204,8 +227,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 input.max = 1;
                 input.value = matrix[i][j];
 
+                // Сохраняем ссылку на инпут в сетку
+                inputGrid[i][j] = input;
+
+                // Главная диагональ (петли) — выключаем
                 if (i === j) {
                     input.disabled = true;
+                } else {
+                    input.addEventListener("input", function () {
+                        // Ограничиваем ввод (только 0 или 1, если ввели что-то другое)
+                        let val = parseInt(input.value);
+                        if (isNaN(val) || val < 0) val = 0;
+                        if (val > 1) val = 1;
+                        input.value = val;
+
+                        // Находим зеркальный инпут (меняем i и j местами)
+                        const mirrorInput = inputGrid[j][i];
+                        if (mirrorInput) {
+                            mirrorInput.value = val;
+                        }
+                    });
                 }
 
                 td.appendChild(input);
@@ -214,7 +255,6 @@ document.addEventListener("DOMContentLoaded", function () {
             table.appendChild(tr);
         }
     }
-
     const btnClearMatrix = document.getElementById("btn-clear-matrix");
     if (btnClearMatrix) {
         btnClearMatrix.addEventListener("click", () => {
@@ -228,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ==========================================
-    // 6. ОТОБРАЖЕНИЕ РЕЗУЛЬТАТОВ (ОДНА ПАНЕЛЬ, БЕЗ ТАБОВ)
+    // 6. ОТОБРАЖЕНИЕ РЕЗУЛЬТАТОВ
     // ==========================================
     function renderResults() {
         const output = document.getElementById("result-output");
@@ -237,15 +277,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 1. Если маршрут не существует
         if (!lastData.exists) {
-            graphPlaceholder.innerHTML = `<div style="color:#e74c3c; padding:20px; text-align:center; font-weight:bold;">Граф не удовлетворяет условиям Эйлера</div>`;
+
+            if (lastData.image) {
+                graphPlaceholder.innerHTML =
+                    `<img src="data:image/png;base64,${lastData.image}"
+             class="graph-image"
+             style="max-width:100%; height:auto;">`;
+            } else {
+                graphPlaceholder.innerHTML =
+                    `<div style="color:#e74c3c;">Граф не удовлетворяет условиям Эйлера</div>`;
+            }
+
             output.innerHTML = `
-                <div class="step-card">
-                    <h4 class="theory-step-title" style="color:#e74c3c;">Маршрут невозможен</h4>
-                    <div class="info-panel info-warning">
-                        <p><strong>Внимание:</strong> ${lastData.message}</p>
-                    </div>
-                </div>
-            `;
+        <div class="step-card">
+            <h4 style="color:#e74c3c;">Маршрут невозможен</h4>
+            <p>${lastData.message}</p>
+        </div>
+    `;
             return;
         }
 
@@ -334,10 +382,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const timestamp = new Date().toISOString().slice(0, 10);
 
             // --- 1. Формируем текстовый отчет (report.txt) ---
-            let reportText = `=========================================\n`;
-            reportText += `        ОТЧЕТ ОБ АНАЛИЗЕ ГРАФА (${timestamp})  \n`;
-            reportText += `=========================================\n\n`;
-
+            let reportText = `ОТЧЕТ ОБ АНАЛИЗЕ ГРАФА (${timestamp})\n`;
+            
             if (!lastData.exists) {
                 reportText += `Статус: Граф не удовлетворяет условиям Эйлера.\n`;
                 reportText += `Причина: ${lastData.message}\n`;
