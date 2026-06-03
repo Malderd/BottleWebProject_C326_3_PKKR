@@ -112,18 +112,48 @@ class TestCliquesSelenium(unittest.TestCase):
         self.driver.get(self.base_url + "/clique_detection?tab=file")
         self.pause("[TEST 3] Открыли file вкладку")
 
-        file_path = r"C:\Users\annak\OneDrive\Рабочий стол\true_matrix.txt" # Выбранный файл
+        # Неверный файл
+        error_file = r"C:\Users\annak\OneDrive\Рабочий стол\error.txt"
 
         file_input = self.wait.until(
             EC.presence_of_element_located((By.ID, "file-input"))
         )
-        file_input.send_keys(file_path) # Загрузили файл в орму
-        self.pause("[TEST 3] Файл выбран")
+
+        file_input.send_keys(error_file)
 
         upload_btn = self.wait.until(
             EC.element_to_be_clickable((By.ID, "btn-upload"))
         )
-        upload_btn.click() # Построили матрицу
+
+        upload_btn.click()  # Пытаемся загрузить неверный файл
+
+        time.sleep(2)
+
+        # Нажимаем "Очистить"
+        clear_btn = self.wait.until(
+            EC.element_to_be_clickable((By.NAME, "clear"))
+        )
+
+        clear_btn.click()
+
+        time.sleep(2)
+
+        # Загружаем правильный файл
+        true_file = r"C:\Users\annak\OneDrive\Рабочий стол\true_matrix.txt"
+
+        file_input = self.wait.until(
+            EC.presence_of_element_located((By.ID, "file-input"))
+        )
+
+        file_input.send_keys(true_file)
+
+        upload_btn = self.wait.until(
+            EC.element_to_be_clickable((By.ID, "btn-upload"))
+        )
+
+        upload_btn.click()
+
+        time.sleep(2)
         self.pause("[TEST 3] Загрузили матрицу")
 
         self.wait.until(
