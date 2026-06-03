@@ -1,453 +1,519 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let lastData = null; // Переменная для хранения ответов бэкенда
+// Основные элементы DOM
+let currentMatrix = [];
+let currentN = 0;
+let currentTab = 'manual';
+let currentGraphImage = null;
 
-    // Вспомогательная функция для определения, какой таб сейчас активен
-    function getActiveTableId() {
-        const activeTab = document.querySelector(".tab.active");
-        if (!activeTab) return "matrix-table-manual";
-        const tabType = activeTab.getAttribute("data-tab"); // manual, random, file
-        return `matrix-table-${tabType}`;
-    }
-
-    function getActiveWrapperId() {
-        const activeTab = document.querySelector(".tab.active");
-        if (!activeTab) return "wrapper-manual";
-        const tabType = activeTab.getAttribute("data-tab");
-        return `wrapper-${tabType}`;
-    }
-
-    // ==========================================
-    // 1. ПЕРЕКЛЮЧЕНИЕ ОСНОВНЫХ ТАБОВ (ВВОД ДАННЫХ)
-    // ==========================================
-    document.querySelectorAll(".tab").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-
-            document.querySelectorAll(".tab-content").forEach(t => t.style.display = "none");
-            const targetId = "tab-" + btn.getAttribute("data-tab");
-            const targetContent = document.getElementById(targetId);
-            if (targetContent) targetContent.style.display = "block";
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function () {
+            const tabId = this.getAttribute('data-tab');
+            switchTab(tabId);
         });
     });
 
-    // ==========================================
-    // 2. РУЧНОЙ ВВОД МАТРИЦЫ
-    // ==========================================
-    const btnCreateMatrix = document.getElementById("btn-create-matrix");
-    if (btnCreateMatrix) {
-        btnCreateMatrix.addEventListener("click", () => {
-            const nInput = document.getElementById("n-manual");
-            const n = parseInt(nInput ? nInput.value : 0);
-            if (!n || n < 2 || n > 20) {
-                alert("Введите N от 2 до 20");
+    document.getElementById('btn-create-matrix').addEventListener('click', createMatrixInput);
+    document.getElementById('btn-clear-matrix').addEventListener('click', clearMatrix);
+    document.getElementById('btn-random').addEventListener('click', generateRandomMatrix);
+    document.getElementById('btn-choose-file').addEventListener('click', () => document.getElementById('file-input').click());
+    document.getElementById('btn-clear-file').addEventListener('click', clearFileMatrix);
+    document.getElementById('btn-solve').addEventListener('click', solveEuler);
+    document.getElementById('btn-save').addEventListener('click', saveResults);
+
+    const fileInput = document.getElementById('file-input');
+    fileInput.addEventListener('change', handleFileUpload);
+
+    const fileZone = document.getElementById('file-zone');
+    fileZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileZone.style.borderColor = '#4CAF50';
+    });
+    fileZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        fileZone.style.borderColor = '#ccc';
+    });
+    fileZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileZone.style.borderColor = '#ccc';
+        const file = e.dataTransfer.files[0];
+        if (file && file.name.endsWith('.txt')) {
+            readFile(file);
+        } else {
+            alert('Пожалуйста, загрузите файл в формате .txt');
+        }
+    });
+    fileZone.addEventListener('click', () => fileInput.click());
+});
+
+function switchTab(tabId) {
+    currentTab = tabId;
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-tab') === tabId) {
+            tab.classList.add('active');
+        }
+    });
+    document.getElementById('tab-manual').style.display = tabId === 'manual' ? 'block' : 'none';
+    document.getElementById('tab-random').style.display = tabId === 'random' ? 'block' : 'none';
+    document.getElementById('tab-file').style.display = tabId === 'file' ? 'block' : 'none';
+}
+
+function createMatrixInput() {
+    const nInput = document.getElementById('n-manual');
+    let n = parseInt(nInput.value);
+    if (isNaN(n) || n < 2) {
+        alert('Введите количество вершин (минимум 2)');
+        return;
+    }
+    if (n > 20) {
+        alert('Максимальное количество вершин - 20');
+        return;
+    }
+    currentN = n;
+    currentMatrix = Array(n).fill().map(() => Array(n).fill(0));
+    const wrapper = document.getElementById('wrapper-manual');
+    const table = document.getElementById('matrix-table-manual');
+    table.innerHTML = '';
+    let thead = '<tr><th></th>';
+    for (let i = 1; i <= n; i++) {
+        thead += `<th>${i}</th>`;
+    }
+    thead += '</tr>';
+    table.innerHTML = thead;
+    for (let i = 0; i < n; i++) {
+        let row = `<tr><th>${i + 1}</th>`;
+        for (let j = 0; j < n; j++) {
+            const isDisabled = (i === j);
+            row += `<td>
+                        <input type="number" 
+                               class="matrix-cell" 
+                               data-i="${i}" 
+                               data-j="${j}"
+                               min="0" 
+                               max="1" 
+                               value="0"
+                               ${isDisabled ? 'disabled' : ''}>
+                    </td>`;
+        }
+        row += '</tr>';
+        table.innerHTML += row;
+    }
+    document.querySelectorAll('#matrix-table-manual .matrix-cell').forEach(cell => {
+        if (!cell.disabled) {
+            cell.addEventListener('change', function () {
+                const i = parseInt(this.getAttribute('data-i'));
+                const j = parseInt(this.getAttribute('data-j'));
+                let val = parseInt(this.value);
+                if (isNaN(val)) val = 0;
+                if (val < 0) val = 0;
+                if (val > 1) val = 1;
+                currentMatrix[i][j] = val;
+                const sibling = document.querySelector(`#matrix-table-manual .matrix-cell[data-i="${j}"][data-j="${i}"]`);
+                if (sibling && sibling !== this) {
+                    sibling.value = val;
+                    currentMatrix[j][i] = val;
+                }
+            });
+        }
+    });
+    wrapper.style.display = 'block';
+    const placeholder = document.getElementById('graph-placeholder');
+    placeholder.innerHTML = '<div style="text-align: center; padding: 50px;">Граф будет отображён после нажатия кнопки "Построить граф и найти эйлеров маршрут"</div>';
+    document.getElementById('result-panel').style.display = 'none';
+    currentGraphImage = null;
+}
+
+function clearMatrix() {
+    const wrapper = document.getElementById('wrapper-manual');
+    wrapper.style.display = 'none';
+    document.getElementById('n-manual').value = '';
+    currentMatrix = [];
+    currentN = 0;
+    const placeholder = document.getElementById('graph-placeholder');
+    placeholder.innerHTML = '<div style="text-align: center; padding: 50px;">Граф будет отображён после нажатия кнопки "Построить граф и найти эйлеров маршрут"</div>';
+    document.getElementById('result-panel').style.display = 'none';
+    currentGraphImage = null;
+}
+
+function generateRandomMatrix() {
+    const nInput = document.getElementById('n-random');
+    const densityInput = document.getElementById('density');
+    let n = parseInt(nInput.value);
+    let density = parseInt(densityInput.value);
+    if (isNaN(n) || n < 2) {
+        alert('Введите количество вершин (минимум 2)');
+        return;
+    }
+    if (n > 20) {
+        alert('Максимальное количество вершин - 20');
+        return;
+    }
+    if (isNaN(density) || density < 1 || density > 100) {
+        alert('Введите плотность рёбер от 1 до 100');
+        return;
+    }
+    fetch('/euler/random', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ n: n, density: density })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
                 return;
             }
-            const matrix = Array.from({ length: n }, () => Array(n).fill(0));
-
-            // Показываем обертку и строим таблицу
-            document.getElementById("wrapper-manual").style.display = "block";
-            buildMatrixFromData(matrix, "matrix-table-manual");
-        });
-    }
-
-    // ==========================================
-    // 3. СЛУЧАЙНАЯ ГЕНЕРАЦИЯ
-    // ==========================================
-    const btnRandom = document.getElementById("btn-random");
-    if (btnRandom) {
-        btnRandom.addEventListener("click", async () => {
-            const nEl = document.getElementById("n-random");
-            const dEl = document.getElementById("density");
-            if (!nEl || !dEl || !nEl.value || !dEl.value) {
-                alert("Введите количество вершин и плотность");
-                return;
+            if (data.matrix) {
+                currentMatrix = data.matrix;
+                currentN = n;
+                displayMatrixRandom(currentMatrix);
+                const placeholder = document.getElementById('graph-placeholder');
+                placeholder.innerHTML = '<div style="text-align: center; padding: 50px;">Граф будет отображён после нажатия кнопки "Построить граф и найти эйлеров маршрут"</div>';
+                document.getElementById('result-panel').style.display = 'none';
+                currentGraphImage = null;
             }
-
-            try {
-                const response = await fetch("/euler/random", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ n: nEl.value, density: dEl.value })
-                });
-                const data = await response.json();
-                if (data.error) { alert(data.error); return; }
-
-                // Показываем обертку и генерируем таблицу
-                document.getElementById("wrapper-random").style.display = "block";
-                buildMatrixFromData(data.matrix, "matrix-table-random");
-            } catch (err) {
-                console.error("Ошибка генерации:", err);
-            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ошибка при генерации случайного графа');
         });
-    }
+}
 
-    // ==========================================
-    // 4. ЗАГРУЗКА ИЗ ФАЙЛА (CLICK & DRAG-AND-DROP)
-    // ==========================================
-    const fileInput = document.getElementById("file-input");
-    const fileZone = document.getElementById("file-zone");
-    const btnChooseFile = document.getElementById("btn-choose-file");
-    const btnClearFile = document.getElementById("btn-clear-file");
-
-    if (btnChooseFile && fileInput) {
-        btnChooseFile.addEventListener("click", () => fileInput.click());
-    }
-    if (fileZone && fileInput) {
-        fileZone.addEventListener("click", () => fileInput.click());
-        fileZone.addEventListener("dragover", (e) => { e.preventDefault(); fileZone.classList.add("dragover"); });
-        fileZone.addEventListener("dragleave", () => fileZone.classList.remove("dragover"));
-        fileZone.addEventListener("drop", async (e) => {
-            e.preventDefault();
-            fileZone.classList.remove("dragover");
-            if (e.dataTransfer.files.length) await uploadFile(e.dataTransfer.files[0]);
-        });
-    }
-    if (fileInput) {
-        fileInput.addEventListener("change", async (e) => {
-            if (e.target.files.length) await uploadFile(e.target.files[0]);
-        });
-    }
-    if (btnClearFile && fileInput && fileZone) {
-        btnClearFile.addEventListener("click", () => {
-            fileInput.value = "";
-            fileZone.innerHTML = "<b>Перетащите файл сюда</b> или нажмите для выбора (.txt)";
-            const table = document.getElementById("matrix-table-file");
-            if (table) table.innerHTML = "";
-            document.getElementById("wrapper-file").style.display = "none";
-            hideResultPanel();
-        });
-    }
-
-    async function uploadFile(file) {
-        if (!file) return;
-        if (fileZone) fileZone.innerHTML = `<b>${file.name}</b> загружен`;
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append('file', file);
+        fetch('/euler/from_file', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                if (data.matrix) {
+                    currentMatrix = data.matrix;
+                    currentN = data.matrix.length;
+                    displayMatrixFile(currentMatrix);
+                    const placeholder = document.getElementById('graph-placeholder');
+                    placeholder.innerHTML = '<div style="text-align: center; padding: 50px;">Граф будет отображён после нажатия кнопки "Построить граф и найти эйлеров маршрут"</div>';
+                    document.getElementById('result-panel').style.display = 'none';
+                    currentGraphImage = null;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ошибка при загрузке файла');
+            });
+    }
+}
 
-        try {
-            const response = await fetch("/euler/from_file", { method: "POST", body: formData });
-            const data = await response.json();
-            if (data.error) { alert(data.error); return; }
+function readFile(file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const content = e.target.result;
+        parseMatrixFromText(content);
+    };
+    reader.readAsText(file);
+}
 
-            // Показываем обертку для файла и строим матрицу
-            document.getElementById("wrapper-file").style.display = "block";
-            buildMatrixFromData(data.matrix, "matrix-table-file");
-        } catch (err) {
-            console.error("Ошибка чтения файла:", err);
+function parseMatrixFromText(text) {
+    const lines = text.trim().split('\n');
+    const matrix = [];
+    for (let line of lines) {
+        const numbers = line.trim().split(/\s+/).map(Number);
+        if (numbers.length > 0 && !isNaN(numbers[0])) {
+            matrix.push(numbers);
         }
     }
-
-    // ==========================================
-    // 5. ПОЛУЧЕНИЕ И ОТПРАВКА МАТРИЦЫ НА РЕШЕНИЕ
-    // ==========================================
-    const btnSolve = document.getElementById("btn-solve");
-    if (btnSolve) {
-        btnSolve.addEventListener("click", async () => {
-            const matrix = getMatrixFromTable();
-            if (!matrix || !matrix.length) {
-                alert("Сначала создайте или загрузите матрицу смежности");
-                return;
-            }
-
-            // --- ПРОВЕРКА НА ИЗОЛИРОВАННЫЕ ВЕРШИНЫ (СТРОКА ИЗ НУЛЕЙ) ---
-            let hasDisconnectedVertex = false;
-            let disconnectedVertices = [];
-
-            for (let i = 0; i < matrix.length; i++) {
-                // Считаем сумму элементов в строке i
-                const rowSum = matrix[i].reduce((sum, val) => sum + val, 0);
-                if (rowSum === 0) {
-                    hasDisconnectedVertex = true;
-                    disconnectedVertices.push(i + 1); // Запоминаем номер вершины (с 1)
-                }
-            }
-
-            try {
-                const response = await fetch("/euler/solve", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ matrix })
-                });
-                const data = await response.json();
-
-              
-                if (hasDisconnectedVertex) {
-                    data.exists = false;
-                    data.message = `Обнаружены отделенные/изолированные вершины: ${disconnectedVertices.join(", ")}. Граф несвязен!`;
-                }
-
-                lastData = data;
-
-                const resPanel = document.getElementById("result-panel");
-                if (resPanel) resPanel.style.display = "block";
-
-                // Вызываем отрисовку результатов
-                renderResults();
-            } catch (err) {
-                console.error("Ошибка отправки на сервер:", err);
-            }
-        });
+    if (matrix.length === 0) {
+        alert('Файл пуст или имеет неверный формат');
+        return;
     }
-
-    function getMatrixFromTable() {
-        const currentTableId = getActiveTableId();
-        const table = document.getElementById(currentTableId);
-        const matrix = [];
-        if (!table || !table.rows.length) return matrix;
-
-        for (let i = 0; i < table.rows.length; i++) {
-            const row = [];
-            for (let j = 0; j < table.rows[i].cells.length; j++) {
-                const input = table.rows[i].cells[j].querySelector("input");
-                row.push(input ? Number(input.value) : 0);
-            }
-            matrix.push(row);
-        }
-        return matrix;
-    }
-
-    function buildMatrixFromData(matrix, tableId) {
-        const table = document.getElementById(tableId);
-        if (!table) return;
-
-        table.innerHTML = "";
-        const n = matrix.length;
-
-        // Массив для хранения ссылок на инпуты, чтобы легко находить "зеркало"
-        const inputGrid = Array.from({ length: n }, () => Array(n).fill(null));
-
-        for (let i = 0; i < n; i++) {
-            const tr = document.createElement("tr");
-            for (let j = 0; j < n; j++) {
-                const td = document.createElement("td");
-                const input = document.createElement("input");
-                input.type = "number";
-                input.min = 0;
-                input.max = 1;
-                input.value = matrix[i][j];
-
-                // Сохраняем ссылку на инпут в сетку
-                inputGrid[i][j] = input;
-
-                // Главная диагональ (петли) — выключаем
-                if (i === j) {
-                    input.disabled = true;
-                } else {
-                    input.addEventListener("input", function () {
-                        // Ограничиваем ввод (только 0 или 1, если ввели что-то другое)
-                        let val = parseInt(input.value);
-                        if (isNaN(val) || val < 0) val = 0;
-                        if (val > 1) val = 1;
-                        input.value = val;
-
-                        // Находим зеркальный инпут (меняем i и j местами)
-                        const mirrorInput = inputGrid[j][i];
-                        if (mirrorInput) {
-                            mirrorInput.value = val;
-                        }
-                    });
-                }
-
-                td.appendChild(input);
-                tr.appendChild(td);
-            }
-            table.appendChild(tr);
-        }
-    }
-    const btnClearMatrix = document.getElementById("btn-clear-matrix");
-    if (btnClearMatrix) {
-        btnClearMatrix.addEventListener("click", () => {
-            const table = document.getElementById("matrix-table-manual");
-            if (table) table.innerHTML = "";
-
-            // Скрываем контейнер таблицы
-            document.getElementById("wrapper-manual").style.display = "none";
-            hideResultPanel();
-        });
-    }
-
-    // ==========================================
-    // 6. ОТОБРАЖЕНИЕ РЕЗУЛЬТАТОВ
-    // ==========================================
-    function renderResults() {
-        const output = document.getElementById("result-output");
-        const graphPlaceholder = document.getElementById("graph-placeholder");
-        if (!output || !lastData) return;
-
-        // 1. Если маршрут не существует
-        if (!lastData.exists) {
-
-            if (lastData.image) {
-                graphPlaceholder.innerHTML =
-                    `<img src="data:image/png;base64,${lastData.image}"
-             class="graph-image"
-             style="max-width:100%; height:auto;">`;
-            } else {
-                graphPlaceholder.innerHTML =
-                    `<div style="color:#e74c3c;">Граф не удовлетворяет условиям Эйлера</div>`;
-            }
-
-            output.innerHTML = `
-        <div class="step-card">
-            <h4 style="color:#e74c3c;">Маршрут невозможен</h4>
-            <p>${lastData.message}</p>
-        </div>
-    `;
+    const n = matrix.length;
+    for (let row of matrix) {
+        if (row.length !== n) {
+            alert('Матрица должна быть квадратной');
             return;
         }
-
-        // 2. Отображение графа в левой панели
-        if (lastData.image) {
-            graphPlaceholder.innerHTML = `<img src="data:image/png;base64,${lastData.image}" class="graph-image" style="max-width:100%; height:auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">`;
+    }
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            if (matrix[i][j] !== matrix[j][i]) {
+                alert('Матрица должна быть симметричной (неориентированный граф)');
+                return;
+            }
+            if (i === j && matrix[i][j] !== 0) {
+                alert('На диагонали должны быть нули (нет петель)');
+                return;
+            }
         }
-
-        // 3. Сборка единого вывода результатов
-        const isCycle = lastData.type === "Эйлеров цикл";
-        const oddVerticesHtml = lastData.odd_vertices.length
-            ? lastData.odd_vertices.map(v => `<strong>Вершина ${v}</strong>`).join(" ")
-            : "<span>отсутствуют (все вершины чётные)</span>";
-
-        // Генерируем HTML для степеней вершин
-        let degreesHtml = "";
-        lastData.degrees.forEach((deg, idx) => {
-            const isOdd = deg % 2 !== 0;
-            const statusHtml = isOdd
-                ? `<span style="color:#e74c3c; font-weight:bold;">(нечётная)</span>`
-                : `<span style="color:#27ae60;">(чётная)</span>`;
-            degreesHtml += `<li>Вершина <strong>${idx + 1}</strong>: степень = <strong>${deg}</strong> ${statusHtml}</li>`;
-        });
-
-        // Генерируем HTML для матрицы достижимости
-        let matrixHtml = `<table class="matrix-table" style="margin: 15px auto 0 auto; border-collapse: collapse;">`;
-        lastData.closure.forEach(row => {
-            matrixHtml += `<tr>`;
-            row.forEach(cell => {
-                const colorStyle = cell ? 'style="color:#2ecc71; font-weight:bold;"' : 'style="color:#e74c3c;"';
-                matrixHtml += `<td ${colorStyle} style="border:1px solid #ddd; padding:8px; text-align:center; min-width:30px;">${cell}</td>`;
-            });
-            matrixHtml += `</tr>`;
-        });
-        matrixHtml += `</table>`;
-
-        // Выводим все данные одним сплошным свитком
-        output.innerHTML = `
-            <div class="step-card" style="margin-bottom: 20px;">
-                <h4 class="theory-step-title">${lastData.type} найден${isCycle ? '' : 'а'}!</h4>
-                <div class="info-panel info-success" style="margin-bottom: 15px;">
-                    <p>Граф связен и удовлетворяет всем условиям существования ${isCycle ? 'эйлерова цикла' : 'эйлеровой цепи'}.</p>
-                </div>
-                <p><b>Стартовая вершина:</b> <span class="degree-badge">${lastData.start_vertex}</span></p>
-                <p><b>Нечётные вершины:</b> ${oddVerticesHtml}</p>
-                
-                <div class="theory-step-route main-route" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 6px; text-align: center; font-size: 1.2em; font-weight: bold;">
-                    ${lastData.path.join(" → ")}
-                </div>
-            </div>
-
-            <div class="step-card" style="margin-bottom: 20px;">
-                <h4 class="theory-step-title">Степени вершин</h4>
-                <ul style="list-style: none; padding-left: 0; margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
-                    ${degreesHtml}
-                </ul>
-            </div>
-
-            <div class="step-card">
-                <h4 class="theory-step-title">Матрица достижимости</h4>
-                <p style="font-size: 0.9em; color: #666;">Показывает связность графа (транзитивное замыкание):</p>
-                <div style="overflow-x: auto;">
-                    ${matrixHtml}
-                </div>
-            </div>
-        `;
     }
+    currentN = n;
+    currentMatrix = matrix;
+    displayMatrixFile(matrix);
+}
 
-    // ==========================================
-    // 7. СБОРКА И СКАЧИВАНИЕ ZIP-АРХИВА
-    // ==========================================
-    const btnSave = document.getElementById("btn-save");
-    if (btnSave) {
-        btnSave.addEventListener("click", async () => {
-            if (!lastData) {
-                alert("Нет данных для сохранения. Сначала найдите маршрут.");
-                return;
-            }
+function clearFileMatrix() {
+    const wrapper = document.getElementById('wrapper-file');
+    wrapper.style.display = 'none';
+    document.getElementById('file-input').value = '';
+    currentMatrix = [];
+    currentN = 0;
+    const placeholder = document.getElementById('graph-placeholder');
+    placeholder.innerHTML = '<div style="text-align: center; padding: 50px;">Граф будет отображён после нажатия кнопки "Построить граф и найти эйлеров маршрут"</div>';
+    document.getElementById('result-panel').style.display = 'none';
+    currentGraphImage = null;
+}
 
-            if (typeof JSZip === "undefined") {
-                alert("Ошибка: Библиотека JSZip не загружена.");
-                return;
-            }
-
-            const zip = new JSZip();
-            const timestamp = new Date().toISOString().slice(0, 10);
-
-            // --- 1. Формируем текстовый отчет (report.txt) ---
-            let reportText = `ОТЧЕТ ОБ АНАЛИЗЕ ГРАФА (${timestamp})\n`;
-            
-            if (!lastData.exists) {
-                reportText += `Статус: Граф не удовлетворяет условиям Эйлера.\n`;
-                reportText += `Причина: ${lastData.message}\n`;
+function drawGraph(matrix) {
+    return fetch('/euler/draw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ matrix: matrix })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.image) {
+                currentGraphImage = data.image;
+                return data.image;
+            } else if (data.error) {
+                throw new Error(data.error);
             } else {
-                reportText += `Тип маршрута: ${lastData.type}\n`;
-                reportText += `Стартовая вершина: ${lastData.start_vertex}\n`;
-
-                const oddCount = lastData.odd_vertices ? lastData.odd_vertices.length : 0;
-                reportText += `Количество нечётных вершин: ${oddCount}\n`;
-                if (oddCount > 0) {
-                    reportText += `Нечётные вершины: ${lastData.odd_vertices.join(", ")}\n`;
-                } else {
-                    reportText += `Нечётные вершины: отсутствуют (все вершины чётные)\n`;
-                }
-
-                reportText += `\nЭйлеров маршрут:\n`;
-                reportText += lastData.path.join(" -> ") + `\n\n`;
-                reportText += `Вывод: Каждое ребро пройдено ровно один раз.\n`;
-            }
-
-            reportText += `\n Степени всех вершин:\n`;
-            if (lastData.degrees) {
-                lastData.degrees.forEach((deg, idx) => {
-                    const status = deg % 2 !== 0 ? "(нечётная)" : "(чётная)";
-                    reportText += `  Вершина ${idx + 1}: степень = ${deg} ${status}\n`;
-                });
-            }
-
-            zip.file("report.txt", reportText);
-
-            // --- 2. Формируем файл исходной матрицы (matrix.txt) ---
-            const currentMatrix = getMatrixFromTable();
-            if (currentMatrix && currentMatrix.length > 0) {
-                const matrixText = currentMatrix.map(row => row.join(" ")).join("\n");
-                zip.file("matrix.txt", matrixText);
-            }
-
-            // --- 3. Добавляем картинку графа (graph.png) ---
-            if (lastData.exists && lastData.image) {
-                zip.file("graph.png", lastData.image, { base64: true });
-            }
-
-            // --- 4. Генерация и скачивание архива ---
-            try {
-                const content = await zip.generateAsync({ type: "blob" });
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(content);
-                link.download = `euler_graph_results_${timestamp}.zip`;
-
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (err) {
-                console.error("Ошибка при создании ZIP-архива:", err);
-                alert("Не удалось создать архив результатов.");
+                throw new Error('Ошибка при отображении графа');
             }
         });
-    }
+}
 
-    function hideResultPanel() {
-        const resPanel = document.getElementById("result-panel");
-        if (resPanel) resPanel.style.display = "none";
-        const graphPlaceholder = document.getElementById("graph-placeholder");
-        if (graphPlaceholder) graphPlaceholder.innerHTML = "Здесь будет граф";
-        lastData = null;
+function solveEuler() {
+    if (currentN === 0 || currentMatrix.length === 0) {
+        alert('Сначала создайте или загрузите граф');
+        return;
     }
-}); // Конец DOMContentLoaded
+    const solveBtn = document.getElementById('btn-solve');
+    const originalText = solveBtn.textContent;
+    solveBtn.textContent = '⏳ Обработка...';
+    solveBtn.disabled = true;
+    const placeholder = document.getElementById('graph-placeholder');
+    placeholder.innerHTML = '<div style="text-align: center; padding: 50px;">🔄 Построение графа и поиск маршрута...</div>';
+
+    drawGraph(currentMatrix)
+        .then(imageBase64 => {
+            placeholder.innerHTML = `<img src="data:image/png;base64,${imageBase64}" alt="Граф" style="max-width: 100%; height: auto; border-radius: 8px;">`;
+            return fetch('/euler/solve', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ matrix: currentMatrix })
+            });
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayResults(data);
+            solveBtn.textContent = originalText;
+            solveBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            placeholder.innerHTML = `<div style="text-align: center; padding: 50px; color: red;">❌ Ошибка: ${error.message}</div>`;
+            alert('Ошибка при построении графа или поиске маршрута');
+            solveBtn.textContent = originalText;
+            solveBtn.disabled = false;
+        });
+}
+
+function displayResults(data) {
+    const resultPanel = document.getElementById('result-panel');
+    const resultOutput = document.getElementById('result-output');
+    resultOutput.innerHTML = '';
+
+    // Степени вершин
+    const degreesDiv = document.createElement('div');
+    degreesDiv.className = 'degrees-section';
+    degreesDiv.innerHTML = '<h3>📊 Степени вершин</h3><div class="degrees-list"></div>';
+    const degreesList = degreesDiv.querySelector('.degrees-list');
+    data.degrees.forEach((deg, idx) => {
+        const degItem = document.createElement('span');
+        degItem.className = 'degree-item';
+        if (deg === 0) {
+            degItem.classList.add('isolated');
+            degItem.title = 'Изолированная вершина';
+        } else if (deg % 2 === 1) {
+            degItem.classList.add('odd');
+            degItem.title = 'Нечётная вершина';
+        }
+        degItem.textContent = `deg(${idx + 1}) = ${deg}`;
+        degreesList.appendChild(degItem);
+    });
+    resultOutput.appendChild(degreesDiv);
+
+    // Результат
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'result-section';
+    let resultIcon = '';
+    let resultClass = '';
+    if (data.type === 'cycle') {
+        resultIcon = '🔄';
+        resultClass = 'cycle';
+    }
+    else if (data.type === 'isolated_vertex') {
+        resultIcon = '⚠️';
+        resultClass = 'disconnected';
+    } else if (data.type === 'path') {
+        resultIcon = '🔗';
+        resultClass = 'path';
+    } else if (data.type === 'disconnected') {
+        resultIcon = '⚠️';
+        resultClass = 'disconnected';
+    } else if (data.type === 'no_edges') {
+        resultIcon = '📭';
+        resultClass = 'no-edges';
+    } else {
+        resultIcon = '❌';
+        resultClass = 'none';
+    }
+    let resultHtml = `<h3>${resultIcon} Результат</h3><div class="result-message ${resultClass}">${data.message}</div>`;
+
+    if (data.is_connected && data.path && data.path.length > 0) {
+        resultHtml += `<div class="path-section">
+                            <h4>${data.type === 'cycle' ? '🔄 Эйлеров цикл' : '🔗 Эйлерова цепь'}</h4>
+                            <div class="path-display">${data.path.join(' → ')}</div>
+                        </div>`;
+    }
+    if (data.type === 'disconnected') {
+        resultHtml += `<div class="warning-section">
+                            <div class="warning-message">
+                                <strong>Эйлеров маршрут не существует!</strong><br>
+                                Граф не является связным. Для существования Эйлерова маршрута граф должен быть связным.<br>
+                                <small>Изолированные компоненты: вершины ${data.isolated_components ? data.isolated_components.join(', ') : ''}</small>
+                            </div>
+                        </div>`;
+    }
+    if (data.type === 'isolated_vertex') {
+        resultHtml += `<div class="warning-section">
+                        <div class="warning-message">
+                            <strong>Обнаружены несвязные вершины</strong><br>
+                            Невозможно выполнить поиск Эйлерова маршрута.<br>
+                            <small>Изолированные вершины: ${data.isolated_vertices.join(', ')}</small>
+                        </div>
+                    </div>`;
+    }
+    if (data.type === 'no_edges') {
+        resultHtml += `<div class="warning-section">
+                            <div class="warning-message">
+                                <strong>Нет рёбер</strong><br>
+                                Граф не содержит рёбер. Эйлеров маршрут не существует.
+                            </div>
+                        </div>`;
+    }
+    resultDiv.innerHTML = resultHtml;
+    resultOutput.appendChild(resultDiv);
+    resultPanel.style.display = 'block';
+    resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function saveResults() {
+    if (!currentGraphImage || currentMatrix.length === 0) {
+        alert('Сначала постройте граф и найдите маршрут');
+        return;
+    }
+    const resultOutput = document.getElementById('result-output');
+    const resultText = resultOutput.innerText;
+    const currentTime = new Date().toLocaleString('ru-RU');
+    let report = `═══════════════════════════════════════════════════════\n`;
+    report += `            АНАЛИЗ ЭЙЛЕРОВА МАРШРУТА\n`;
+    report += `═══════════════════════════════════════════════════════\n\n`;
+    report += `Дата и время: ${currentTime}\n`;
+    report += `Количество вершин: ${currentN}\n\n`;
+    report += `Матрица смежности:\n`;
+    for (let i = 0; i < currentN; i++) {
+        let row = `   ${i + 1}  `;
+        for (let j = 0; j < currentN; j++) {
+            row += `${currentMatrix[i][j]}  `;
+        }
+        report += row + '\n';
+    }
+    report += `\n${'─'.repeat(55)}\n\n`;
+    report += resultText;
+    report += `\n\n${'─'.repeat(55)}\n`;
+    report += ` Легенда:\n`;
+    report += `   • Чётные вершины: нормальные\n`;
+    report += `   • Нечётные вершины: выделены цветом\n`;
+    report += `   • Эйлеров цикл: все вершины чётные\n`;
+    report += `   • Эйлерова цепь: ровно две нечётные вершины\n`;
+    report += `\n${'═'.repeat(55)}\n`;
+    const zip = new JSZip();
+    zip.file("graph.png", currentGraphImage, { base64: true });
+    zip.file("euler_results.txt", report);
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `euler_results_${currentTime.replace(/[/:,. ]/g, '_')}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+}
+
+function displayMatrixRandom(matrix) {
+    const n = matrix.length;
+    const wrapper = document.getElementById('wrapper-random');
+    const table = document.getElementById('matrix-table-random');
+    table.innerHTML = '';
+    let thead = '<tr><th></th>';
+    for (let i = 1; i <= n; i++) {
+        thead += `<th>${i}</th>`;
+    }
+    thead += '</tr>';
+    table.innerHTML = thead;
+    for (let i = 0; i < n; i++) {
+        let row = `<tr><th>${i + 1}</th>`;
+        for (let j = 0; j < n; j++) {
+            const isDisabled = (i === j);
+            row += `<td>
+                        <input type="text" 
+                               class="matrix-cell-readonly" 
+                               value="${matrix[i][j]}"
+                               ${isDisabled ? 'disabled' : 'readonly'}
+                               style="text-align: center; width: 40px;">
+                    </td>`;
+        }
+        row += '</tr>';
+        table.innerHTML += row;
+    }
+    wrapper.style.display = 'block';
+}
+
+function displayMatrixFile(matrix) {
+    const n = matrix.length;
+    const wrapper = document.getElementById('wrapper-file');
+    const table = document.getElementById('matrix-table-file');
+    table.innerHTML = '';
+    let thead = '<tr><th></th>';
+    for (let i = 1; i <= n; i++) {
+        thead += `<th>${i}</th>`;
+    }
+    thead += '</tr>';
+    table.innerHTML = thead;
+    for (let i = 0; i < n; i++) {
+        let row = `<tr><th>${i + 1}</th>`;
+        for (let j = 0; j < n; j++) {
+            const isDisabled = (i === j);
+            row += `<td>
+                        <input type="text" 
+                               class="matrix-cell-readonly" 
+                               value="${matrix[i][j]}"
+                               ${isDisabled ? 'disabled' : 'readonly'}
+                               style="text-align: center; width: 40px;">
+                    </td>`;
+        }
+        row += '<tr>';
+        table.innerHTML += row;
+    }
+    wrapper.style.display = 'block';
+}
