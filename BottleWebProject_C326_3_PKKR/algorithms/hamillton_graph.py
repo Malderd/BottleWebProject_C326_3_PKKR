@@ -1,4 +1,4 @@
-def hamillton_graph(matrix):
+def find_hamillton_graph(matrix):
     n = len(matrix)
 
     path = [0]

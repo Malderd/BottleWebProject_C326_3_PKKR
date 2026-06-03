@@ -291,7 +291,7 @@
                     Количество вершин:
                 </label>
 
-                <input type="number" id="size" min="1" max="15" value="5">
+                <input type="number" id="size" min="3" max="15" value="{{ form_data.get('n', 5) }}">
 
             </div>
 
@@ -309,13 +309,20 @@
 
                 </button>
 
-                <button type="button">
+                <button type="button" onclick="document.getElementById('matrixFile').click()">
 
                     Загрузить
 
                 </button>
 
-                <button type="button" onclick="createMatrix()">
+                
+                <input
+                    type="file"
+                    id="matrixFile"
+                    accept=".txt"
+                    style="display:none">
+
+                <button type="button" onclick="clearMatrix()">
 
                     Очистить
 
@@ -325,6 +332,16 @@
 
         </div>
 
+        % if errors: 
+            <div class="error"> 
+                % for key, value in errors.items(): 
+                    <p>{{ value }}</p> 
+                % end 
+            </div> 
+        % end 
+        
+        <div id="matrixError" class="error"></div>
+
         <form action="/decide_hamillton_graph" method="post">
 
             <input type="hidden" id="hiddenN" name="n">
@@ -333,19 +350,57 @@
 
             <div class="action-buttons">
 
-                <button type="submit" class="button_main">
-
+                <button type="submit" name="action" value="solve" class="button_main">
                     Найти решение
-
                 </button>
 
-                <button type="button" class="save-btn">
-
+                <button type="submit" name="action" value="save" class="save-btn">
                     Сохранить
-
                 </button>
 
             </div>
+
+            % if success:
+
+                <div class="result-block">
+
+                    % if result:
+
+                        % result_type, path = result
+
+                        % if result_type == 'cycle':
+
+                            <h3>
+                                Найден гамильтонов цикл
+                            </h3>
+
+                            <p>
+                                {{ ' → '.join(str(v) for v in path) }} → {{ path[0] }}
+                            </p>
+
+                        % else:
+
+                            <h3>
+                                Найдена гамильтонова цепь
+                            </h3>
+
+                            <p>
+                                {{ ' → '.join(str(v) for v in path) }}
+                            </p>
+
+                        % end
+
+                    % else:
+
+                        <h3>
+                            Гамильтонов цикл или цепь отсутствуют
+                        </h3>
+
+                    % end
+
+                </div>
+
+            % end
 
             <div class="graph-section">
 
@@ -354,6 +409,19 @@
                 </h2>
 
                 <div class="graph-box">
+
+                    % if graph_image:
+
+                        <img
+                            src="{{ graph_image }}"
+                            alt="Граф">
+
+                    % else:
+
+                        Граф еще не построен
+
+                    % end
+
                 </div>
 
             </div>
@@ -367,82 +435,13 @@
 
 <script>
 
-function createMatrix() {
-
-    const n =
-        Number(
-            document.getElementById('size').value
-        );
-
-    document.getElementById(
-        'hiddenN'
-    ).value = n;
-
-    let html = '<table class="matrix">';
-
-    for (let i = 0; i < n; i++) {
-
-        html += '<tr>';
-
-        for (let j = 0; j < n; j++) {
-
-            html += `
-                <td>
-                    <input
-                        class="cell"
-                        type="number"
-                        min="0"
-                        max="1"
-                        value="${i === j ? 0 : ''}"
-                        name="cell_${i}_${j}">
-                </td>
-            `;
-        }
-
-        html += '</tr>';
-    }
-
-    html += '</table>';
-
-    document.getElementById(
-        'matrixContainer'
-    ).innerHTML = html;
-}
-
-function generateMatrix() {
-
-    createMatrix();
-
-    const n =
-        Number(
-            document.getElementById('size').value
-        );
-
-    for (let i = 0; i < n; i++) {
-
-        for (let j = i; j < n; j++) {
-
-            const value =
-                i === j ? 0 : Math.random() < 0.5 ? 0 : 1;
-
-            const first =
-                document.getElementsByName(
-                    `cell_${i}_${j}`
-                )[0];
-
-            const second =
-                document.getElementsByName(
-                    `cell_${j}_${i}`
-                )[0];
-
-            first.value = value;
-            second.value = value;
-        }
-    }
-}
-
-window.onload = createMatrix;
+    window.formData = {
+    % for key, value in form_data.items():
+        "{{key}}": "{{value}}",
+    % end
+    };
 
 </script>
 
+<script src="/static/scripts/hamillton_graph.js"></script>
 </body>

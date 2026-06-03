@@ -1,19 +1,23 @@
 """
 Routes and views for the bottle application.
 """
-from bottle import route, view, request, template, response
-
-from bottle import route, view, request, template, post
+from bottle import route, view, request, template, post, static_file, response
 from datetime import datetime
 import json, io, zipfile, base64
-import json
+import os
+import ast
 import random
 
-from hamillton_graph import hamillton_graph, valid_hamillton
+from algorithms.hamillton_graph import find_hamillton_graph
+from validations.valid_hamillton import valid_hamillton
+from algorithms.draw_graph import draw_graph, save_graph_archive
 from algorithms.clique_detection import solve_cliques, generate_random_matrix
 from validations.valid_clique import validate_n, validate_matrix, validate_density, validate_txt_file
 from algorithms.euler_graph import solve_euler
 from validations.valid_euler import validation_euler,validation_random_params, validation_and_parse_file
+from algorithms.kosarayu_algorithm import find_components
+from algorithms.graph_visualizer import draw_directed_graph
+from validations.valid_kosarayu import validate_matrix_kosarayu, validate_matrix_text
 from algorithms.euler import draw_graph, find_eulerian_path
 
 # Эйлеров граф - маршруты для рисования и решения
@@ -126,24 +130,85 @@ def euler_graph():
 @route('/hamillton_graph')
 @view('hamillton_graph')
 def hamillton_graph():
-    return template('hamillton_graph.tpl', title='Hamilltom graph',
-                    result=None, success=False, errors={}, form_data={}, request=request)
-
+    return template(
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
+        result=None,
+        graph_image=None,
+        success=False,
+        errors={},
+        form_data={},
+        request=request
+    )
 
 @route('/decide_hamillton_graph', method='POST')
 @view('hamillton_graph')
 def decide_hamillton_graph():
-    return template('hamillton_graph.tpl', title='Hamilltom graph',
-                    result=None, success=True, errors={}, form_data=request.forms, request=request)
+    n = int(request.forms.get('n'))
 
+    # Получение нажатой кнопки
+    action = request.forms.get('action') 
+    
+    # Чтение матрицы из формы
+    matrix = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            row.append(
+                request.forms.get(
+                    f'{i}_{j}',
+                    ''
+                )
+            )
+        matrix.append(row)
 
-@route('/kosarayu_algorithm')
-@view('kosarayu_algorithm')
-def kosarayu_algorithm():
-    return dict(title='Kosarayu_algorithm', request=request)
+    # Проверка валидности
+    errors = valid_hamillton(matrix)
 
+    if errors:
 
-# ─── Клики: GET
+        return template(
+            'hamillton_graph.tpl',
+            title='Hamilltom graph',
+            result=None,
+            graph_image=None,
+            success=False,
+            errors=errors,
+            form_data=request.forms,
+            request=request
+        )
+
+    # Преобразование строк в чисоа
+    matrix = [[int(cell) for cell in row]for row in matrix]
+
+    graph_image = None
+    result = None
+
+    if action == "solve":
+        result = find_hamillton_graph(matrix)
+        graph_image = draw_graph(matrix)
+
+    elif action == "save":
+
+        zip_name, temp_dir = save_graph_archive(matrix)
+
+        return static_file(
+            zip_name,
+            root=temp_dir,
+            download=zip_name
+        )
+
+    return template(
+        'hamillton_graph.tpl',
+        title='Hamilltom graph',
+        result=result,
+        graph_image=graph_image,
+        success=True,
+        errors={},
+        form_data=request.forms,
+        request=request
+    )
+
 @route('/clique_detection')
 def clique_detection():
     tab = request.query.get('tab', 'manual')
@@ -298,13 +363,14 @@ def clique_save():
     for i in range(n):
         lines.append(str(i + 1).rjust(2) + ' ' + '  '.join(str(matrix[i][j]).rjust(2) for j in range(n)))
     lines.append('')
-    cliques = result['maximal_cliques']
+    cliques = result['all_cliques']
+
     if cliques:
-        lines.append(f'Максимальных клик найдено: {len(cliques)}')
+        lines.append(f'Найдено клик: {len(cliques)}')
         for idx, clique in enumerate(cliques):
             lines.append(f'{idx + 1}) {{{", ".join(map(str, clique))}}}')
     else:
-        lines.append('Максимальных клик не найдено.')
+        lines.append('Клик не найдено.')
 
     txt_bytes = '\n'.join(lines).encode('utf-8')
     png_bytes = base64.b64decode(result['graph_png'])
@@ -321,9 +387,116 @@ def clique_save():
 @route('/kosarayu_algorithm')
 @view('kosarayu_algorithm')
 def kosarayu_algorithm():
+    with open('./static/data/kosarayu_theory.json', encoding='utf-8') as f:
+        theory = json.load(f)
     return dict(
         title='Kosarayu_algorithm',
-        request=request
+        request=request,
+        matrix=None,
+        components=None,
+        theory=theory,
+        graph_image=None,
+        errors = None
     )
 
+@post('/kosarayu_algorithm/find_components')
+@view('kosarayu_algorithm')
+def find_components_route():
 
+    with open('./static/data/kosarayu_theory.json', encoding='utf-8') as f:
+        theory = json.load(f)
+
+    matrix_json = request.forms.get('matrix_data')
+    matrix = json.loads(matrix_json)
+
+    errors = validate_matrix_kosarayu(matrix)
+
+    # если есть ошибки — не считаем
+    if errors:
+        return dict(
+            title='Kosarayu_algorithm',
+            request=request,
+            theory=theory,
+            matrix=matrix,
+            components=None,
+            graph_image=None,
+            errors=errors
+        )
+
+    components = find_components(matrix)
+    draw_directed_graph(
+        matrix,
+        components,
+        "static/images/result_graph.png"
+    )
+    return dict(
+        title='Kosarayu_algorithm',
+        request=request,
+        theory=theory,
+        matrix=matrix,
+        components=components,
+        graph_image="/static/images/result_graph.png",
+        errors = None
+    )
+
+@post('/kosarayu_algorithm/load_matrix')
+@view('kosarayu_algorithm')
+def load_matrix_route():
+    errors = []
+    matrix = None
+    file = request.files.get('matrix_file')
+    allowed_extension = ".txt"
+    extension = os.path.splitext(file.filename)[1].lower()
+
+    if not file:
+        errors.append("Файл не выбран")
+    elif extension != allowed_extension:
+        errors.append("Загружаемый файл должен быть расширения TXT")
+    else:
+        text = file.file.read().decode("utf-8").strip()
+        valid, result = validate_matrix_text(text)
+        if not valid:
+            errors.append(result)
+        else:
+            matrix = result
+
+    # Передаем matrix в шаблон, чтоб JS потом построил таблицу
+    return dict(
+        title='Kosarayu_algorithm',
+        request=request,
+        matrix=matrix,
+        components=None,
+        graph_image=None,
+        theory=json.load(open('./static/data/kosarayu_theory.json', encoding='utf-8')),
+        errors=errors
+    )
+
+@post('/kosarayu_algorithm/save_matrix')
+def save_matrix():
+
+    matrix = ast.literal_eval(
+        request.forms.get("matrix")
+    )
+
+    components = ast.literal_eval(
+        request.forms.get("components")
+    )
+
+    text = f'Дата: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\n\n'
+
+    text += "Матрица смежности:\n"
+
+    for row in matrix:
+        text += " ".join(map(str, row)) + "\n"
+
+    text += "\nКомпоненты сильной связности:\n"
+
+    for component in components:
+        text += "{" + ", ".join(map(str, component)) + "}\n"
+
+    response.content_type = "text/plain; charset=utf-8"
+    response.headers[
+        "Content-Disposition"
+    ] = 'attachment; filename="result.txt"'
+
+    return text
