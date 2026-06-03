@@ -23,7 +23,7 @@ class TestGraphAlgorithm(unittest.TestCase):
         ]
         self.assertFalse(is_clique([1, 2, 3], matrix))
 
-    # Проверка поиска всех сообществ в графе
+    # Проверка поиска сообщества с размерностью 3
     def test_find_all_cliques(self):
         matrix = [
             [0, 1, 1],
@@ -35,7 +35,7 @@ class TestGraphAlgorithm(unittest.TestCase):
         # Среди найденных есть сообщество размера 3
         self.assertTrue(any(len(c) == 3 for c in cliques))
 
-        # Список результатов не был усечён
+        # Не превышает количества найденных сообществ
         self.assertFalse(truncated)
 
 class TestGraphGenerator(unittest.TestCase):
