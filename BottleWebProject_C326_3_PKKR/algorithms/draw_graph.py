@@ -42,7 +42,7 @@ def build_graph(matrix):
     return graph1
 
 # Функция отображения графа на странице
-def draw_graph(matrix):
+def draw_graph1(matrix):
     graph = build_graph(matrix)
 
     buf = io.BytesIO() # Буфер памяти

@@ -66,6 +66,7 @@ h2 {
     .info-content h2 {
         margin-top: 45px;
         color: #cfe97c;
+        text-align: left;
     }
 
     /* Абзацы внутри описания */
