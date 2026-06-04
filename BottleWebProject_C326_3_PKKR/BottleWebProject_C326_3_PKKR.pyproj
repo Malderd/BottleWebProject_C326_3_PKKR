@@ -21,6 +21,7 @@
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
@@ -54,6 +55,12 @@
     </Compile>
     <Compile Include="tests\test_hamillton.py" />
     <Compile Include="tests\test_cliques_selenium.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_euler.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_euler_selenium.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\__init__.py">
