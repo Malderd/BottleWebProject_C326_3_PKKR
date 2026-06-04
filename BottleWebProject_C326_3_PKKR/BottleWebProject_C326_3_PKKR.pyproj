@@ -23,6 +23,7 @@
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
+    <WebBrowserPort>5555</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,6 +62,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\test_euler_selenium.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_kosarayu_selenium.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\__init__.py">
