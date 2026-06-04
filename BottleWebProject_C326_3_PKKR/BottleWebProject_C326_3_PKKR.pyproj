@@ -20,7 +20,7 @@
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
-	<InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
@@ -52,6 +52,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\test_cliques_selenium.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_euler.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_euler_selenium.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\__init__.py">

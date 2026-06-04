@@ -196,3 +196,6 @@ def find_eulerian_path(matrix):
         "is_connected": True,
         "has_edges": True
     }
+if __name__ == '__main__':
+    from bottle import run
+    run(host='127.0.0.1', port=5555, debug=True)
