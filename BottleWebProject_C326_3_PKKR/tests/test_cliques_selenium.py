@@ -40,12 +40,6 @@ class TestCliquesSelenium(unittest.TestCase):
         ActionChains(self.driver).scroll_from_origin(origin, 0, -y).perform() # -y
         time.sleep(1.5)
 
-    # Ожидание с выводом в консоль
-    def pause(self, text, sec=None):
-        sec = sec or random.uniform(1,2)
-        print(text)
-        time.sleep(sec)
-
     # ПС-01, переход с главной на собственную страничку
     def test_1_open_page(self):
         print("\n[TEST 1] Старт с главной страницы")
