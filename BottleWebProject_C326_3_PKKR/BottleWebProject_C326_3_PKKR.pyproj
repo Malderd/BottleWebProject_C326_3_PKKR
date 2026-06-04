@@ -93,7 +93,7 @@
   <ItemGroup>
     <Folder Include="algorithms\" />
     <Folder Include="tests\" />
-	<Folder Include="tests\test_data" />
+    <Folder Include="tests\test_data" />
     <Folder Include="static\data\" />
     <Folder Include="validations\" />
     <Folder Include="static\" />
@@ -154,6 +154,8 @@
     <Content Include="static\scripts\matrix_generator.js" />
     <Content Include="static\scripts\matrix_prepare.js" />
     <Content Include="static\scripts\random-graph_generator.js" />
+    <Content Include="tests\test_data\error.txt" />
+    <Content Include="tests\test_data\true_matrix.txt" />
     <Content Include="views\kosarayu_algorithm.tpl" />
     <Content Include="views\clique_detection.tpl" />
     <Content Include="views\hamillton_graph.tpl" />
@@ -163,13 +165,13 @@
     <Content Include="views\index.tpl" />
     <Content Include="views\footer.tpl" />
     <Content Include="views\layout.tpl" />
-	<Content Include="tests\test_data\big_matrix_chain_20.txt" />
-	<Content Include="tests\test_data\big_matrix_cycle_15.txt" />
-	<Content Include="tests\test_data\big_matrix_euler_15.txt" />
-	<Content Include="tests\test_data\big_matrix_15.txt" />
+    <Content Include="tests\test_data\big_matrix_chain_20.txt" />
+    <Content Include="tests\test_data\big_matrix_cycle_15.txt" />
+    <Content Include="tests\test_data\big_matrix_euler_15.txt" />
+    <Content Include="tests\test_data\big_matrix_15.txt" />
     <Content Include="tests\test_data\euler_chain_5.txt" />
-	<Content Include="tests\test_data\euler_cycle_6.txt" />
-	<Content Include="tests\test_data\euler_disconnected_4.txt" />
+    <Content Include="tests\test_data\euler_cycle_6.txt" />
+    <Content Include="tests\test_data\euler_disconnected_4.txt" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
