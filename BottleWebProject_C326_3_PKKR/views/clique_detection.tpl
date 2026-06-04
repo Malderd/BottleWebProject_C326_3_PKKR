@@ -1,7 +1,6 @@
 % rebase('layout.tpl', title='Поиск клик')
 
 <link rel="stylesheet" href="/static/content/cliques.css">
-<link rel="stylesheet" href="/static/content/fonts.css">
 
 <section class="hero-cliques">
     <div class="overlay"></div>

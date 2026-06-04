@@ -206,6 +206,4 @@
 </section>
 
 <!-- Подключение скриптов в конце -->
-<script src="/static/scripts/jquery-1.10.2.min.js"></script>
-<script src="/static/scripts/bootstrap.min.js"></script>
 <script src="/static/scripts/euler.js"></script>

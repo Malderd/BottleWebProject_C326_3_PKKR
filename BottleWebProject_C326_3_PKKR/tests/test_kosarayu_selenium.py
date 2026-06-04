@@ -1,6 +1,7 @@
 import unittest
 import time
 import random
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -184,7 +185,7 @@ class TestKosarayuSelenium(unittest.TestCase):
         self.driver.get(self.base_url + "/kosarayu_algorithm")
         self.pause()
 
-        file_path = r"C:\Users\rozhi\Downloads\abr.txt" # Выбранный файл
+        file_path = os.path.abspath("./tests/test_data/matrix_kosarayu.txt") # Выбранный файл
 
         file_input = self.wait.until(
             EC.presence_of_element_located((By.NAME, "matrix_file"))
@@ -216,7 +217,7 @@ class TestKosarayuSelenium(unittest.TestCase):
         self.driver.get(self.base_url + "/kosarayu_algorithm")
         self.pause()
 
-        file_path = r"C:\Users\rozhi\Downloads\table.txt"
+        file_path = os.path.abspath("./tests/test_data/uncorrect_matrix_kosarayu.txt") # Выбранный файл
 
         file_input = self.wait.until(
             EC.presence_of_element_located((By.NAME, "matrix_file"))
