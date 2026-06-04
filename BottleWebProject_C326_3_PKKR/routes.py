@@ -10,7 +10,7 @@ import random
 
 from algorithms.hamillton_graph import find_hamillton_graph
 from validations.valid_hamillton import valid_hamillton
-from algorithms.draw_graph import draw_graph, save_graph_archive
+from algorithms.draw_graph import draw_graph1, save_graph_archive
 from algorithms.clique_detection import solve_cliques, generate_random_matrix
 from validations.valid_clique import validate_n, validate_matrix, validate_density, validate_txt_file
 from algorithms.euler_graph import solve_euler
@@ -186,7 +186,7 @@ def decide_hamillton_graph():
 
     if action == "solve":
         result = find_hamillton_graph(matrix)
-        graph_image = draw_graph(matrix)
+        graph_image = draw_graph1(matrix)
 
     elif action == "save":
 
