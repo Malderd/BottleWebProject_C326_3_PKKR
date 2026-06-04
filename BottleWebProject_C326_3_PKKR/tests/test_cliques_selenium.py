@@ -1,5 +1,6 @@
 import unittest
 import time
+import os
 import random
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -109,7 +110,7 @@ class TestCliquesSelenium(unittest.TestCase):
         time.sleep(1)
 
         # Неверный файл
-        error_file = r"C:\Users\annak\OneDrive\Рабочий стол\error.txt"
+        error_file = os.path.abspath("./tests/test_data/error.txt") 
 
         file_input = self.wait.until(
             EC.presence_of_element_located((By.ID, "file-input"))
@@ -135,7 +136,7 @@ class TestCliquesSelenium(unittest.TestCase):
         time.sleep(2)
 
         # Загружаем правильный файл
-        true_file = r"C:\Users\annak\OneDrive\Рабочий стол\true_matrix.txt"
+        true_file = os.path.abspath("./tests/test_data/true_matrix.txt") 
 
         file_input = self.wait.until(
             EC.presence_of_element_located((By.ID, "file-input"))
