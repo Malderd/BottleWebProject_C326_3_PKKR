@@ -126,8 +126,8 @@ class TestHamilltonValidationFile(unittest.TestCase):
     def test_txt_not_square(self):
 
         txt = """0 1
-        1 0
-        1 1"""
+                1 0
+                1 1"""
 
         matrix, err = validate_txt_file(txt)
         self.assertEqual(err, 'Матрица должна быть квадратной.')
@@ -146,8 +146,8 @@ class TestHamilltonValidationFile(unittest.TestCase):
     def test_txt_not_symmetric(self):
 
         txt = """0 1 0
-        0 0 1
-        0 1 0"""
+                0 0 1
+                0 1 0"""
 
         matrix, err = validate_txt_file(txt)
         self.assertEqual(err, 'Матрица должна быть симметричной.')
@@ -156,8 +156,8 @@ class TestHamilltonValidationFile(unittest.TestCase):
     def test_txt_invalid_diagonal(self):
 
         txt = """1 1 0
-        1 0 1
-        0 1 0"""
+                1 0 1
+                0 1 0"""
 
         matrix, err = validate_txt_file(txt)
         self.assertEqual(err, 'На главной диагонали должны быть нули.')
