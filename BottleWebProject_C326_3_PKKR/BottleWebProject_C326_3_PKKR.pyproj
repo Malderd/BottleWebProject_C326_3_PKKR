@@ -19,12 +19,11 @@
     <Name>BottleWebProject_C326_3_PKKR</Name>
     <RootNamespace>BottleWebProject_C326_3_PKKR</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_dorxyna|$(MSBuildProjectFullPath)</InterpreterId>
-    <InterpreterId>MSBuild|env_kul|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env_kaza|$(MSBuildProjectFullPath)</InterpreterId>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
+    <WebBrowserPort>5555</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +41,9 @@
     <Compile Include="algorithms\euler.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="algorithms\euler_graph.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="algorithms\clique_detection.py">
       <SubType>Code</SubType>
     </Compile>
@@ -53,10 +55,20 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\test_hamillton.py" />
+    <Compile Include="tests\test_kosarayu.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tests\test_cliques_selenium.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tests\test_hamillton_selenium.py">
+    <Compile Include="tests\test_hamillton_selenium.py"/>
+    <Compile Include="tests\test_euler.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_euler_selenium.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_kosarayu_selenium.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\__init__.py">
@@ -82,6 +94,7 @@
   <ItemGroup>
     <Folder Include="algorithms\" />
     <Folder Include="tests\" />
+    <Folder Include="tests\test_data" />
     <Folder Include="static\data\" />
     <Folder Include="validations\" />
     <Folder Include="static\" />
@@ -94,7 +107,6 @@
   <ItemGroup>
     <Content Include="requirements.txt" />
     <Content Include="static\content\about.css" />
-    <Content Include="static\content\bootstrap.css" />
     <Content Include="static\content\bootstrap.min.css" />
     <Content Include="static\content\hamillton_graph.css">
       <SubType>Code</SubType>
@@ -106,14 +118,13 @@
     <Content Include="static\content\euler.css">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="static\content\kosarayu_algorithm.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="static\content\fonts.css" />
     <Content Include="static\content\site.css" />
     <Content Include="static\data\cliques_theory.json" />
     <Content Include="static\data\kosarayu_theory.json" />
-    <Content Include="static\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="static\fonts\Montserrat-Bold.ttf" />
     <Content Include="static\fonts\Montserrat-Regular.ttf" />
     <Content Include="static\fonts\Montserrat-SemiBold.ttf" />
@@ -131,8 +142,6 @@
     <Content Include="static\images\many_cliques.png" />
     <Content Include="static\images\nastya.png" />
     <Content Include="static\images\friend_graph.png" />
-    <Content Include="static\scripts\bootstrap.js" />
-    <Content Include="static\scripts\bootstrap.min.js" />
     <Content Include="static\scripts\button_find_state.js" />
     <Content Include="static\scripts\button_state.js" />
     <Content Include="static\scripts\hamillton_graph.js">
@@ -142,23 +151,12 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="static\scripts\cliques.js" />
-    <Content Include="static\scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="static\scripts\jquery-1.10.2.js" />
-    <Content Include="static\scripts\jquery-1.10.2.min.js" />
-    <Content Include="static\scripts\jquery-1.10.2.min.map" />
-    <Content Include="static\scripts\jquery.validate-vsdoc.js" />
-    <Content Include="static\scripts\jquery.validate.js" />
-    <Content Include="static\scripts\jquery.validate.min.js" />
-    <Content Include="static\scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="static\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="static\scripts\matrix_clear.js" />
     <Content Include="static\scripts\matrix_generator.js" />
     <Content Include="static\scripts\matrix_prepare.js" />
-    <Content Include="static\scripts\modernizr-2.6.2.js" />
     <Content Include="static\scripts\random-graph_generator.js" />
-    <Content Include="static\scripts\respond.js" />
-    <Content Include="static\scripts\respond.min.js" />
-    <Content Include="static\scripts\_references.js" />
+    <Content Include="tests\test_data\error.txt" />
+    <Content Include="tests\test_data\true_matrix.txt" />
     <Content Include="views\kosarayu_algorithm.tpl" />
     <Content Include="views\clique_detection.tpl" />
     <Content Include="views\hamillton_graph.tpl" />
@@ -168,6 +166,13 @@
     <Content Include="views\index.tpl" />
     <Content Include="views\footer.tpl" />
     <Content Include="views\layout.tpl" />
+    <Content Include="tests\test_data\big_matrix_chain_20.txt" />
+    <Content Include="tests\test_data\big_matrix_cycle_15.txt" />
+    <Content Include="tests\test_data\big_matrix_euler_15.txt" />
+    <Content Include="tests\test_data\big_matrix_15.txt" />
+    <Content Include="tests\test_data\euler_chain_5.txt" />
+    <Content Include="tests\test_data\euler_cycle_6.txt" />
+    <Content Include="tests\test_data\euler_disconnected_4.txt" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

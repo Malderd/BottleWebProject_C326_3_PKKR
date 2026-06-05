@@ -18,7 +18,7 @@
 
             <a href="#graph-form" class="scroll-btn">
                 ⬇&nbsp;&nbsp;Перейти к задаче
-             </a>
+            </a>
         </div>
 
         <!-- ТЕОРИЯ -->
@@ -32,28 +32,28 @@
 
                 % for section in theory["sections"]:
 
-            % if section.get("block"):
+                % if section.get("block"):
 
-                <div class="block">
+                    <div class="block">
+                        <p>{{!section["text"]}}</p>
+
+                        % if "image" in section:
+                            <img src="{{section['image']}}" alt="{{section.get('image_caption', '')}}" class="{{section.get('image_class', '')}}">
+                        % end
+                    </div>
+
+                % else:
+
                     <p>{{!section["text"]}}</p>
 
                     % if "image" in section:
                         <img src="{{section['image']}}" alt="{{section.get('image_caption', '')}}" class="{{section.get('image_class', '')}}">
                     % end
-                </div>
 
-            % else:
-
-                <p>{{!section["text"]}}</p>
-
-                % if "image" in section:
-                    <img src="{{section['image']}}" alt="{{section.get('image_caption', '')}}" class="{{section.get('image_class', '')}}">
                 % end
 
             % end
-
-        % end
-        </div>
+            </div>
 
         </details>
 
@@ -101,7 +101,7 @@
                         <div class="table_and_buttons" id="table_and_buttons" style="display: {{'block' if matrix else 'none'}}">
                             <div class="buttons">
 
-                                <button type="button" class="btn primary" onclick="generateRandomGraph()">
+                                <button type="button" class="btn primary" onclick="generateRandomGraph()" id="generateButton">
                                     Сгенерировать
                                 </button>
 
@@ -195,7 +195,7 @@
                                    name="components"
                                    value="{{components}}">
 
-                            <button type="submit" class="btn primary">
+                            <button type="submit" class="btn primary" id="saveButton">
                                 Сохранить
                             </button>
                         </form>
@@ -224,7 +224,7 @@
 
                     <h2>Найденные компоненты сильной связности</h2>
 
-                        % if components:
+                    % if components:
                             <div class="results-info">
                                 Количество компонент: <b>{{len(components)}}</b>
                             </div>
@@ -236,22 +236,19 @@
                                         {{"{" + ", ".join(map(str, component)) + "}"}}
                                     </div>
                                 % end
-
                             </div>
+
                             % else:
                             <div class="results-info">
                                 Результаты алгоритма появятся после обработки графа
                             </div>
-                        % end
-
-                    </div>
+                    % end
 
                 </div>
 
             </div>
 
         </div>
-
     </div>
-% include('footer.tpl')
+    % include('footer.tpl')
 </section>

@@ -34,7 +34,28 @@ def validation_euler(matrix):
                     "exists": False,
                     "message": f"Матрица несимметрична относительно главной диагонали между вершинами {i+1} и {j+1}. Граф должен быть неориентированным."
                 }
-
+    active_vertices = {i for i in range(n) if sum(matrix[i]) > 0}
+    
+    if active_vertices:
+        # Стартуем BFS с любой активной вершины
+        start_vertex = next(iter(active_vertices))
+        visited = set()
+        queue = [start_vertex]
+        visited.add(start_vertex)
+        
+        while queue:
+            current = queue.pop(0)
+            for neighbor in range(n):
+                if matrix[current][neighbor] == 1 and neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+        
+        # Если посетили не все активные вершины — граф несвязный
+        if not active_vertices.issubset(visited):
+            return False, {
+                "exists": False,
+                "message": "Граф несвязен (содержит несколько изолированных компонент с ребрами). Эйлеров маршрут невозможен."
+            }
     # Если структура матрицы верна — пропускаем к решению!
     return True, None
 

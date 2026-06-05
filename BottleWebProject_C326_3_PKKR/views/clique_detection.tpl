@@ -1,7 +1,6 @@
 % rebase('layout.tpl', title='Поиск клик')
 
 <link rel="stylesheet" href="/static/content/cliques.css">
-<link rel="stylesheet" href="/static/content/fonts.css">
 
 <section class="hero-cliques">
     <div class="overlay"></div>
@@ -291,7 +290,7 @@
                                         {{'disabled' if not (defined('file_name') and file_name) else ''}}>
                                     Загрузить
                                 </button>
-                                <button type="button" class="btn secondary"
+                                <button type="button" name="clear" class="btn secondary"
                                         onclick="location.href='/clique_detection?tab=file'">
                                     Очистить
                                 </button>

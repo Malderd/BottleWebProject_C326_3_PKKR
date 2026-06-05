@@ -6,7 +6,7 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href="/static/content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/content/site.css" />
-    <script src="/static/scripts/modernizr-2.6.2.js"></script>
+    <link rel="stylesheet" href="/static/content/fonts.css" />
 </head>
 
 <body>
@@ -55,10 +55,6 @@
     <div class="container body-content">
         {{!base}}
     </div>
-
-    <script src="/static/scripts/jquery-1.10.2.js"></script>
-    <script src="/static/scripts/bootstrap.js"></script>
-    <script src="/static/scripts/respond.js"></script>
 
 </body>
 </html>
